@@ -209,6 +209,12 @@ body{
   background:rgba(13,17,45,.6);border:1.5px solid var(--glass-line);transition:all .13s;touch-action:manipulation;
 }
 .choice:active{transform:scale(.985);}
+.ans-ta{width:100%;min-height:150px;resize:vertical;font-family:var(--font);font-size:16px;line-height:1.7;color:#fff;
+  background:rgba(13,17,45,.6);border:1.5px solid var(--glass-line);border-radius:14px;padding:14px 15px;}
+.ans-ta:focus{outline:none;border-color:var(--gold);}
+textarea,input{-webkit-user-select:text;user-select:text;}
+.wr-badge{display:inline-block;font-size:11.5px;font-weight:700;color:#d8c9ff;background:rgba(126,87,255,.22);border:1px solid rgba(167,139,250,.55);padding:3px 10px;border-radius:99px;margin-left:8px;}
+.ta-count{text-align:right;font-size:12px;color:#8e98cf;margin-top:6px;}
 .choice .abc{flex:none;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;background:rgba(255,255,255,.12);}
 .choice.sel{background:rgba(247,201,72,.18);border-color:var(--gold);}
 .choice.sel .abc{background:var(--gold);color:#241c05;}
@@ -359,6 +365,25 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .stamp.t-ok{color:#8df0b2;border-color:#22c55e;}
 .stamp.t-red{color:#ff9d9d;border-color:var(--bad);}
 
+.bq{display:flex;align-items:center;gap:10px;border-radius:12px;padding:11px 13px;margin-bottom:8px;background:rgba(13,17,45,.55);border:1px solid var(--glass-line);}
+.bq .tp{flex:none;font-size:11px;font-weight:800;border-radius:8px;padding:3px 9px;background:rgba(94,234,212,.15);color:var(--cyan);border:1px solid rgba(94,234,212,.4);}
+.bq .tp.wr{background:rgba(126,87,255,.2);color:#d8c9ff;border-color:rgba(167,139,250,.5);}
+.bq .tx{flex:1;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.bq button{flex:none;font-family:var(--font);font-size:13px;cursor:pointer;background:rgba(255,255,255,.1);border:1px solid var(--glass-line);color:#fff;border-radius:8px;padding:5px 9px;}
+.bq button.del{border-color:rgba(239,68,68,.55);color:#ff9d9d;}
+.echoice{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.echoice input[type=radio]{width:20px;height:20px;accent-color:var(--gold);flex:none;}
+.echoice input[type=text]{flex:1;font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;}
+.modal.wide{max-width:640px;text-align:left;max-height:86vh;overflow-y:auto;}
+.gr-item{border-radius:12px;padding:13px 14px;margin-bottom:12px;background:rgba(13,17,45,.6);border:1px solid var(--glass-line);}
+.gr-item .gq{font-size:14px;font-weight:600;margin-bottom:8px;}
+.gr-item .ga{font-size:14.5px;line-height:1.7;white-space:pre-wrap;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;margin-bottom:10px;color:#e8ecff;}
+.gr-item .ga.empty{color:#8e98cf;font-style:italic;}
+.gr-btns{display:flex;gap:8px;}
+.gr-btns button{flex:1;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;border-radius:10px;padding:9px;background:rgba(255,255,255,.08);border:1.5px solid var(--glass-line);color:#fff;}
+.gr-btns button.on0{background:rgba(239,68,68,.25);border-color:var(--bad);}
+.gr-btns button.on1{background:rgba(34,197,94,.25);border-color:#22c55e;}
+
 /* ---------- จอฉายหน้าห้อง (WAR ROOM) ---------- */
 #warRoom{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;background:radial-gradient(1000px 500px at 80% -10%,rgba(96,165,250,.18),transparent 60%),linear-gradient(160deg,#070a1e,#141a3f);overflow:auto;padding:22px clamp(14px,3vw,34px);}
 #warRoom.show{display:flex;}
@@ -498,7 +523,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
         <div class="info-chip"><b>1</b><span>สิทธิ์สอบ (ครั้ง)</span></div>
       </div>
       <ul class="rules">
-        <li><i>🚫</i> ห้ามสลับแท็บ / ย่อหน้าจอ / เปิดแอปอื่น — ระบบตรวจจับและบันทึกแจ้งครูทันที</li>
+        <li id="ruleTabLi"><i>🚫</i> <span id="ruleTabTxt">ห้ามสลับแท็บ / ย่อหน้าจอ / เปิดแอปอื่น — ระบบตรวจจับและบันทึกแจ้งครูทันที</span></li>
         <li><i>🚫</i> ห้ามคลิกขวา คัดลอก หรือแปลภาษาด้วยโปรแกรมใด ๆ</li>
         <li><i>🎥</i> <span id="ruleFace">ระบบ AI ตรวจจับใบหน้าตลอดการสอบ ห้ามออกจากหน้ากล้อง</span></li>
         <li><i>⏰</i> เมื่อหมดเวลา ระบบจะส่งคำตอบให้อัตโนมัติ</li>
@@ -577,7 +602,8 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 
     <div class="tabs">
       <button class="tab-btn on" id="tabBtnLive">📡 LIVE สด</button>
-      <button class="tab-btn" id="tabBtnSet">⚙️ ตั้งค่าระบบ</button>
+      <button class="tab-btn" id="tabBtnSet">⚙️ ตั้งค่า</button>
+      <button class="tab-btn" id="tabBtnBuild">📝 สร้างข้อสอบ</button>
     </div>
 
     <div id="tabLive">
@@ -611,6 +637,49 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
           <tbody id="resultBody"><tr><td colspan="9" style="text-align:center;color:#8e98cf;">ยังไม่มีผู้ส่งคำตอบ</td></tr></tbody>
         </table></div>
       </div>
+    </div>
+
+    <div id="tabBuild" class="hidden">
+      <div class="card">
+        <h2>📝 Exam Builder <span class="hint">เพิ่มข้อสอบปรนัย + ข้อเขียน แล้วบันทึกลง Google Sheets ให้เอง</span></h2>
+        <div class="set-grid">
+          <div class="set-field"><label>เลือกชุดที่จะแก้ไข</label><select id="bSetSel" style="font-family:var(--font);font-size:14px;padding:11px 12px;border-radius:11px;background:#141a3f;color:#fff;border:1px solid var(--glass-line);"></select></div>
+          <div class="set-field"><label>&nbsp;</label><button class="btn" id="bNewSet" style="width:100%;">➕ สร้างชุดใหม่</button></div>
+          <div class="set-field"><label>รหัสชุด (A-Z 0-9 _ เท่านั้น)</label><input type="text" id="bSetId"></div>
+          <div class="set-field"><label>ชื่อชุด</label><input type="text" id="bTitle"></div>
+          <div class="switch-row full"><span>📱 โหมดผ่อนปรน: ไม่จับสลับหน้าจอ (แนะนำสำหรับชุดข้อเขียนบน iPad)</span><label class="sw"><input type="checkbox" id="bRelax"><i></i></label></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>รายการข้อ (<span id="bCount">0</span> ข้อ)</h2>
+        <div id="bQList"><p class="hint">ยังไม่มีข้อสอบในชุดนี้</p></div>
+        <div style="display:flex;gap:10px;margin-top:12px;">
+          <button class="btn btn-sm" id="bAddMc" style="flex:1;">➕ เพิ่มข้อปรนัย</button>
+          <button class="btn btn-sm" id="bAddWr" style="flex:1;">✍️ เพิ่มข้อเขียน</button>
+        </div>
+      </div>
+      <div class="card hidden" id="bEditor">
+        <h2 id="bEditorTitle">เพิ่มข้อปรนัย</h2>
+        <div class="set-field full" style="margin-bottom:12px;"><label>โจทย์</label><textarea id="eQ" rows="3"></textarea></div>
+        <div id="eMcFields" style="margin-bottom:12px;">
+          <p class="hint" style="margin-bottom:8px;">พิมพ์ตัวเลือก (อย่างน้อย 2) แล้วติ๊กวงกลมหน้าข้อที่เป็นคำตอบถูก</p>
+          <div class="echoice"><input type="radio" name="eAns" value="0" checked><input type="text" id="eC0" placeholder="ตัวเลือก A"></div>
+          <div class="echoice"><input type="radio" name="eAns" value="1"><input type="text" id="eC1" placeholder="ตัวเลือก B"></div>
+          <div class="echoice"><input type="radio" name="eAns" value="2"><input type="text" id="eC2" placeholder="ตัวเลือก C"></div>
+          <div class="echoice"><input type="radio" name="eAns" value="3"><input type="text" id="eC3" placeholder="ตัวเลือก D"></div>
+        </div>
+        <div id="eWrFields" class="hidden" style="margin-bottom:12px;">
+          <div class="set-field full"><label>เฉลย — ตอบสั้นให้ระบบตรวจเอง คั่นหลายแบบด้วย | เช่น went|goed &nbsp;·&nbsp; เว้นว่าง = ครูตรวจให้คะแนนเอง</label><input type="text" id="eKeys"></div>
+        </div>
+        <div class="set-field full" style="margin-bottom:14px;"><label>รูปภาพ URL (ไม่มีเว้นว่าง)</label><input type="text" id="eImg"></div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-gold" id="eSave" style="flex:1;">✔ บันทึกข้อนี้</button>
+          <button class="btn" id="eCancel">ยกเลิก</button>
+        </div>
+      </div>
+      <button class="btn btn-gold btn-block" id="bSaveSet">💾 บันทึกชุดนี้ลง Google Sheets</button>
+      <button class="btn btn-danger btn-block hidden" id="bDelSet" style="margin-top:10px;">🗑 ลบชุดนี้ออกจากชีต</button>
+      <p class="hint" style="margin-top:10px;">💡 แก้ชุดที่อยู่ในโค้ด = ระบบจะบันทึกเป็นเวอร์ชันชีตทับให้อัตโนมัติ (โค้ดเดิมไม่ต้องแตะ)</p>
     </div>
 
     <div id="tabSet" class="hidden">
@@ -839,7 +908,7 @@ function mergeSheetSets(sets){
   Object.keys(sets || {}).forEach(id=>{
     const s = sets[id];
     if(!s || !Array.isArray(s.questions) || !s.questions.length) return;
-    EXAM_SETS[id] = { title: s.title || id, questions: s.questions, fromSheet: true };
+    EXAM_SETS[id] = { title: s.title || id, questions: s.questions, relax: !!s.relax, fromSheet: true };
   });
 }
 function setLabel(id){ return EXAM_SETS[id] ? EXAM_SETS[id].title : (id || '–'); }
@@ -1138,6 +1207,11 @@ function gotoRules(){
   $('ruleQty').textContent = QUESTIONS.length;
   $('ruleTime').textContent = parseInt(S.config.durationMinutes,10)||60;
   $('ruleSet').textContent = setLabel(CUR_SET);
+  const relax = !!(EXAM_SETS[CUR_SET] && EXAM_SETS[CUR_SET].relax);
+  $('ruleTabLi').querySelector('i').textContent = relax ? '📝' : '🚫';
+  $('ruleTabTxt').textContent = relax
+    ? 'ชุดนี้เป็นโหมดข้อเขียน: ไม่จับการสลับหน้าจอ แต่ยังห้ามคัดลอก/แปลภาษา และครูเห็นความคืบหน้าตลอด'
+    : 'ห้ามสลับแท็บ / ย่อหน้าจอ / เปิดแอปอื่น — ระบบตรวจจับและบันทึกแจ้งครูทันที';
   show('scrRules');
   $('agreeChk').checked = false;
   $('btnStart').disabled = true;
@@ -1167,11 +1241,11 @@ async function startExam(){
     const rng = mulberry32(S.seed);
     S.qOrder = (S.config.shuffleQuestions==='true') ? seededShuffle(range(N), rng) : range(N);
     S.cOrder = QUESTIONS.map((q,i)=> (S.config.shuffleChoices==='true')
-      ? seededShuffle(range(q.choices.length), mulberry32(S.seed + i*7919 + 13))
-      : range(q.choices.length));
+      ? seededShuffle(range((q.choices||[]).length), mulberry32(S.seed + i*7919 + 13))
+      : range((q.choices||[]).length));
     S.answers = new Array(N).fill(-1);
     if(r.resumed && Array.isArray(r.savedAnswers) && r.savedAnswers.length === N){
-      S.answers = r.savedAnswers.map(a=>Number(a));
+      S.answers = r.savedAnswers.map(a => (typeof a === 'string' ? a : Number(a)));
       toast('กู้คำตอบเดิมกลับมาให้แล้ว ✓');
     }
     if(remainingMs() <= 0){
@@ -1212,6 +1286,7 @@ function buildWatermark(){
 }
 function enterExamUI(){
   S.phase = 'exam'; S.cur = 0;
+  S.relax = !!(EXAM_SETS[CUR_SET] && EXAM_SETS[CUR_SET].relax);
   $('hudName').textContent = S.student.name;
   $('hudClass').textContent = S.classLevel+'/'+S.room+' เลขที่ '+S.student.no;
   buildPalette();
@@ -1250,13 +1325,34 @@ function tick(){
   if(rem <= 60000 && !S.warned1){ S.warned1 = true; toast('⏰ เหลือเวลา 1 นาที!'); sfxWarn(); }
   if(rem <= 0){ doSubmit(true); }
 }
-function answeredCount(){ return S.answers.filter(a=>a>=0).length; }
+function isAnswered(i){
+  const q = QUESTIONS[i], a = S.answers[i];
+  if(q && q.type === 'written') return typeof a === 'string' && a.trim() !== '';
+  return typeof a === 'number' && a >= 0;
+}
+function answeredCount(){ let n=0; for(let i=0;i<QUESTIONS.length;i++){ if(isAnswered(i)) n++; } return n; }
+function normTxt(s){ return String(s).toLowerCase().replace(/\s+/g,' ').trim().replace(/[.,!?;:'"\u201c\u201d\u2018\u2019]+$/,''); }
+function matchKeys(ans, keys){
+  if(typeof ans !== 'string' || !ans.trim()) return false;
+  const a = normTxt(ans);
+  return keys.some(k => normTxt(k) === a);
+}
+function computeScore(){
+  let auto = 0; const manualIdx = [];
+  QUESTIONS.forEach((q,i)=>{
+    if(q.type === 'written'){
+      if(q.keys && q.keys.length){ if(matchKeys(S.answers[i], q.keys)) auto++; }
+      else manualIdx.push(i);
+    }else if(S.answers[i] === q.answer) auto++;
+  });
+  return { auto: auto, manualIdx: manualIdx };
+}
 function updateHud(){
   $('hudAnswered').textContent = answeredCount()+'/'+QUESTIONS.length;
   $('vioBadge').textContent = '⚠ ทุจริต '+S.violations+' ครั้ง';
   $('vioBadge').classList.toggle('show', S.violations > 0);
   document.querySelectorAll('#palette .pal').forEach((p,i)=>{
-    p.classList.toggle('done', S.answers[S.qOrder[i]] >= 0);
+    p.classList.toggle('done', isAnswered(S.qOrder[i]));
     p.classList.toggle('cur', i === S.cur);
   });
 }
@@ -1273,11 +1369,27 @@ function renderQuestion(){
   const pos = S.cur;
   const orig = S.qOrder[pos];
   const q = QUESTIONS[orig];
-  $('qNum').textContent = 'ข้อ '+(pos+1)+' / '+QUESTIONS.length;
+  $('qNum').innerHTML = 'ข้อ '+(pos+1)+' / '+QUESTIONS.length + (q.type==='written' ? '<span class="wr-badge">✍️ ข้อเขียน</span>' : '');
   $('qText').textContent = q.q;
   if(q.image && q.image.trim()){ $('qImg').src = q.image; $('qImg').style.display='block'; }
   else{ $('qImg').style.display='none'; $('qImg').removeAttribute('src'); }
   const box = $('choices'); box.innerHTML = '';
+  if(q.type === 'written'){
+    const ta = document.createElement('textarea');
+    ta.className = 'ans-ta';
+    ta.placeholder = 'พิมพ์คำตอบของคุณที่นี่...';
+    ta.value = (typeof S.answers[orig] === 'string') ? S.answers[orig] : '';
+    const cnt = document.createElement('div');
+    cnt.className = 'ta-count';
+    const updCnt = ()=>{ cnt.textContent = ta.value.trim() ? ta.value.length+' ตัวอักษร ✓ บันทึกอัตโนมัติ' : 'ยังไม่ได้ตอบ'; };
+    ta.addEventListener('input', ()=>{ S.answers[orig] = ta.value; updCnt(); updateHud(); });
+    updCnt();
+    box.appendChild(ta); box.appendChild(cnt);
+    $('btnPrev').disabled = pos === 0;
+    $('btnNext').disabled = pos === QUESTIONS.length-1;
+    updateHud();
+    return;
+  }
   const letters = ['A','B','C','D','E','F'];
   S.cOrder[orig].forEach((cIdx, j)=>{
     const b = document.createElement('button');
@@ -1325,13 +1437,16 @@ async function doSubmit(auto){
   if(S.submitted || S.submitting) return;
   S.submitting = true;
   if(S.timerInt){ clearInterval(S.timerInt); S.timerInt = null; }
-  const score = QUESTIONS.reduce((s,q,i)=> s + (S.answers[i]===q.answer ? 1 : 0), 0);
+  const cs = computeScore();
+  const score = cs.auto;
+  const pending = cs.manualIdx.length;
   const timeUsedSec = Math.min(
     Math.max(0, Math.round(((Date.now()+S.offset) - S.startTime)/1000)),
     (parseInt(S.config.durationMinutes,10)||60)*60
   );
   const payload = {action:'submitExam', classLevel:S.classLevel, room:S.room, no:S.student.no, name:S.student.name,
-    setId:CUR_SET, score:score, total:QUESTIONS.length, timeUsedSec:timeUsedSec, violations:S.violations, answers:S.answers};
+    setId:CUR_SET, score:score, total:QUESTIONS.length, timeUsedSec:timeUsedSec, violations:S.violations,
+    pending:pending, gradeMeta:{auto:score, manualTotal:pending, manual:{}}, answers:S.answers};
   let ok = false;
   for(let i=0;i<3 && !ok;i++){
     try{ const r = await api(payload); if(r.ok) ok = true; }
@@ -1351,7 +1466,7 @@ async function doSubmit(auto){
   $('wmLayer').classList.remove('show');
   $('dangerEdge').classList.remove('show');
   $('bcOverlay').classList.remove('show');
-  showResult(score, auto);
+  showResult(score, auto, pending);
   sfxSuccess();
 }
 function animateScore(target){
@@ -1403,19 +1518,24 @@ function fireConfetti(){
     })();
   }catch(e){}
 }
-function showResult(score, auto){
+function showResult(score, auto, pending){
   const total = QUESTIONS.length;
   const pct = total ? score/total : 0;
   if(S.config.showScore === 'true'){
     $('resultScoreWrap').style.display = '';
     $('resScore').textContent = '0';
-    $('resTotal').textContent = 'จาก '+total+' คะแนน';
-    $('resMsg').textContent = pct>=0.8 ? '🏆 ยอดเยี่ยมมาก!' : pct>=0.6 ? '👍 ทำได้ดี!' : pct>=0.5 ? '🙂 ผ่านเกณฑ์' : '💪 ครั้งหน้าสู้ใหม่นะ';
+    $('resTotal').textContent = 'จาก '+total+' คะแนน' + (pending > 0 ? ' (ยังไม่รวมข้อเขียน)' : '');
+    if(pending > 0){
+      $('resMsg').textContent = '📝 ส่งแล้ว! ข้อเขียน '+pending+' ข้อรอครูตรวจ';
+      $('stampEl').className = 'stamp'; $('stampEl').textContent = '';
+    }else{
+      $('resMsg').textContent = pct>=0.8 ? '🏆 ยอดเยี่ยมมาก!' : pct>=0.6 ? '👍 ทำได้ดี!' : pct>=0.5 ? '🙂 ผ่านเกณฑ์' : '💪 ครั้งหน้าสู้ใหม่นะ';
+      showStamp(pct);
+    }
     animateScore(score);
-    showStamp(pct);
   }else{
     $('resultScoreWrap').style.display = 'none';
-    $('resMsg').textContent = 'ส่งคำตอบเรียบร้อยแล้ว ✓';
+    $('resMsg').textContent = pending > 0 ? 'ส่งเรียบร้อย ✓ ข้อเขียน '+pending+' ข้อรอครูตรวจ' : 'ส่งคำตอบเรียบร้อยแล้ว ✓';
     $('stampEl').className = 'stamp'; $('stampEl').textContent = '';
   }
   fireConfetti();
@@ -1430,6 +1550,7 @@ function showResult(score, auto){
 /* ══════════════════ ANTI-CHEAT ══════════════════ */
 function violation(type, detail){
   if(S.phase !== 'exam' || S.submitted) return;
+  if(S.relax && (type === 'TAB_SWITCH' || type === 'WINDOW_BLUR')) return; // ชุดโหมดผ่อนปรน
   const now = Date.now();
   if(now - S.lastVio < 1200) return; // กันนับซ้ำ blur+visibility พร้อมกัน
   S.lastVio = now;
@@ -1647,10 +1768,12 @@ function renderAdmin(){
     rb.innerHTML = res.map(r=>{
       const t = (r.submitText||'').split(' ')[1] || r.submitText || '–';
       const vio = r.violations > 0 ? '<span class="pill bad">'+r.violations+'</span>' : '<span class="pill ok">0</span>';
+      const pend = r.pending > 0 ? ' <span class="pill warn">📝 รอตรวจ '+r.pending+'</span>' : '';
+      const gradeBtn = r.pending > 0 ? '<button class="btn btn-sm btn-gold" data-grade="'+esc(r.key)+'" style="margin-right:6px;">ตรวจ</button>' : '';
       return '<tr><td>'+esc(t)+'</td><td>'+esc(r.classLevel)+'/'+esc(r.room)+'</td><td>'+esc(r.no)+'</td><td class="name">'+esc(r.name)+'</td>'+
         '<td>'+esc(setLabel(r.setId))+'</td>'+
-        '<td class="score-cell">'+r.score+'/'+r.total+'</td><td>'+fmtSec(r.timeUsedSec)+'</td><td>'+vio+'</td>'+
-        '<td><button class="btn btn-sm btn-danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'">สอบใหม่</button></td></tr>';
+        '<td class="score-cell">'+r.score+'/'+r.total+pend+'</td><td>'+fmtSec(r.timeUsedSec)+'</td><td>'+vio+'</td>'+
+        '<td>'+gradeBtn+'<button class="btn btn-sm btn-danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'">สอบใหม่</button></td></tr>';
     }).join('');
   }
 }
@@ -1762,6 +1885,176 @@ async function saveConfig(extra){
   }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
 }
 
+/* ══════════════════ EXAM BUILDER ══════════════════ */
+const BLD = { setId:'', title:'', relax:false, questions:[], edit:-1, editType:'mc', isNew:false };
+
+function bRefreshSetSel(keep){
+  const sel = $('bSetSel'); sel.innerHTML = '';
+  Object.keys(EXAM_SETS).forEach(id=>{
+    const o = document.createElement('option');
+    o.value = id;
+    o.textContent = setLabel(id)+' — '+id+' ('+EXAM_SETS[id].questions.length+' ข้อ'+(EXAM_SETS[id].fromSheet?' · ชีต':' · โค้ด')+')';
+    sel.appendChild(o);
+  });
+  if(keep && EXAM_SETS[keep]) sel.value = keep;
+}
+function bLoadSet(id){
+  const s = EXAM_SETS[id];
+  if(!s) return;
+  BLD.setId = id; BLD.isNew = false;
+  BLD.title = s.title || id;
+  BLD.relax = !!s.relax;
+  BLD.questions = s.questions.map(q => q.type === 'written'
+    ? { type:'written', q:q.q, keys:(q.keys||[]).slice(), image:q.image||'' }
+    : { type:'mc', q:q.q, choices:(q.choices||[]).slice(), answer:q.answer, image:q.image||'' });
+  $('bSetId').value = id; $('bSetId').readOnly = true;
+  $('bTitle').value = BLD.title;
+  $('bRelax').checked = BLD.relax;
+  $('bDelSet').classList.toggle('hidden', !s.fromSheet);
+  $('bEditor').classList.add('hidden');
+  bRenderList();
+}
+function bNewSet(){
+  let n = Object.keys(EXAM_SETS).length + 1;
+  while(EXAM_SETS['SET_'+String(n).padStart(2,'0')]) n++;
+  BLD.setId = 'SET_'+String(n).padStart(2,'0');
+  BLD.isNew = true; BLD.title = 'ชุดใหม่'; BLD.relax = false; BLD.questions = [];
+  $('bSetId').value = BLD.setId; $('bSetId').readOnly = false;
+  $('bTitle').value = BLD.title;
+  $('bRelax').checked = false;
+  $('bDelSet').classList.add('hidden');
+  $('bEditor').classList.add('hidden');
+  bRenderList();
+  toast('ตั้งรหัส/ชื่อชุด แล้วกดเพิ่มข้อได้เลย');
+}
+function bRenderList(){
+  $('bCount').textContent = BLD.questions.length;
+  const box = $('bQList');
+  if(!BLD.questions.length){ box.innerHTML = '<p class="hint">ยังไม่มีข้อสอบในชุดนี้ กดปุ่มด้านล่างเพื่อเพิ่ม</p>'; return; }
+  box.innerHTML = BLD.questions.map((q,i)=>{
+    const tp = q.type === 'written'
+      ? '<span class="tp wr">✍️ เขียน'+((q.keys&&q.keys.length)?'·ตรวจเอง':'·ครูตรวจ')+'</span>'
+      : '<span class="tp">ปรนัย</span>';
+    return '<div class="bq"><b>'+(i+1)+'.</b> '+tp+'<span class="tx">'+esc(q.q)+'</span>'
+      +'<button data-bup="'+i+'" title="เลื่อนขึ้น">▲</button>'
+      +'<button data-bdn="'+i+'" title="เลื่อนลง">▼</button>'
+      +'<button data-bed="'+i+'">แก้</button>'
+      +'<button class="del" data-bdl="'+i+'">ลบ</button></div>';
+  }).join('');
+}
+function bOpenEditor(type, idx){
+  BLD.editType = type; BLD.edit = (idx === undefined ? -1 : idx);
+  $('bEditorTitle').textContent = (BLD.edit >= 0 ? 'แก้ไขข้อ '+(BLD.edit+1) : 'เพิ่ม') + (type === 'written' ? ' ✍️ ข้อเขียน' : ' ข้อปรนัย');
+  $('eMcFields').classList.toggle('hidden', type === 'written');
+  $('eWrFields').classList.toggle('hidden', type !== 'written');
+  const q = BLD.edit >= 0 ? BLD.questions[BLD.edit] : null;
+  $('eQ').value = q ? q.q : '';
+  $('eImg').value = q ? (q.image||'') : '';
+  ['eC0','eC1','eC2','eC3'].forEach((id,i)=>{ $(id).value = (q && q.choices && q.choices[i]) || ''; });
+  const ansIdx = (q && typeof q.answer === 'number') ? q.answer : 0;
+  document.querySelectorAll('input[name=eAns]').forEach(r=>{ r.checked = Number(r.value) === ansIdx; });
+  $('eKeys').value = (q && q.keys) ? q.keys.join('|') : '';
+  $('bEditor').classList.remove('hidden');
+}
+function bSaveQuestion(){
+  const qt = $('eQ').value.trim();
+  if(!qt){ toast('พิมพ์โจทย์ก่อน'); return; }
+  let item;
+  if(BLD.editType === 'written'){
+    const keys = $('eKeys').value.split('|').map(s=>s.trim()).filter(Boolean);
+    item = { type:'written', q:qt, keys:keys, image:$('eImg').value.trim() };
+  }else{
+    const choices = ['eC0','eC1','eC2','eC3'].map(id=>$(id).value.trim()).filter(Boolean);
+    if(choices.length < 2){ toast('ต้องมีตัวเลือกอย่างน้อย 2 ข้อ'); return; }
+    const ansEl = document.querySelector('input[name=eAns]:checked');
+    const answer = ansEl ? Number(ansEl.value) : 0;
+    if(answer >= choices.length){ toast('ข้อที่ติ๊กเป็นคำตอบถูกยังว่างอยู่'); return; }
+    item = { type:'mc', q:qt, choices:choices, answer:answer, image:$('eImg').value.trim() };
+  }
+  if(BLD.edit >= 0) BLD.questions[BLD.edit] = item;
+  else BLD.questions.push(item);
+  $('bEditor').classList.add('hidden');
+  bRenderList();
+}
+async function bSaveSet(){
+  const setId = $('bSetId').value.trim().toUpperCase();
+  if(!/^[A-Z0-9_\-]+$/.test(setId)){ toast('รหัสชุดใช้ A-Z 0-9 _ เท่านั้น'); return; }
+  if(!BLD.questions.length){ toast('เพิ่มข้อสอบอย่างน้อย 1 ข้อก่อน'); return; }
+  const btn = $('bSaveSet'); btn.disabled = true; btn.textContent = 'กำลังบันทึก...';
+  try{
+    const r = await api({action:'adminSaveSet', pin:S.adminPin, setId:setId,
+      title:$('bTitle').value.trim() || setId, relax:$('bRelax').checked, questions:BLD.questions});
+    if(r.ok){
+      mergeSheetSets(r.sets);
+      S.sheetIssues = r.issues || [];
+      rebuildSetMapUI();
+      bRefreshSetSel(setId);
+      bLoadSet(setId);
+      toast('บันทึกชุด '+setId+' ลงชีตแล้ว ✓ ('+BLD.questions.length+' ข้อ)');
+      sfxSuccess();
+    }else toast('บันทึกไม่สำเร็จ: '+(r.error||''));
+  }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+  finally{ btn.disabled = false; btn.textContent = '💾 บันทึกชุดนี้ลง Google Sheets'; }
+}
+function rebuildSetMapUI(){
+  $('setMapGrid').innerHTML = '';
+  const cfg = S.adminData ? S.adminData.config : S.config;
+  fillSetMapUI(cfg);
+}
+
+/* ══════════════════ ตรวจข้อเขียน (GRADING) ══════════════════ */
+async function openGrading(key){
+  try{
+    const r = await api({action:'adminGetAnswers', pin:S.adminPin, key:key});
+    if(!r.ok){ toast('ดึงคำตอบไม่สำเร็จ'); return; }
+    const set = EXAM_SETS[r.setId];
+    if(!set){ toast('ไม่พบชุดข้อสอบ '+r.setId+' (รีเฟรชหน้า)'); return; }
+    const manual = [];
+    set.questions.forEach((q,i)=>{ if(q.type === 'written' && (!q.keys || !q.keys.length)) manual.push(i); });
+    const grades = {};
+    Object.keys(r.meta.manual || {}).forEach(k=>{ grades[k] = Number(r.meta.manual[k]); });
+    const box = $('modalBox');
+    box.className = 'modal wide';
+    box.innerHTML = '<h3>📝 ตรวจข้อเขียน — '+esc(r.name)+'</h3>'
+      + '<p class="hint" style="text-align:left;margin-bottom:12px;">'+esc(setLabel(r.setId))+' · ให้คะแนนทีละข้อ (0 หรือ 1 คะแนน)</p>'
+      + manual.map(i=>{
+          const ansTxt = (typeof r.answers[i] === 'string' && r.answers[i].trim()) ? r.answers[i] : '';
+          return '<div class="gr-item" data-gi="'+i+'">'
+            + '<div class="gq">ข้อ '+(i+1)+': '+esc(set.questions[i].q)+'</div>'
+            + '<div class="ga'+(ansTxt?'':' empty')+'">'+(ansTxt?esc(ansTxt):'— นักเรียนไม่ได้ตอบ —')+'</div>'
+            + '<div class="gr-btns">'
+            + '<button data-gr="0" class="'+(grades[i]===0?'on0':'')+'">✗ 0 คะแนน</button>'
+            + '<button data-gr="1" class="'+(grades[i]===1?'on1':'')+'">✓ 1 คะแนน</button>'
+            + '</div></div>';
+        }).join('')
+      + '<div class="row" style="margin-top:6px;"><button class="btn" id="grCancel">ปิด</button><button class="btn btn-gold" id="grSave">💾 บันทึกคะแนน</button></div>';
+    $('modalWrap').classList.add('show');
+    box.querySelectorAll('[data-gr]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const item = b.closest('.gr-item');
+        const gi = item.getAttribute('data-gi');
+        grades[gi] = Number(b.getAttribute('data-gr'));
+        item.querySelectorAll('[data-gr]').forEach(x=>x.classList.remove('on0','on1'));
+        b.classList.add(grades[gi] === 1 ? 'on1' : 'on0');
+        sfxClick();
+      });
+    });
+    box.querySelector('#grCancel').addEventListener('click', ()=>{ closeModal(); box.className = 'modal'; });
+    box.querySelector('#grSave').addEventListener('click', async ()=>{
+      if(!Object.keys(grades).length){ toast('ยังไม่ได้ให้คะแนนข้อไหนเลย'); return; }
+      try{
+        const g = await api({action:'adminGrade', pin:S.adminPin, key:key, grades:grades});
+        if(g.ok){
+          closeModal(); box.className = 'modal';
+          toast('บันทึกคะแนนแล้ว ✓ รวม '+g.score+' คะแนน'+(g.pending>0?' (เหลือรอตรวจ '+g.pending+' ข้อ)':''));
+          sfxSuccess();
+          adminPollOnce();
+        }else toast('บันทึกไม่สำเร็จ');
+      }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+    });
+  }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+}
+
 /* ══════════════════ EVENT BINDINGS ══════════════════ */
 $('btnConfirmId').addEventListener('click', confirmIdentity);
 $('btnScanNext').addEventListener('click', ()=>{ sfxClick(); gotoRules(); });
@@ -1779,16 +2072,64 @@ $('adminLink').addEventListener('click', ()=>{
 });
 $('btnAdminLogin').addEventListener('click', adminLogin);
 $('adminPin').addEventListener('keydown', e=>{ if(e.key==='Enter') adminLogin(); });
-$('tabBtnLive').addEventListener('click', ()=>{ $('tabBtnLive').classList.add('on'); $('tabBtnSet').classList.remove('on'); $('tabLive').classList.remove('hidden'); $('tabSet').classList.add('hidden'); });
-$('tabBtnSet').addEventListener('click', ()=>{ $('tabBtnSet').classList.add('on'); $('tabBtnLive').classList.remove('on'); $('tabSet').classList.remove('hidden'); $('tabLive').classList.add('hidden'); if(S.adminData) fillSettingsForm(S.adminData.config); });
+function setTab(name){
+  const map = { live:['tabBtnLive','tabLive'], set:['tabBtnSet','tabSet'], build:['tabBtnBuild','tabBuild'] };
+  Object.keys(map).forEach(k=>{
+    $(map[k][0]).classList.toggle('on', k === name);
+    $(map[k][1]).classList.toggle('hidden', k !== name);
+  });
+  if(name === 'set' && S.adminData) fillSettingsForm(S.adminData.config);
+  if(name === 'build'){ bRefreshSetSel($('bSetSel').value); if(!BLD.setId) bLoadSet($('bSetSel').value); }
+}
+$('tabBtnLive').addEventListener('click', ()=>setTab('live'));
+$('tabBtnSet').addEventListener('click', ()=>setTab('set'));
+$('tabBtnBuild').addEventListener('click', ()=>setTab('build'));
+$('bSetSel').addEventListener('change', e=>bLoadSet(e.target.value));
+$('bNewSet').addEventListener('click', bNewSet);
+$('bAddMc').addEventListener('click', ()=>bOpenEditor('mc'));
+$('bAddWr').addEventListener('click', ()=>bOpenEditor('written'));
+$('eSave').addEventListener('click', bSaveQuestion);
+$('eCancel').addEventListener('click', ()=>$('bEditor').classList.add('hidden'));
+$('bSaveSet').addEventListener('click', bSaveSet);
+$('bDelSet').addEventListener('click', ()=>{
+  const id = BLD.setId;
+  modal('ลบชุดข้อสอบ','ลบชุด "'+id+'" ออกจากชีต Questions ถาวร?\n(ถ้ามีชุดชื่อเดียวกันในโค้ด เวอร์ชันโค้ดจะกลับมาแทน)',[
+    {label:'ยกเลิก'},
+    {label:'ยืนยันลบ', cls:'btn-danger', fn: async ()=>{
+      try{
+        const r = await api({action:'adminDeleteSet', pin:S.adminPin, setId:id});
+        if(r.ok){
+          if(EXAM_SETS[id] && EXAM_SETS[id].fromSheet) delete EXAM_SETS[id];
+          mergeSheetSets(r.sets);
+          rebuildSetMapUI();
+          bRefreshSetSel();
+          bLoadSet($('bSetSel').value);
+          toast('ลบชุด '+id+' แล้ว (รีเฟรชหน้าเพื่อซิงก์เมนูสมบูรณ์)');
+        }else toast('ลบไม่สำเร็จ');
+      }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+    }}
+  ]);
+});
+$('bQList').addEventListener('click', e=>{
+  const t = e.target;
+  const up = t.getAttribute('data-bup'), dn = t.getAttribute('data-bdn');
+  const ed = t.getAttribute('data-bed'), dl = t.getAttribute('data-bdl');
+  if(up !== null && up !== undefined && up !== ''){ const i=Number(up); if(i>0){ const x=BLD.questions[i]; BLD.questions[i]=BLD.questions[i-1]; BLD.questions[i-1]=x; bRenderList(); } }
+  else if(dn !== null && dn !== undefined && dn !== ''){ const i=Number(dn); if(i<BLD.questions.length-1){ const x=BLD.questions[i]; BLD.questions[i]=BLD.questions[i+1]; BLD.questions[i+1]=x; bRenderList(); } }
+  else if(ed !== null && ed !== undefined && ed !== ''){ const i=Number(ed); bOpenEditor(BLD.questions[i].type, i); }
+  else if(dl !== null && dl !== undefined && dl !== ''){ const i=Number(dl); BLD.questions.splice(i,1); bRenderList(); }
+});
 $('btnSaveCfg').addEventListener('click', ()=>saveConfig());
 $('btnExamToggle').addEventListener('click', ()=>{
   const open = S.adminData && S.adminData.config.examOpen === 'true';
   saveConfig({examOpen: open ? 'false':'true'});
 });
 document.addEventListener('click', e=>{
-  const t = e.target.closest ? e.target.closest('[data-reset]') : null;
-  if(t) askReset(t.getAttribute('data-reset'), t.getAttribute('data-name'));
+  if(!e.target.closest) return;
+  const t = e.target.closest('[data-reset]');
+  if(t){ askReset(t.getAttribute('data-reset'), t.getAttribute('data-name')); return; }
+  const g = e.target.closest('[data-grade]');
+  if(g) openGrading(g.getAttribute('data-grade'));
 });
 $('fClass').addEventListener('change', renderAdmin);
 $('fRoom').addEventListener('change', renderAdmin);
