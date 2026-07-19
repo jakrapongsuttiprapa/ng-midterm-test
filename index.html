@@ -196,6 +196,11 @@ body{
 #hudProg b{display:block;font-size:15px;font-weight:700;color:var(--gold);}
 #hudProg span{font-size:10.5px;color:#9aa6e6;}
 
+#answerProgress{height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:14px;}
+#answerProgressFill{display:block;height:100%;width:0%;border-radius:99px;transition:width .4s ease,background .4s ease,box-shadow .4s ease;background:linear-gradient(90deg,#5eead4,#60a5fa);}
+#answerProgressFill.mid{background:linear-gradient(90deg,#60a5fa,#f7c948);}
+#answerProgressFill.high{background:linear-gradient(90deg,#f7c948,#e0a92e);box-shadow:0 0 10px rgba(247,201,72,.55);}
+
 .q-card{padding:24px 22px;}
 #qTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 #qNum{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.14em;}
@@ -218,6 +223,9 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .choice .abc{flex:none;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;background:rgba(255,255,255,.12);}
 .choice.sel{background:rgba(247,201,72,.18);border-color:var(--gold);}
 .choice.sel .abc{background:var(--gold);color:#241c05;}
+.choice .checkmark{display:none;margin-left:auto;font-size:19px;color:var(--gold);flex:none;}
+.choice.sel .checkmark{display:inline-block;animation:checkBlink .32s ease;}
+@keyframes checkBlink{0%{opacity:0;transform:scale(.3) rotate(-10deg);}55%{opacity:1;transform:scale(1.2) rotate(4deg);}100%{opacity:1;transform:scale(1) rotate(0);}}
 
 #examNav{display:flex;gap:10px;margin-top:4px;}
 #examNav .btn{flex:1;}
@@ -542,6 +550,8 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
       <div id="timerBox"><b id="timerText">--:--</b><span>เวลาที่เหลือ</span></div>
     </div>
 
+    <div id="answerProgress"><i id="answerProgressFill"></i></div>
+
     <div class="card q-card">
       <div id="qTop">
         <span id="qNum">ข้อ 1</span>
@@ -570,6 +580,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
       <div class="result-msg" id="resMsg">ส่งคำตอบเรียบร้อยแล้ว ✓</div>
       <div id="stampWrap"><span class="stamp" id="stampEl"></span></div>
       <div class="result-sub" id="resSub" style="margin-top:12px;"></div>
+      <button class="btn btn-gold btn-block" id="btnDownloadCard" style="margin-top:18px;">📸 บันทึกภาพผลสอบ</button>
     </div>
   </section>
 
@@ -697,6 +708,12 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
           <div class="set-field full"><label>URL รูปฮีโร่แบนเนอร์ (ยืดหดตามหน้าจออัตโนมัติ)</label><input type="text" id="cfgHero" placeholder="https://..."></div>
           <div class="set-field"><label>ความมืดทับรูปพื้นหลัง (0–90%) ยิ่งมากตัวหนังสือยิ่งชัด</label><input type="number" id="cfgBgDim" min="0" max="90" step="5"></div>
           <div class="set-field"><label>ความกว้างการ์ด (พิกเซล 480–1100)</label><input type="number" id="cfgCardW" min="480" max="1100" step="20"></div>
+          <div class="set-field"><label>ธีมสี</label><select id="cfgTheme" style="font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;width:100%;">
+            <option value="gold">ทอง-กรมท่า (ดีฟอลต์)</option>
+            <option value="emerald">เขียวมรกต</option>
+            <option value="rose">ชมพู-กุหลาบ</option>
+            <option value="ocean">ฟ้าสมุทร</option>
+          </select></div>
           <div class="set-field"><label>เวลาสอบ (นาที)</label><input type="number" id="cfgDur" min="1" max="240"></div>
           <div class="set-field full"><label>ประกาศถึงนักเรียน (แสดงหน้าแรก, เว้นว่าง = ไม่แสดง)</label><textarea id="cfgAnn"></textarea></div>
         </div>
@@ -786,7 +803,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 5 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -865,7 +882,7 @@ const S = {
   qOrder:[], cOrder:[], answers:[], cur:0,
   violations:0, lastVio:0, submitted:false, submitting:false, phase:'boot', bcSeen:0,
   stream:null, timerInt:null, hbInt:null, adminInt:null,
-  warned5:false, warned1:false, adminData:null
+  warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false
 };
 
 const $ = id => document.getElementById(id);
@@ -925,15 +942,36 @@ const sfxClick   = ()=> tone(660,.08,'triangle');
 const sfxWarn    = ()=> { tone(440,.18,'sawtooth',0,.1); tone(310,.25,'sawtooth',.15,.1); };
 const sfxSuccess = ()=> { tone(523,.12,'sine'); tone(659,.12,'sine',.12); tone(784,.2,'sine',.24); };
 const sfxBc      = ()=> { tone(784,.14,'sine',0,.1); tone(988,.22,'sine',.16,.1); };
+const sfxAlarm   = ()=> { tone(880,.16,'square',0,.3); tone(660,.16,'square',.2,.3); tone(880,.16,'square',.4,.3); tone(660,.2,'square',.6,.3); };
 
 /* ---------- Seeded shuffle (เหมือนเดิมทุกครั้งที่ resume) ---------- */
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 function seededShuffle(arr, rng){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); const tmp=a[i]; a[i]=a[j]; a[j]=tmp; } return a; }
 const range = n => Array.from({length:n},(_,i)=>i);
 
+/* ---------- ธีมสี (เลือกได้จากแดชบอร์ดครู ไม่ต้องแก้โค้ด) ---------- */
+const THEMES = {
+  gold:    { navy1:'#0b1026', navy2:'#1b2350', navy3:'#2b2f77', gold:'#f7c948', goldDeep:'#e0a92e', cyan:'#5eead4', blue:'#60a5fa' },
+  emerald: { navy1:'#08160f', navy2:'#0f2a1d', navy3:'#163c29', gold:'#34d399', goldDeep:'#059669', cyan:'#6ee7b7', blue:'#38bdf8' },
+  rose:    { navy1:'#1a0b12', navy2:'#2c1220', navy3:'#3d1a2c', gold:'#fb7185', goldDeep:'#e11d48', cyan:'#fda4af', blue:'#f472b6' },
+  ocean:   { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee' }
+};
+function applyTheme(name){
+  const t = THEMES[name] || THEMES.gold;
+  const root = document.documentElement.style;
+  root.setProperty('--navy1', t.navy1);
+  root.setProperty('--navy2', t.navy2);
+  root.setProperty('--navy3', t.navy3);
+  root.setProperty('--gold', t.gold);
+  root.setProperty('--gold-deep', t.goldDeep);
+  root.setProperty('--cyan', t.cyan);
+  root.setProperty('--blue', t.blue);
+}
+
 /* ---------- Config apply ---------- */
 function applyConfig(cfg){
   S.config = cfg;
+  applyTheme(cfg.colorTheme || 'gold');
   document.title = cfg.examTitle + ' ' + cfg.schoolName;
   $('heroTitle').textContent = cfg.examTitle;
   $('heroSub').textContent = cfg.examSubtitle;
@@ -1295,6 +1333,26 @@ function updateHud(){
     p.classList.toggle('done', isAnswered(S.qOrder[i]));
     p.classList.toggle('cur', i === S.cur);
   });
+  updateAnswerProgress();
+  checkEncouragement();
+}
+function updateAnswerProgress(){
+  const fill = $('answerProgressFill');
+  if(!fill) return;
+  const total = QUESTIONS.length || 1;
+  const pct = Math.round((answeredCount()/total)*100);
+  fill.style.width = pct+'%';
+  fill.classList.toggle('mid', pct >= 34 && pct < 67);
+  fill.classList.toggle('high', pct >= 67);
+}
+const ENCOURAGE_MSGS = { 25:'🙂 เริ่มต้นได้ดี ทำต่อไปนะ!', 50:'✨ มาถึงครึ่งทางแล้ว สู้ๆ!', 75:'🌟 ใกล้จะครบแล้ว เก่งมาก!' };
+function checkEncouragement(){
+  const total = QUESTIONS.length || 1;
+  const pct = (answeredCount()/total)*100;
+  [25,50,75].forEach(mark=>{
+    const key = 'encour'+mark;
+    if(pct >= mark && !S[key]){ S[key] = true; toast(ENCOURAGE_MSGS[mark]); }
+  });
 }
 function buildPalette(){
   const pal = $('palette'); pal.innerHTML = '';
@@ -1334,7 +1392,7 @@ function renderQuestion(){
   S.cOrder[orig].forEach((cIdx, j)=>{
     const b = document.createElement('button');
     b.className = 'choice' + (S.answers[orig] === cIdx ? ' sel' : '');
-    b.innerHTML = '<span class="abc">'+letters[j]+'</span><span>'+esc(q.choices[cIdx])+'</span>';
+    b.innerHTML = '<span class="abc">'+letters[j]+'</span><span>'+esc(q.choices[cIdx])+'</span><span class="checkmark">✓</span>';
     b.addEventListener('click', ()=>{
       sfxClick();
       S.answers[orig] = cIdx;
@@ -1461,6 +1519,7 @@ function fireConfetti(){
 function showResult(score, auto, pending){
   const total = QUESTIONS.length;
   const pct = total ? score/total : 0;
+  S.lastResult = { score:score, total:total, pending:pending, showScore: S.config.showScore === 'true' };
   if(S.config.showScore === 'true'){
     $('resultScoreWrap').style.display = '';
     $('resScore').textContent = '0';
@@ -1485,6 +1544,56 @@ function showResult(score, auto, pending){
   sub += '<br>ปิดหน้านี้ได้เลย';
   $('resSub').innerHTML = sub;
   show('scrResult');
+}
+
+/* ---------- การ์ดสรุปผลสอบ (ดาวน์โหลดเป็นรูปภาพ) ---------- */
+async function downloadResultCard(){
+  try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
+  const cv = document.createElement('canvas');
+  cv.width = 900; cv.height = 600;
+  const ctx = cv.getContext('2d');
+  const g = ctx.createLinearGradient(0,0,900,600);
+  g.addColorStop(0,'#141a3f'); g.addColorStop(0.55,'#232a66'); g.addColorStop(1,'#37317f');
+  ctx.fillStyle = g; ctx.fillRect(0,0,900,600);
+  ctx.strokeStyle = 'rgba(247,201,72,0.85)'; ctx.lineWidth = 6;
+  ctx.strokeRect(20,20,860,560);
+  ctx.strokeStyle = 'rgba(247,201,72,0.35)'; ctx.lineWidth = 1;
+  ctx.strokeRect(32,32,836,536);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#f7c948';
+  ctx.font = 'bold 32px "Kanit","Noto Sans Thai",sans-serif';
+  ctx.fillText(S.config.examTitle || 'ENGLISH MIDTERM TEST', 450, 95);
+  ctx.fillStyle = '#cdd6ff';
+  ctx.font = '17px "Kanit","Noto Sans Thai",sans-serif';
+  ctx.fillText(S.config.schoolName || '', 450, 128);
+  const r = S.lastResult || { score:0, total:QUESTIONS.length, pending:0, showScore:false };
+  if(r.showScore){
+    ctx.fillStyle = '#f7c948';
+    ctx.font = 'bold 130px "Kanit","Noto Sans Thai",sans-serif';
+    ctx.fillText(String(r.score), 450, 310);
+    ctx.fillStyle = '#aab4e8';
+    ctx.font = '22px "Kanit","Noto Sans Thai",sans-serif';
+    ctx.fillText('จาก '+r.total+' คะแนน'+(r.pending>0?' (รอตรวจข้อเขียน)':''), 450, 350);
+  }else{
+    ctx.fillStyle = '#8df0b2';
+    ctx.font = 'bold 40px "Kanit","Noto Sans Thai",sans-serif';
+    ctx.fillText('✓ ส่งคำตอบเรียบร้อยแล้ว', 450, 300);
+  }
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 26px "Kanit","Noto Sans Thai",sans-serif';
+  ctx.fillText(S.student.name, 450, 420);
+  ctx.fillStyle = '#9aa6e6';
+  ctx.font = '17px "Kanit","Noto Sans Thai",sans-serif';
+  ctx.fillText(S.classLevel+'/'+S.room+' เลขที่ '+S.student.no+' · '+setLabel(CUR_SET), 450, 448);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});
+  ctx.fillStyle = '#8e98cf';
+  ctx.font = '15px "Kanit","Noto Sans Thai",sans-serif';
+  ctx.fillText(dateStr, 450, 530);
+  const link = document.createElement('a');
+  link.download = 'ผลสอบ-'+S.student.name+'.png';
+  link.href = cv.toDataURL('image/png');
+  link.click();
 }
 
 /* ══════════════════ ANTI-CHEAT ══════════════════ */
@@ -1547,6 +1656,8 @@ async function adminLogin(){
     const r = await api({action:'adminLogin', pin:pin});
     if(!r.ok){ $('adminErr').style.display = 'block'; sfxWarn(); return; }
     S.adminPin = pin;
+    S.adminVioMs = -1;
+    S.adminVioInit = false;
     applyConfig(r.config);
     fillSettingsForm(r.config);
     buildAdminFilters();
@@ -1665,8 +1776,26 @@ async function adminPollOnce(){
     const r = await api({action:'adminLive', pin:S.adminPin});
     if(!r.ok) return;
     S.adminData = r;
+    checkNewViolations(r.recentViolations);
     renderAdmin();
   }catch(err){ /* ครั้งถัดไปลองใหม่ */ }
+}
+/* แจ้งเตือนดังทันทีเมื่อมีการทุจริตใหม่เกิดขึ้น (ไม่แจ้งของเก่าตอนเพิ่งล็อกอิน) */
+function checkNewViolations(list){
+  const arr = Array.isArray(list) ? list : [];
+  let maxMs = S.adminVioMs;
+  let newest = null;
+  arr.forEach(v=>{
+    if(v.type === 'ADMIN_RESET') return;
+    const ms = Number(v.ms)||0;
+    if(ms > maxMs){ maxMs = ms; newest = v; }
+  });
+  if(!S.adminVioInit){ S.adminVioInit = true; S.adminVioMs = maxMs; return; }
+  if(newest){
+    S.adminVioMs = maxMs;
+    sfxAlarm();
+    toast('🚨 '+newest.name+' — '+(VIO_LABELS[newest.type]||newest.type));
+  }
 }
 function fmtSec(sec){
   if(sec < 0) return '–';
@@ -1795,6 +1924,7 @@ function fillSettingsForm(cfg){
   const bd = parseInt(cfg.bgDim,10); $('cfgBgDim').value = isNaN(bd) ? 50 : bd;
   $('cfgHero').value = cfg.heroBanner;
   $('cfgCardW').value = parseInt(cfg.cardWidth,10)||760;
+  $('cfgTheme').value = cfg.colorTheme || 'gold';
   $('cfgDur').value = parseInt(cfg.durationMinutes,10)||60;
   $('cfgAnn').value = cfg.announcement;
   $('cfgOpen').checked = cfg.examOpen === 'true';
@@ -1812,6 +1942,7 @@ async function saveConfig(extra){
     heroBanner: $('cfgHero').value.trim(),
     bgDim: String((function(){ const v = parseInt($('cfgBgDim').value,10); return isNaN(v) ? 50 : Math.min(90, Math.max(0, v)); })()),
     cardWidth: String(Math.min(1100, Math.max(480, parseInt($('cfgCardW').value,10)||760))),
+    colorTheme: $('cfgTheme').value,
     durationMinutes: String(Math.min(240, Math.max(1, parseInt($('cfgDur').value,10)||60))),
     announcement: $('cfgAnn').value.trim(),
     setMap: collectSetMap(),
@@ -2014,6 +2145,7 @@ $('btnPrev').addEventListener('click', ()=>{ if(S.cur>0){ sfxClick(); S.cur--; r
 $('btnNext').addEventListener('click', ()=>{ if(S.cur<QUESTIONS.length-1){ sfxClick(); S.cur++; renderQuestion(); } });
 $('btnPalette').addEventListener('click', ()=>{ sfxClick(); $('palette').classList.toggle('show'); updateHud(); });
 $('btnSubmit').addEventListener('click', confirmSubmit);
+$('btnDownloadCard').addEventListener('click', downloadResultCard);
 $('btnVioOk').addEventListener('click', ()=>{ $('violOverlay').classList.remove('show'); });
 $('adminLink').addEventListener('click', ()=>{
   const u = new URL(location.href); u.searchParams.set('admin','1'); location.href = u.toString();
@@ -2068,6 +2200,7 @@ $('bQList').addEventListener('click', e=>{
   else if(dl !== null && dl !== undefined && dl !== ''){ const i=Number(dl); BLD.questions.splice(i,1); bRenderList(); }
 });
 $('btnSaveCfg').addEventListener('click', ()=>saveConfig());
+$('cfgTheme').addEventListener('change', e=>applyTheme(e.target.value));
 $('btnExamToggle').addEventListener('click', ()=>{
   const open = S.adminData && S.adminData.config.examOpen === 'true';
   saveConfig({examOpen: open ? 'false':'true'});
