@@ -608,7 +608,11 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 
     <div id="tabLive">
       <div class="card">
-        <h2>📣 ประกาศถึงจอนักเรียนทุกคน <span class="hint">(เด้งบนจอเด็กภายใน ~10 วิ)</span></h2>
+        <h2>📣 ประกาศถึงจอนักเรียน <span class="hint">(เด้งบนจอเด็กภายใน ~10 วิ)</span></h2>
+        <div class="filters" style="margin-bottom:10px;">
+          <select id="bcClass"><option value="">ทุกชั้น</option></select>
+          <select id="bcRoom"><option value="">ทุกห้อง</option></select>
+        </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <input type="text" id="bcInput" maxlength="300" placeholder="เช่น ข้อ 5 แก้โจทย์เป็น... / เหลือเวลา 10 นาที"
             style="flex:1;min-width:200px;font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;">
@@ -786,95 +790,31 @@ const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
-   📝 ชุดข้อสอบ — ครู OAT ใส่ข้อสอบจริงแทนตัวอย่างด้านล่างได้เลย
-   ▸ มีได้หลายชุด (ตอนนี้ 12 ชุด) เพิ่มชุดใหม่ = ก๊อปบล็อก SET เดิมแล้วเปลี่ยนชื่อ
-     เช่น SET_13: { title:"ชุดที่ 13", questions:[ ... ] },
-     ชุดใหม่จะโผล่ในเมนูแอดมินให้จับคู่ห้องอัตโนมัติ
-   ▸ รูปแบบต่อข้อ:
-     { q:"โจทย์", choices:["A","B","C","D"], answer:เลข index คำตอบถูก(เริ่มที่ 0), image:"" }
-     - image ใส่ URL หรือ base64 ได้ / ไม่มีรูปให้เว้น ""
-     - แต่ละชุดใส่กี่ข้อก็ได้ ไม่ต้องเท่ากัน ระบบนับอัตโนมัติ
-   ▸ ห้องไหนใช้ชุดไหน: ตั้งค่าที่หน้าแอดมิน (แท็บตั้งค่า → ชุดข้อสอบรายห้อง)
-     ค่าเริ่มต้นด้านล่าง (DEFAULT_SET_MAP) ใช้เมื่อยังไม่เคยตั้งค่าในแอดมิน
+   📝 ชุดข้อสอบ
+   ▸ ไม่ต้องแก้ตรงนี้แล้ว! ระบบมีหน้า "สร้างข้อสอบ" (Exam Builder)
+     อยู่ในแดชบอร์ดครูอยู่แล้ว — เข้า index.html?admin=1 → ใส่ PIN
+     → แท็บ "📝 สร้างข้อสอบ" แล้วพิมพ์โจทย์/ตัวเลือกผ่านหน้าเว็บได้เลย
+     ระบบจะบันทึกลง Google Sheets (ชีต Questions) ให้อัตโนมัติ
+     ไม่ต้องเปิดไฟล์นี้มาแก้โค้ดอีกต่อไป
+   ▸ SET_01 ด้านล่างเป็นชุดตัวอย่างเล็ก ๆ ไว้กันระบบพังตอนเริ่มใช้งาน
+     ครั้งแรก (ก่อนที่จะสร้างชุดจริงในแดชบอร์ด) ลบ/แก้ทีหลังได้จาก
+     แท็บ "สร้างข้อสอบ" เช่นกัน ไม่ต้องมาแก้ในไฟล์นี้
+   ▸ หลังสร้างชุดใหม่ในแดชบอร์ดแล้ว ไปที่แท็บ "⚙️ ตั้งค่า" →
+     "ชุดข้อสอบรายห้อง" เพื่อกำหนดว่าห้องไหน (ม.4/ม.5/ม.6) ใช้ชุดไหน
 ══════════════════════════════════════════════════════════════ */
 const EXAM_SETS = {
-  SET_01: { title:"ชุดที่ 1", questions:[
-    { q:"(ตัวอย่างข้อ 1) She ______ to school every day.", choices:["go","goes","going","gone"], answer:1, image:"" },
-    { q:"(ตัวอย่างข้อ 2) They ______ football in the park now.", choices:["play","plays","are playing","played"], answer:2, image:"" },
-    { q:"(ตัวอย่างข้อ 3) I ______ a student.", choices:["is","are","am","be"], answer:2, image:"" },
-    { q:"(ตัวอย่างข้อ 4) ______ you like some water?", choices:["Would","Are","Does","Is"], answer:0, image:"" },
-    { q:"(ตัวอย่างข้อ 5) This book is ______ than that one.", choices:["good","better","best","well"], answer:1, image:"" },
-    { q:"(ตัวอย่างข้อ 6) We ______ TV when it started to rain.", choices:["watch","watched","were watching","are watching"], answer:2, image:"" },
-    { q:"(ตัวอย่างข้อ 7) There ______ many students in the classroom.", choices:["is","are","was","be"], answer:1, image:"" },
-    { q:"(ตัวอย่างข้อ 8) A: Where is Tom?  B: He ______ in the library.", choices:["study","studies","is studying","studied"], answer:2, image:"" },
-    { q:"(ตัวอย่างข้อ 9) My birthday is ______ July.", choices:["at","on","in","by"], answer:2, image:"" },
-    { q:"(ตัวอย่างข้อ 10) Choose the correct sentence.", choices:["He don't like coffee.","He doesn't likes coffee.","He doesn't like coffee.","He not like coffee."], answer:2, image:"" }
-  ]},
-  SET_02: { title:"ชุดที่ 2", questions:[
-    { q:"(ตัวอย่าง SET 2 ข้อ 1) He ______ breakfast at 7 a.m.", choices:["eat","eats","eating","ate"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 2 ข้อ 2) Look! The dog ______ in the garden.", choices:["run","runs","is running","ran"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 2 ข้อ 3) ______ she from Japan?", choices:["Is","Are","Do","Does"], answer:0, image:"" }
-  ]},
-  SET_03: { title:"ชุดที่ 3", questions:[
-    { q:"(ตัวอย่าง SET 3 ข้อ 1) We went to the beach ______ Sunday.", choices:["in","on","at","by"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 3 ข้อ 2) She is ______ girl in class.", choices:["tall","taller","the tallest","most tall"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 3 ข้อ 3) I have lived here ______ 2010.", choices:["for","since","from","at"], answer:1, image:"" }
-  ]},
-  SET_04: { title:"ชุดที่ 4", questions:[
-    { q:"(ตัวอย่าง SET 4 ข้อ 1) They ______ their homework yesterday.", choices:["do","does","did","doing"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 4 ข้อ 2) How ______ milk do you want?", choices:["many","much","some","any"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 4 ข้อ 3) If it rains, we ______ at home.", choices:["stay","will stay","stayed","staying"], answer:1, image:"" }
-  ]},
-  SET_05: { title:"ชุดที่ 5", questions:[
-    { q:"(ตัวอย่าง SET 5 ข้อ 1) The letter ______ by Tom last week.", choices:["wrote","was written","is writing","writes"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 5 ข้อ 2) She asked me ______ I was hungry.", choices:["that","what","if","who"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 5 ข้อ 3) I enjoy ______ books at night.", choices:["read","to read","reading","reads"], answer:2, image:"" }
-  ]},
-  SET_06: { title:"ชุดที่ 6", questions:[
-    { q:"(ตัวอย่าง SET 6 ข้อ 1) You ______ wear a helmet. It's the law.", choices:["must","might","could","would"], answer:0, image:"" },
-    { q:"(ตัวอย่าง SET 6 ข้อ 2) Neither Tom ______ Jane came to the party.", choices:["or","and","nor","but"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 6 ข้อ 3) The movie was ______ boring that I slept.", choices:["so","such","very","too"], answer:0, image:"" }
-  ]},
-  SET_07: { title:"ชุดที่ 7", questions:[
-    { q:"(ตัวอย่าง SET 7 ข้อ 1) By next year, I ______ my studies.", choices:["finish","will have finished","finished","am finishing"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 7 ข้อ 2) The man ______ car was stolen called the police.", choices:["who","whom","whose","which"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 7 ข้อ 3) I'm used to ______ up early.", choices:["get","getting","got","gets"], answer:1, image:"" }
-  ]},
-  SET_08: { title:"ชุดที่ 8", questions:[
-    { q:"(ตัวอย่าง SET 8 ข้อ 1) If I ______ rich, I would travel the world.", choices:["am","was","were","be"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 8 ข้อ 2) She suggested ______ to the museum.", choices:["go","to go","going","goes"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 8 ข้อ 3) Hardly ______ arrived when it started to rain.", choices:["we had","had we","we have","have we"], answer:1, image:"" }
-  ]},
-  SET_09: { title:"ชุดที่ 9", questions:[
-    { q:"(ตัวอย่าง SET 9 ข้อ 1) The report ______ be finished by Friday.", choices:["need","must","ought","has"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 9 ข้อ 2) Despite ______ hard, he failed the test.", choices:["study","studied","studying","to study"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 9 ข้อ 3) It's high time you ______ to bed.", choices:["go","went","gone","going"], answer:1, image:"" }
-  ]},
-  SET_10: { title:"ชุดที่ 10", questions:[
-    { q:"(ตัวอย่าง SET 10 ข้อ 1) I wish I ______ speak French fluently.", choices:["can","could","will","would"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 10 ข้อ 2) The news ______ shocking to everyone.", choices:["were","are","was","have been"], answer:2, image:"" },
-    { q:"(ตัวอย่าง SET 10 ข้อ 3) He denied ______ the window.", choices:["break","to break","breaking","broke"], answer:2, image:"" }
-  ]},
-  SET_11: { title:"ชุดที่ 11", questions:[
-    { q:"(ตัวอย่าง SET 11 ข้อ 1) Not only ______ smart, but she is also kind.", choices:["she is","is she","she was","does she"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 11 ข้อ 2) The proposal ______ by the committee now.", choices:["is discussing","is being discussed","discusses","discussed"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 11 ข้อ 3) ______ he studied harder, he would have passed.", choices:["If","Had","Should","Were"], answer:1, image:"" }
-  ]},
-  SET_12: { title:"ชุดที่ 12", questions:[
-    { q:"(ตัวอย่าง SET 12 ข้อ 1) The company ______ profits for three years.", choices:["makes","has been making","is make","make"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 12 ข้อ 2) She speaks English ______ than her brother.", choices:["fluent","more fluently","most fluently","fluently"], answer:1, image:"" },
-    { q:"(ตัวอย่าง SET 12 ข้อ 3) By the time we arrived, the show ______.", choices:["started","has started","had started","starts"], answer:2, image:"" }
+  SET_01: { title:"ชุดตัวอย่าง (แก้ไข/แทนที่ได้จากแดชบอร์ดครู แท็บ 'สร้างข้อสอบ')", questions:[
+    { q:"(ตัวอย่าง) She ______ to school every day.", choices:["go","goes","going","gone"], answer:1, image:"" },
+    { q:"(ตัวอย่าง) They ______ football when it started to rain.", choices:["play","played","were playing","are playing"], answer:2, image:"" },
+    { type:"written", q:"(ตัวอย่างข้อเขียน) Write the past tense of \"go\".", keys:["went"], image:"" }
   ]}
 };
 
 /* ค่าเริ่มต้นห้อง→ชุด (ใช้เมื่อยังไม่ตั้งค่าในแอดมิน) — แก้ในแอดมินสะดวกกว่า */
 const DEFAULT_SET_MAP = {
-  'ม.1|1':'SET_01','ม.1|2':'SET_01','ม.1|3':'SET_02','ม.1|4':'SET_02',
-  'ม.2|1':'SET_03','ม.2|2':'SET_03','ม.2|3':'SET_04','ม.2|4':'SET_04',
-  'ม.3|1':'SET_05','ม.3|2':'SET_05','ม.3|3':'SET_06','ม.3|4':'SET_06',
-  'ม.4|1':'SET_07','ม.4|2':'SET_07','ม.4|3':'SET_08','ม.4|4':'SET_08',
-  'ม.5|1':'SET_09','ม.5|2':'SET_09','ม.5|3':'SET_10','ม.5|4':'SET_10',
-  'ม.6|1':'SET_11','ม.6|2':'SET_11','ม.6|3':'SET_12','ม.6|4':'SET_12'
+  'ม.4|1':'SET_01','ม.4|2':'SET_01','ม.4|3':'SET_01','ม.4|4':'SET_01',
+  'ม.5|1':'SET_01','ม.5|2':'SET_01','ม.5|3':'SET_01','ม.5|4':'SET_01',
+  'ม.6|1':'SET_01','ม.6|2':'SET_01','ม.6|3':'SET_01','ม.6|4':'SET_01'
 };
 
 /* ชุดที่กำลังใช้งาน (ระบบเลือกให้อัตโนมัติตามห้อง) */
@@ -915,7 +855,7 @@ function setLabel(id){ return EXAM_SETS[id] ? EXAM_SETS[id].title : (id || '–'
 
 /* ══════════════════ ระบบ (ไม่ต้องแก้ด้านล่างนี้) ══════════════════ */
 const SPD = (typeof window!=='undefined' && window.__TEST_SPEED) ? window.__TEST_SPEED : 1;
-const CLASSES = ['ม.1','ม.2','ม.3','ม.4','ม.5','ม.6'];
+const CLASSES = ['ม.4','ม.5','ม.6'];
 const ROOMS = [1,2,3,4];
 
 const S = {
@@ -1624,10 +1564,10 @@ function buildAdminFilters(){
   const fc = $('fClass');
   if(fc.options.length <= 1){
     CLASSES.forEach(c=>{
-      [fc, $('wClass')].forEach(sel=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+      [fc, $('wClass'), $('bcClass')].forEach(sel=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
     });
     ROOMS.forEach(r=>{
-      [$('fRoom'), $('wRoom')].forEach(sel=>{ const o=document.createElement('option'); o.value=String(r); o.textContent='ห้อง '+r; sel.appendChild(o); });
+      [$('fRoom'), $('wRoom'), $('bcRoom')].forEach(sel=>{ const o=document.createElement('option'); o.value=String(r); o.textContent='ห้อง '+r; sel.appendChild(o); });
     });
   }
 }
@@ -1689,18 +1629,26 @@ function renderWar(){
       +'<div class="pgw"><span class="pg" style="width:'+p+'%"></span></div></div>';
   }).join('') || '<div class="feed-item">ยังไม่มีนักเรียนกำลังสอบ</div>';
 
-  if(d.bc && d.bc.msg){ $('warBc').textContent = '📣 '+d.bc.msg; $('warBc').classList.add('show'); }
+  if(d.bc && d.bc.msg){ $('warBc').textContent = '📣 ถึง '+bcTargetLabel(d.bc)+': '+d.bc.msg; $('warBc').classList.add('show'); }
   else $('warBc').classList.remove('show');
 }
+function bcTargetLabel(bc){
+  if(!bc) return '';
+  if(bc.classLevel && bc.room) return bc.classLevel+'/'+bc.room;
+  if(bc.classLevel) return bc.classLevel+' (ทุกห้อง)';
+  return 'ทุกชั้น ทุกห้อง';
+}
 function updateBcStatus(bc){
-  $('bcStatus').textContent = (bc && bc.msg) ? '📣 กำลังประกาศ: "'+bc.msg+'"' : 'ยังไม่มีประกาศ';
+  $('bcStatus').textContent = (bc && bc.msg) ? '📣 กำลังประกาศถึง '+bcTargetLabel(bc)+': "'+bc.msg+'"' : 'ยังไม่มีประกาศ';
 }
 async function sendBroadcast(msg){
   try{
-    const r = await api({action:'adminBroadcast', pin:S.adminPin, msg:msg});
+    const payload = {action:'adminBroadcast', pin:S.adminPin, msg:msg};
+    if(msg){ payload.classLevel = $('bcClass').value; payload.room = $('bcRoom').value; }
+    const r = await api(payload);
     if(r.ok){
       updateBcStatus(r.bc);
-      toast(msg ? 'ส่งประกาศแล้ว 📣 (ถึงจอเด็กภายใน ~10 วิ)' : 'ล้างประกาศแล้ว');
+      toast(msg ? 'ส่งประกาศถึง '+bcTargetLabel(r.bc)+' แล้ว 📣' : 'ล้างประกาศแล้ว');
       if(msg) $('bcInput').value = '';
       adminPollOnce();
     }else toast('ส่งไม่สำเร็จ');
