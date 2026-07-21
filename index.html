@@ -1105,7 +1105,7 @@ async function confirmIdentity(){
   btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ...';
   try{
     const targetSetId = resolveSet(S.classLevel, S.room);
-    const r = await api({action:'checkStudent', classLevel:S.classLevel, room:S.room, no:S.student.no, setId:targetSetId});
+    const r = await api({action:'checkStudent', classLevel:S.classLevel, room:S.room, no:S.student.no, name:S.student.name, setId:targetSetId});
     if(!r.ok) throw new Error();
     if(r.status === 'SUBMITTED'){
       modal('ส่งคำตอบไปแล้ว','คุณได้ส่งคำตอบของชุดข้อสอบนี้ไปแล้ว\nหากต้องการสอบใหม่ ให้แจ้งครูผู้คุมสอบเพื่อปลดล็อก',[{label:'รับทราบ',cls:'btn-gold'}]);
