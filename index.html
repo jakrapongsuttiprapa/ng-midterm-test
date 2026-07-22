@@ -803,7 +803,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 5 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1104,20 +1104,17 @@ async function confirmIdentity(){
   const btn = $('btnConfirmId');
   btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ...';
   try{
-    const targetSetId = resolveSet(S.classLevel, S.room);
-    const r = await api({action:'checkStudent', classLevel:S.classLevel, room:S.room, no:S.student.no, name:S.student.name, setId:targetSetId});
+    const r = await api({action:'checkStudent', classLevel:S.classLevel, room:S.room, no:S.student.no});
     if(!r.ok) throw new Error();
     if(r.status === 'SUBMITTED'){
-      modal('ส่งคำตอบไปแล้ว','คุณได้ส่งคำตอบของชุดข้อสอบนี้ไปแล้ว\nหากต้องการสอบใหม่ ให้แจ้งครูผู้คุมสอบเพื่อปลดล็อก',[{label:'รับทราบ',cls:'btn-gold'}]);
+      modal('ส่งคำตอบไปแล้ว','คุณได้ส่งคำตอบของการสอบนี้ไปแล้ว\nหากต้องการสอบใหม่ ให้แจ้งครูผู้คุมสอบเพื่อปลดล็อก',[{label:'รับทราบ',cls:'btn-gold'}]);
       return;
     }
-    let useSetId = targetSetId;
     if(r.status === 'IN_PROGRESS'){
-      if(r.setId) useSetId = r.setId; // มีสอบค้างอยู่ → พาเข้าสอบต่อด้วยชุดเดิมที่เคยเริ่มไว้
       toast('พบการสอบค้างอยู่ — ระบบจะพาเข้าสอบต่อจากเดิม');
     }
-    S.key = S.classLevel+'|'+S.room+'|'+S.student.no+'|'+useSetId;
-    useSet(useSetId);
+    S.key = S.classLevel+'|'+S.room+'|'+S.student.no;
+    useSet(resolveSet(S.classLevel, S.room));
     if(S.config.faceScan === 'true'){ startScan(); }
     else{ gotoRules(); }
   }catch(err){
@@ -1212,7 +1209,6 @@ async function startExam(){
       useSet(r.setId);
       toast('ใช้ชุดข้อสอบเดิมของคุณ: '+setLabel(r.setId));
     }
-    if(r.key) S.key = r.key;
     S.seed = r.seed;
     S.startTime = r.startTime;
     S.offset = r.serverNow - Date.now();
