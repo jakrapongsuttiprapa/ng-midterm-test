@@ -18,6 +18,7 @@
   --navy1:#0b1026; --navy2:#1b2350; --navy3:#2b2f77;
   --gold:#f7c948; --gold-deep:#e0a92e;
   --cyan:#5eead4; --blue:#60a5fa;
+  --gold-rgb:247,201,72; --cyan-rgb:94,234,212; --blue-rgb:96,165,250;
   --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
   --radius:20px;
   --shadow:0 18px 50px rgba(5,8,30,.45);
@@ -39,8 +40,8 @@ body{
 #bgLayer{
   position:fixed;inset:0;z-index:-2;
   background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(96,165,250,.25), transparent 60%),
-    radial-gradient(900px 700px at -10% 110%, rgba(94,234,212,.16), transparent 55%),
+    radial-gradient(1100px 600px at 85% -10%, rgba(var(--blue-rgb),.25), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(var(--cyan-rgb),.16), transparent 55%),
     linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%);
   background-size:cover;background-position:center;
 }
@@ -67,7 +68,7 @@ body{
   background:repeating-linear-gradient(115deg,transparent 0 26px,rgba(255,255,255,.035) 26px 27px);
   pointer-events:none;
 }
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.22em;font-weight:600;color:var(--gold);border:1px solid rgba(247,201,72,.5);border-radius:999px;padding:5px 14px;margin-bottom:12px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.22em;font-weight:600;color:var(--gold);border:1px solid rgba(var(--gold-rgb),.5);border-radius:999px;padding:5px 14px;margin-bottom:12px;}
 .hero-title{font-size:clamp(26px,5.4vw,42px);font-weight:800;line-height:1.08;letter-spacing:.01em;}
 .hero-sub{margin-top:8px;font-size:clamp(14px,2.6vw,17px);color:#cdd6ff;font-weight:400;}
 .hero-school{margin-top:14px;font-size:13px;color:var(--cyan);font-weight:500;}
@@ -91,7 +92,7 @@ body{
 }
 .btn:active{transform:scale(.97);}
 .btn:disabled{opacity:.4;cursor:not-allowed;}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;box-shadow:0 10px 26px rgba(247,201,72,.3);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;box-shadow:0 10px 26px rgba(var(--gold-rgb),.3);}
 .btn-danger{background:linear-gradient(135deg,#ef4444,#b91c1c);}
 .btn-block{display:block;width:100%;}
 .btn-sm{font-size:13px;padding:8px 14px;border-radius:10px;font-weight:600;}
@@ -99,7 +100,7 @@ body{
 /* ---------- banners ---------- */
 .bar{border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:14px;font-weight:500;display:none;}
 .bar.show{display:block;}
-#annBar{background:rgba(56,44,6,.82);border:1px solid rgba(247,201,72,.6);color:#ffe9a8;}
+#annBar{background:rgba(56,44,6,.82);border:1px solid rgba(var(--gold-rgb),.6);color:#ffe9a8;}
 #closedBar{background:rgba(58,8,10,.85);border:1px solid rgba(239,68,68,.65);color:#ffc7c7;}
 
 /* ---------- chips (ชั้น / ห้อง) ---------- */
@@ -110,7 +111,7 @@ body{
   background:rgba(13,17,45,.62);border:1.5px solid var(--glass-line);transition:all .15s;touch-action:manipulation;
 }
 .chip:active{transform:scale(.96);}
-.chip.sel{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;border-color:transparent;box-shadow:0 8px 22px rgba(247,201,72,.35);}
+.chip.sel{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;border-color:transparent;box-shadow:0 8px 22px rgba(var(--gold-rgb),.35);}
 
 /* ---------- student list ---------- */
 #studentList{max-height:330px;overflow-y:auto;border-radius:14px;border:1px solid var(--glass-line);-webkit-overflow-scrolling:touch;}
@@ -120,14 +121,14 @@ body{
   color:#fff;font-family:var(--font);font-size:15px;font-weight:500;touch-action:manipulation;
 }
 .stu-row:last-child{border-bottom:none;}
-.stu-row .no-badge{flex:none;min-width:64px;text-align:center;font-size:13px;font-weight:700;color:var(--cyan);background:rgba(94,234,212,.12);border:1px solid rgba(94,234,212,.4);border-radius:9px;padding:5px 8px;}
-.stu-row.sel{background:rgba(247,201,72,.2);}
+.stu-row .no-badge{flex:none;min-width:64px;text-align:center;font-size:13px;font-weight:700;color:var(--cyan);background:rgba(var(--cyan-rgb),.12);border:1px solid rgba(var(--cyan-rgb),.4);border-radius:9px;padding:5px 8px;}
+.stu-row.sel{background:rgba(var(--gold-rgb),.2);}
 .stu-row.sel .no-badge{color:#241c05;background:var(--gold);border-color:var(--gold);}
 .list-note{padding:22px;text-align:center;font-size:14px;color:#aab4e8;}
 
 #selSummary{
   display:none;margin-top:14px;border-radius:14px;padding:14px 16px;
-  background:rgba(5,38,34,.8);border:1px solid rgba(94,234,212,.5);font-size:15px;line-height:1.6;
+  background:rgba(5,38,34,.8);border:1px solid rgba(var(--cyan-rgb),.5);font-size:15px;line-height:1.6;
 }
 #selSummary.show{display:block;}
 #selSummary b{color:var(--cyan);}
@@ -139,8 +140,8 @@ body{
 }
 #camVideo{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
 .scan-grid{position:absolute;inset:0;background:
-  repeating-linear-gradient(0deg,transparent 0 31px,rgba(94,234,212,.10) 31px 32px),
-  repeating-linear-gradient(90deg,transparent 0 31px,rgba(94,234,212,.10) 31px 32px);pointer-events:none;}
+  repeating-linear-gradient(0deg,transparent 0 31px,rgba(var(--cyan-rgb),.10) 31px 32px),
+  repeating-linear-gradient(90deg,transparent 0 31px,rgba(var(--cyan-rgb),.10) 31px 32px);pointer-events:none;}
 .scan-line{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);box-shadow:0 0 18px var(--cyan);animation:scanmove 2.2s linear infinite;pointer-events:none;}
 @keyframes scanmove{0%{top:2%;}50%{top:96%;}100%{top:2%;}}
 .corner{position:absolute;width:34px;height:34px;border:3px solid var(--cyan);pointer-events:none;}
@@ -155,7 +156,7 @@ body{
 .scan-steps li.doing .dot{border-color:var(--cyan);animation:pulse 1s infinite;}
 .scan-steps li.done{color:#d9ffe9;}
 .scan-steps li.done .dot{border-color:var(--ok);background:var(--ok);color:#04140a;}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(94,234,212,.5);}50%{box-shadow:0 0 0 7px rgba(94,234,212,0);}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--cyan-rgb),.5);}50%{box-shadow:0 0 0 7px rgba(var(--cyan-rgb),0);}}
 .scan-progress{height:8px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;max-width:340px;margin:0 auto 16px;}
 .scan-progress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .5s;}
 .ai-warn{
@@ -197,9 +198,9 @@ body{
 #hudProg span{font-size:10.5px;color:#9aa6e6;}
 
 #answerProgress{height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:14px;}
-#answerProgressFill{display:block;height:100%;width:0%;border-radius:99px;transition:width .4s ease,background .4s ease,box-shadow .4s ease;background:linear-gradient(90deg,#5eead4,#60a5fa);}
-#answerProgressFill.mid{background:linear-gradient(90deg,#60a5fa,#f7c948);}
-#answerProgressFill.high{background:linear-gradient(90deg,#f7c948,#e0a92e);box-shadow:0 0 10px rgba(247,201,72,.55);}
+#answerProgressFill{display:block;height:100%;width:0%;border-radius:99px;transition:width .4s ease,background .4s ease,box-shadow .4s ease;background:linear-gradient(90deg,var(--cyan),var(--blue));}
+#answerProgressFill.mid{background:linear-gradient(90deg,var(--blue),var(--gold));}
+#answerProgressFill.high{background:linear-gradient(90deg,var(--gold),var(--gold-deep));box-shadow:0 0 10px rgba(var(--gold-rgb),.55);}
 
 .q-card{padding:24px 22px;}
 #qTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
@@ -221,7 +222,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .wr-badge{display:inline-block;font-size:11.5px;font-weight:700;color:#d8c9ff;background:rgba(126,87,255,.22);border:1px solid rgba(167,139,250,.55);padding:3px 10px;border-radius:99px;margin-left:8px;}
 .ta-count{text-align:right;font-size:12px;color:#8e98cf;margin-top:6px;}
 .choice .abc{flex:none;width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;background:rgba(255,255,255,.12);}
-.choice.sel{background:rgba(247,201,72,.18);border-color:var(--gold);}
+.choice.sel{background:rgba(var(--gold-rgb),.18);border-color:var(--gold);}
 .choice.sel .abc{background:var(--gold);color:#241c05;}
 .choice .checkmark{display:none;margin-left:auto;font-size:19px;color:var(--gold);flex:none;}
 .choice.sel .checkmark{display:inline-block;animation:checkBlink .32s ease;}
@@ -236,7 +237,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
   aspect-ratio:1;border-radius:11px;border:1.5px solid var(--glass-line);background:rgba(13,17,45,.6);
   color:#fff;font-family:var(--font);font-weight:700;font-size:14px;cursor:pointer;touch-action:manipulation;
 }
-.pal.done{background:rgba(94,234,212,.25);border-color:var(--cyan);}
+.pal.done{background:rgba(var(--cyan-rgb),.25);border-color:var(--cyan);}
 .pal.cur{outline:2.5px solid var(--gold);outline-offset:1.5px;}
 
 #monitorBox{
@@ -272,7 +273,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .score-ring{
   width:168px;height:168px;border-radius:50%;margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.14),transparent 55%),linear-gradient(150deg,#233064,#101638);
-  border:3px solid var(--gold);box-shadow:0 0 0 8px rgba(247,201,72,.12),var(--shadow);
+  border:3px solid var(--gold);box-shadow:0 0 0 8px rgba(var(--gold-rgb),.12),var(--shadow);
 }
 .score-ring b{font-size:46px;font-weight:800;color:var(--gold);line-height:1;}
 .score-ring span{font-size:13px;color:#aab4e8;margin-top:5px;}
@@ -351,7 +352,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 /* ---------- นับถอยหลังก่อนเริ่ม ---------- */
 #cdOverlay{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;background:rgba(4,6,18,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
 #cdOverlay.show{display:flex;}
-#cdNum{font-size:clamp(90px,22vw,150px);font-weight:800;color:var(--gold);text-shadow:0 0 60px rgba(247,201,72,.55);animation:cdpop .68s ease both;}
+#cdNum{font-size:clamp(90px,22vw,150px);font-weight:800;color:var(--gold);text-shadow:0 0 60px rgba(var(--gold-rgb),.55);animation:cdpop .68s ease both;}
 @keyframes cdpop{0%{transform:scale(2.3);opacity:0;}30%{transform:scale(1);opacity:1;}100%{opacity:.9;}}
 
 /* ---------- ขอบจอแดง 5 นาทีสุดท้าย ---------- */
@@ -368,13 +369,13 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .stamp{display:inline-block;margin-top:16px;padding:10px 26px;border:4px dashed;border-radius:14px;font-size:25px;font-weight:800;letter-spacing:.12em;transform:scale(0);opacity:0;}
 .stamp.show{animation:stampin .5s cubic-bezier(.2,1.6,.4,1) forwards;}
 @keyframes stampin{0%{transform:rotate(7deg) scale(2.6);opacity:0;}60%{opacity:1;}100%{transform:rotate(-8deg) scale(1);opacity:1;}}
-.stamp.t-gold{color:var(--gold);border-color:var(--gold);text-shadow:0 0 22px rgba(247,201,72,.5);}
+.stamp.t-gold{color:var(--gold);border-color:var(--gold);text-shadow:0 0 22px rgba(var(--gold-rgb),.5);}
 .stamp.t-cyan{color:var(--cyan);border-color:var(--cyan);}
 .stamp.t-ok{color:#8df0b2;border-color:#22c55e;}
 .stamp.t-red{color:#ff9d9d;border-color:var(--bad);}
 
 .bq{display:flex;align-items:center;gap:10px;border-radius:12px;padding:11px 13px;margin-bottom:8px;background:rgba(13,17,45,.55);border:1px solid var(--glass-line);}
-.bq .tp{flex:none;font-size:11px;font-weight:800;border-radius:8px;padding:3px 9px;background:rgba(94,234,212,.15);color:var(--cyan);border:1px solid rgba(94,234,212,.4);}
+.bq .tp{flex:none;font-size:11px;font-weight:800;border-radius:8px;padding:3px 9px;background:rgba(var(--cyan-rgb),.15);color:var(--cyan);border:1px solid rgba(var(--cyan-rgb),.4);}
 .bq .tp.wr{background:rgba(126,87,255,.2);color:#d8c9ff;border-color:rgba(167,139,250,.5);}
 .bq .tx{flex:1;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .bq button{flex:none;font-family:var(--font);font-size:13px;cursor:pointer;background:rgba(255,255,255,.1);border:1px solid var(--glass-line);color:#fff;border-radius:8px;padding:5px 9px;}
@@ -393,7 +394,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .gr-btns button.on1{background:rgba(34,197,94,.25);border-color:#22c55e;}
 
 /* ---------- จอฉายหน้าห้อง (WAR ROOM) ---------- */
-#warRoom{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;background:radial-gradient(1000px 500px at 80% -10%,rgba(96,165,250,.18),transparent 60%),linear-gradient(160deg,#070a1e,#141a3f);overflow:auto;padding:22px clamp(14px,3vw,34px);}
+#warRoom{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;background:radial-gradient(1000px 500px at 80% -10%,rgba(var(--blue-rgb),.18),transparent 60%),linear-gradient(160deg,var(--navy1),var(--navy2));overflow:auto;padding:22px clamp(14px,3vw,34px);}
 #warRoom.show{display:flex;}
 .war-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
 .war-head h1{font-size:clamp(20px,2.6vw,30px);font-weight:800;}
@@ -434,6 +435,75 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   .set-grid{grid-template-columns:1fr;}
   #examHead{top:6px;}
   .shell{padding:12px 10px 90px;}
+}
+
+/* ---------- ธีมนีออนเกมมิ่ง — เอฟเฟกต์เรืองแสงเพิ่มเติม ---------- */
+.theme-neon #bgLayer{
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(0,255,242,.16), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(255,47,209,.14), transparent 55%),
+    linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%);
+}
+.theme-neon #bgLayer::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 2px, transparent 2px 4px);
+  mix-blend-mode:overlay;
+}
+.theme-neon .hero-title,
+.theme-neon .war-head h1,
+.theme-neon .ad-head h1{ text-shadow:0 0 12px var(--gold), 0 0 30px rgba(255,47,209,.55); }
+.theme-neon .btn-gold{ box-shadow:0 0 16px rgba(255,47,209,.65), 0 0 36px rgba(255,47,209,.3); }
+.theme-neon .card,
+.theme-neon .war-panel,
+.theme-neon .war-stat,
+.theme-neon .stat{ box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 0 22px rgba(111,45,255,.28), var(--shadow); }
+.theme-neon .chip.sel,
+.theme-neon .choice.sel,
+.theme-neon .stu-row.sel{ box-shadow:0 0 18px rgba(255,47,209,.55); }
+.theme-neon .score-ring{ box-shadow:0 0 0 8px rgba(255,47,209,.16), 0 0 34px rgba(255,47,209,.45), var(--shadow); }
+.theme-neon #timerBox b,
+.theme-neon .score-ring b,
+.theme-neon .stat b,
+.theme-neon .war-stat b,
+.theme-neon .info-chip b{ text-shadow:0 0 10px currentColor; }
+.theme-neon .live-dot{ box-shadow:0 0 10px var(--ok); }
+.theme-neon #dangerEdge{ box-shadow:inset 0 0 0 4px rgba(255,47,209,.85), inset 0 0 90px rgba(255,47,209,.4); }
+
+/* ---------- ธีม Neobu (Neo-Brutalism) — เส้นขอบดำหนา เงาทึบ ไม่เบลอ สีแบนจัดจ้าน ---------- */
+.theme-neobu #bgLayer{ background:var(--navy1) !important; }
+.theme-neobu #bgLayer::after{ content:none !important; }
+.theme-neobu .card,
+.theme-neobu .modal,
+.theme-neobu .viol-card,
+.theme-neobu .bc-card,
+.theme-neobu .war-panel,
+.theme-neobu .war-stat,
+.theme-neobu .stat,
+.theme-neobu .info-chip,
+.theme-neobu #examHead,
+.theme-neobu .chip,
+.theme-neobu .choice{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  border:3px solid #000 !important;
+  box-shadow:5px 5px 0 #000 !important;
+}
+.theme-neobu .btn{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  border:3px solid #000 !important;
+  box-shadow:4px 4px 0 #000 !important;
+  transition:transform .08s, box-shadow .08s !important;
+}
+.theme-neobu .btn:active{
+  box-shadow:1px 1px 0 #000 !important;
+  transform:translate(3px,3px) !important;
+}
+.theme-neobu .choice.sel{ border-color:var(--gold) !important; }
+.theme-neobu .score-ring{ border:5px solid #000 !important; box-shadow:6px 6px 0 #000 !important; }
+.theme-neobu .hero-title, .theme-neobu .ad-head h1, .theme-neobu .war-head h1{ text-shadow:3px 3px 0 #000 !important; }
+.theme-neobu #modalWrap, .theme-neobu #violOverlay, .theme-neobu #bcOverlay, .theme-neobu #cdOverlay{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
 }
 </style>
 </head>
@@ -713,6 +783,8 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
             <option value="emerald">เขียวมรกต</option>
             <option value="rose">ชมพู-กุหลาบ</option>
             <option value="ocean">ฟ้าสมุทร</option>
+            <option value="neon">นีออนเกมมิ่ง</option>
+            <option value="neobu">Neobu (นีโอบรูทัลลิสม์)</option>
           </select></div>
           <div class="set-field"><label>เวลาสอบ (นาที)</label><input type="number" id="cfgDur" min="1" max="240"></div>
           <div class="set-field full"><label>ประกาศถึงนักเรียน (แสดงหน้าแรก, เว้นว่าง = ไม่แสดง)</label><textarea id="cfgAnn"></textarea></div>
@@ -803,7 +875,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 5 วินาที
+const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -954,8 +1026,16 @@ const THEMES = {
   gold:    { navy1:'#0b1026', navy2:'#1b2350', navy3:'#2b2f77', gold:'#f7c948', goldDeep:'#e0a92e', cyan:'#5eead4', blue:'#60a5fa' },
   emerald: { navy1:'#08160f', navy2:'#0f2a1d', navy3:'#163c29', gold:'#34d399', goldDeep:'#059669', cyan:'#6ee7b7', blue:'#38bdf8' },
   rose:    { navy1:'#1a0b12', navy2:'#2c1220', navy3:'#3d1a2c', gold:'#fb7185', goldDeep:'#e11d48', cyan:'#fda4af', blue:'#f472b6' },
-  ocean:   { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee' }
+  ocean:   { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee' },
+  neon:    { navy1:'#050014', navy2:'#0d0221', navy3:'#1a0b3d', gold:'#ff2fd1', goldDeep:'#b300ff', cyan:'#00fff2', blue:'#6f2dff' },
+  neobu:   { navy1:'#171717', navy2:'#171717', navy3:'#171717', gold:'#ffe100', goldDeep:'#ffe100', cyan:'#00e5ff', blue:'#00e5ff' }
 };
+function hexToRgbStr(hex){
+  const h = String(hex||'').replace('#','');
+  const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+  if(isNaN(r) || isNaN(g) || isNaN(b)) return '247,201,72';
+  return r+','+g+','+b;
+}
 function applyTheme(name){
   const t = THEMES[name] || THEMES.gold;
   const root = document.documentElement.style;
@@ -966,6 +1046,23 @@ function applyTheme(name){
   root.setProperty('--gold-deep', t.goldDeep);
   root.setProperty('--cyan', t.cyan);
   root.setProperty('--blue', t.blue);
+  root.setProperty('--gold-rgb', hexToRgbStr(t.gold));
+  root.setProperty('--cyan-rgb', hexToRgbStr(t.cyan));
+  root.setProperty('--blue-rgb', hexToRgbStr(t.blue));
+  document.body.classList.toggle('theme-neon', name === 'neon');
+  document.body.classList.toggle('theme-neobu', name === 'neobu');
+}
+function themeColor(varName, fallback){
+  try{
+    const v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return v || fallback;
+  }catch(e){ return fallback; }
+}
+function themeRgba(rgbVarName, alpha, fallbackRgb){
+  try{
+    const v = getComputedStyle(document.documentElement).getPropertyValue(rgbVarName).trim();
+    return 'rgba('+(v||fallbackRgb)+','+alpha+')';
+  }catch(e){ return 'rgba('+fallbackRgb+','+alpha+')'; }
 }
 
 /* ---------- Config apply ---------- */
@@ -1104,17 +1201,20 @@ async function confirmIdentity(){
   const btn = $('btnConfirmId');
   btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ...';
   try{
-    const r = await api({action:'checkStudent', classLevel:S.classLevel, room:S.room, no:S.student.no});
+    const targetSetId = resolveSet(S.classLevel, S.room);
+    const r = await api({action:'checkStudent', classLevel:S.classLevel, room:S.room, no:S.student.no, name:S.student.name, setId:targetSetId});
     if(!r.ok) throw new Error();
     if(r.status === 'SUBMITTED'){
-      modal('ส่งคำตอบไปแล้ว','คุณได้ส่งคำตอบของการสอบนี้ไปแล้ว\nหากต้องการสอบใหม่ ให้แจ้งครูผู้คุมสอบเพื่อปลดล็อก',[{label:'รับทราบ',cls:'btn-gold'}]);
+      modal('ส่งคำตอบไปแล้ว','คุณได้ส่งคำตอบของชุดข้อสอบนี้ไปแล้ว\nหากต้องการสอบใหม่ ให้แจ้งครูผู้คุมสอบเพื่อปลดล็อก',[{label:'รับทราบ',cls:'btn-gold'}]);
       return;
     }
+    let useSetId = targetSetId;
     if(r.status === 'IN_PROGRESS'){
+      if(r.setId) useSetId = r.setId; // มีสอบค้างอยู่ → พาเข้าสอบต่อด้วยชุดเดิมที่เคยเริ่มไว้
       toast('พบการสอบค้างอยู่ — ระบบจะพาเข้าสอบต่อจากเดิม');
     }
-    S.key = S.classLevel+'|'+S.room+'|'+S.student.no;
-    useSet(resolveSet(S.classLevel, S.room));
+    S.key = S.classLevel+'|'+S.room+'|'+S.student.no+'|'+useSetId;
+    useSet(useSetId);
     if(S.config.faceScan === 'true'){ startScan(); }
     else{ gotoRules(); }
   }catch(err){
@@ -1209,6 +1309,7 @@ async function startExam(){
       useSet(r.setId);
       toast('ใช้ชุดข้อสอบเดิมของคุณ: '+setLabel(r.setId));
     }
+    if(r.key) S.key = r.key;
     S.seed = r.seed;
     S.startTime = r.startTime;
     S.offset = r.serverNow - Date.now();
@@ -1495,7 +1596,7 @@ function fireConfetti(){
     if(!ctx) return;
     cv.style.display = 'block';
     cv.width = window.innerWidth; cv.height = window.innerHeight;
-    const colors = ['#f7c948','#5eead4','#60a5fa','#ef4444','#a78bfa','#ffffff'];
+    const colors = [themeColor('--gold','#f7c948'), themeColor('--cyan','#5eead4'), themeColor('--blue','#60a5fa'), '#ef4444', '#a78bfa', '#ffffff'];
     const ps = Array.from({length:90}, ()=>({
       x:Math.random()*cv.width, y:-20-Math.random()*cv.height*.4,
       r:4+Math.random()*6, c:colors[Math.floor(Math.random()*colors.length)],
@@ -1552,15 +1653,17 @@ async function downloadResultCard(){
   const cv = document.createElement('canvas');
   cv.width = 900; cv.height = 600;
   const ctx = cv.getContext('2d');
+  const navy1 = themeColor('--navy1','#141a3f'), navy2 = themeColor('--navy2','#232a66'), navy3 = themeColor('--navy3','#37317f');
+  const goldColor = themeColor('--gold','#f7c948');
   const g = ctx.createLinearGradient(0,0,900,600);
-  g.addColorStop(0,'#141a3f'); g.addColorStop(0.55,'#232a66'); g.addColorStop(1,'#37317f');
+  g.addColorStop(0,navy1); g.addColorStop(0.55,navy2); g.addColorStop(1,navy3);
   ctx.fillStyle = g; ctx.fillRect(0,0,900,600);
-  ctx.strokeStyle = 'rgba(247,201,72,0.85)'; ctx.lineWidth = 6;
+  ctx.strokeStyle = themeRgba('--gold-rgb',0.85,'247,201,72'); ctx.lineWidth = 6;
   ctx.strokeRect(20,20,860,560);
-  ctx.strokeStyle = 'rgba(247,201,72,0.35)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = themeRgba('--gold-rgb',0.35,'247,201,72'); ctx.lineWidth = 1;
   ctx.strokeRect(32,32,836,536);
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#f7c948';
+  ctx.fillStyle = goldColor;
   ctx.font = 'bold 32px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.config.examTitle || 'ENGLISH MIDTERM TEST', 450, 95);
   ctx.fillStyle = '#cdd6ff';
@@ -1568,7 +1671,7 @@ async function downloadResultCard(){
   ctx.fillText(S.config.schoolName || '', 450, 128);
   const r = S.lastResult || { score:0, total:QUESTIONS.length, pending:0, showScore:false };
   if(r.showScore){
-    ctx.fillStyle = '#f7c948';
+    ctx.fillStyle = goldColor;
     ctx.font = 'bold 130px "Kanit","Noto Sans Thai",sans-serif';
     ctx.fillText(String(r.score), 450, 310);
     ctx.fillStyle = '#aab4e8';
