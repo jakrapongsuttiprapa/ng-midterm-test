@@ -40,8 +40,8 @@ body{
 #bgLayer{
   position:fixed;inset:0;z-index:-2;
   background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(var(--blue-rgb),.25), transparent 60%),
-    radial-gradient(900px 700px at -10% 110%, rgba(var(--cyan-rgb),.16), transparent 55%),
+    radial-gradient(1100px 600px at 85% -10%, rgba(var(--blue-rgb),.34), transparent 62%),
+    radial-gradient(900px 700px at -10% 110%, rgba(var(--cyan-rgb),.24), transparent 58%),
     linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%);
   background-size:cover;background-position:center;
 }
@@ -68,6 +68,11 @@ body{
   background:repeating-linear-gradient(115deg,transparent 0 26px,rgba(255,255,255,.035) 26px 27px);
   pointer-events:none;
 }
+#heroDefault::before{
+  content:'Aa';position:absolute;right:-8px;top:-22px;z-index:-1;
+  font-size:clamp(90px,16vw,160px);font-weight:800;line-height:1;
+  color:rgba(var(--gold-rgb),.09);pointer-events:none;user-select:none;font-family:var(--font);
+}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.22em;font-weight:600;color:var(--gold);border:1px solid rgba(var(--gold-rgb),.5);border-radius:999px;padding:5px 14px;margin-bottom:12px;}
 .hero-title{font-size:clamp(26px,5.4vw,42px);font-weight:800;line-height:1.08;letter-spacing:.01em;}
 .hero-sub{margin-top:8px;font-size:clamp(14px,2.6vw,17px);color:#cdd6ff;font-weight:400;}
@@ -77,9 +82,10 @@ body{
 .card{
   background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border:1px solid var(--glass-line);border-radius:var(--radius);
-  padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow);
+  padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow), inset 0 0 0 1px rgba(var(--gold-rgb),.16);
 }
-.card h2{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:14px;text-shadow:0 1px 6px rgba(0,0,0,.5);}
+.card h2{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;position:relative;text-shadow:0 1px 6px rgba(0,0,0,.5);}
+.card h2::after{content:'';position:absolute;left:0;bottom:0;width:42px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--gold),transparent);}
 .stepnum{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#1a1608;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
 .hint{font-size:13px;color:#aab4e8;font-weight:400;}
 .hidden{display:none!important;}
@@ -87,7 +93,8 @@ body{
 .btn{
   font-family:var(--font);border:none;cursor:pointer;border-radius:14px;
   font-size:16px;font-weight:700;padding:14px 22px;color:#fff;
-  background:rgba(255,255,255,.12);border:1px solid var(--glass-line);
+  background:linear-gradient(135deg, rgba(var(--cyan-rgb),.16), rgba(var(--blue-rgb),.12));
+  border:1px solid rgba(var(--cyan-rgb),.3);
   transition:transform .12s,filter .12s;touch-action:manipulation;
 }
 .btn:active{transform:scale(.97);}
@@ -108,7 +115,7 @@ body{
 .chips.rooms{grid-template-columns:repeat(4,1fr);}
 .chip{
   padding:14px 6px;border-radius:14px;text-align:center;font-size:16px;font-weight:700;cursor:pointer;color:#fff;font-family:var(--font);
-  background:rgba(13,17,45,.62);border:1.5px solid var(--glass-line);transition:all .15s;touch-action:manipulation;
+  background:rgba(13,17,45,.62);border:1.5px solid rgba(var(--cyan-rgb),.28);transition:all .15s;touch-action:manipulation;
 }
 .chip:active{transform:scale(.96);}
 .chip.sel{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;border-color:transparent;box-shadow:0 8px 22px rgba(var(--gold-rgb),.35);}
@@ -183,8 +190,9 @@ body{
 /* ---------- exam ---------- */
 #examHead{
   position:sticky;top:10px;z-index:40;display:flex;align-items:center;gap:10px;
-  background:rgba(10,14,38,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid var(--glass-line);border-radius:16px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--shadow);
+  background:linear-gradient(120deg, rgba(10,14,38,.85), rgba(var(--blue-rgb),.14)), rgba(10,14,38,.85);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(var(--cyan-rgb),.25);border-radius:16px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--shadow);
 }
 #stuChip{font-size:12.5px;line-height:1.35;font-weight:500;min-width:0;}
 #stuChip b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;}
@@ -234,7 +242,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 #palette{display:none;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:8px;margin-top:14px;}
 #palette.show{display:grid;}
 .pal{
-  aspect-ratio:1;border-radius:11px;border:1.5px solid var(--glass-line);background:rgba(13,17,45,.6);
+  aspect-ratio:1;border-radius:11px;border:1.5px solid rgba(var(--cyan-rgb),.28);background:rgba(13,17,45,.6);
   color:#fff;font-family:var(--font);font-weight:700;font-size:14px;cursor:pointer;touch-action:manipulation;
 }
 .pal.done{background:rgba(var(--cyan-rgb),.25);border-color:var(--cyan);}
@@ -252,6 +260,8 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 /* ---------- overlays / modal / toast ---------- */
 #violOverlay{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(120,10,10,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:20px;}
 #violOverlay.show{display:flex;}
+#pauseOverlay{position:fixed;inset:0;z-index:91;display:none;align-items:center;justify-content:center;background:rgba(10,20,45,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:20px;}
+#pauseOverlay.show{display:flex;}
 .viol-card{max-width:420px;width:100%;text-align:center;border-radius:22px;padding:30px 24px;background:#1a0b0f;border:1.5px solid var(--bad);box-shadow:0 24px 70px rgba(0,0,0,.6);}
 .viol-card .big{font-size:48px;}
 .viol-card h3{font-size:20px;font-weight:800;color:#ff9d9d;margin:8px 0 6px;}
@@ -269,11 +279,15 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .toast{background:#10163a;border:1px solid var(--glass-line);color:#fff;font-size:13.5px;font-weight:500;border-radius:12px;padding:10px 18px;box-shadow:var(--shadow);animation:fadeUp .3s;}
 
 /* ---------- result ---------- */
-.result-card{text-align:center;padding:38px 24px;}
+.result-card{text-align:center;padding:38px 24px;background-image:repeating-linear-gradient(115deg,transparent 0 26px,rgba(var(--gold-rgb),.03) 26px 27px);}
 .score-ring{
-  width:168px;height:168px;border-radius:50%;margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.14),transparent 55%),linear-gradient(150deg,#233064,#101638);
+  width:168px;height:168px;border-radius:50%;margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.14),transparent 55%),linear-gradient(150deg,var(--navy2),var(--navy1));
   border:3px solid var(--gold);box-shadow:0 0 0 8px rgba(var(--gold-rgb),.12),var(--shadow);
+}
+.score-ring::before{
+  content:'';position:absolute;inset:-9px;border-radius:50%;
+  border:1px dashed rgba(var(--gold-rgb),.4);pointer-events:none;
 }
 .score-ring b{font-size:46px;font-weight:800;color:var(--gold);line-height:1;}
 .score-ring span{font-size:13px;color:#aab4e8;margin-top:5px;}
@@ -470,7 +484,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-neon #dangerEdge{ box-shadow:inset 0 0 0 4px rgba(255,47,209,.85), inset 0 0 90px rgba(255,47,209,.4); }
 
 /* ---------- ธีม Neobu (Neo-Brutalism) — เส้นขอบดำหนา เงาทึบ ไม่เบลอ สีแบนจัดจ้าน ---------- */
-.theme-neobu #bgLayer{ background:var(--navy1) !important; }
+.theme-neobu #bgLayer{ background:var(--navy1); }
 .theme-neobu #bgLayer::after{ content:none !important; }
 .theme-neobu .card,
 .theme-neobu .modal,
@@ -501,6 +515,8 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 }
 .theme-neobu .choice.sel{ border-color:var(--gold) !important; }
 .theme-neobu .score-ring{ border:5px solid #000 !important; box-shadow:6px 6px 0 #000 !important; }
+.theme-neobu .score-ring::before{ display:none; }
+.theme-neobu .card h2::after{ display:none; }
 .theme-neobu .hero-title, .theme-neobu .ad-head h1, .theme-neobu .war-head h1{ text-shadow:3px 3px 0 #000 !important; }
 .theme-neobu #modalWrap, .theme-neobu #violOverlay, .theme-neobu #bcOverlay, .theme-neobu #cdOverlay{
   backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
@@ -510,7 +526,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-arcade #bgLayer{
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 2px, transparent 2px 4px),
-    linear-gradient(160deg,var(--navy1),var(--navy3)) !important;
+    linear-gradient(160deg,var(--navy1),var(--navy3));
 }
 .theme-arcade .card,
 .theme-arcade .modal,
@@ -536,6 +552,8 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-arcade .btn:active{ box-shadow:1px 1px 0 rgba(0,0,0,.8) !important; transform:translate(3px,3px) !important; }
 .theme-arcade .pal{ border-radius:2px !important; border:2px solid var(--gold) !important; }
 .theme-arcade .score-ring{ border:4px solid var(--gold) !important; border-radius:50% !important; box-shadow:6px 6px 0 rgba(0,0,0,.8) !important; }
+.theme-arcade .score-ring::before{ display:none; }
+.theme-arcade .card h2::after{ display:none; }
 .theme-arcade .hero-title, .theme-arcade #timerText, .theme-arcade .score-ring b, .theme-arcade #cdNum, .theme-arcade .stamp{
   font-family:'Press Start 2P',monospace !important;
 }
@@ -544,7 +562,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-arcade .score-ring b{ font-size:44px !important; }
 
 /* ---------- ธีม Terminal แฮกเกอร์ — จอเขียวฟอสฟอรัส ---------- */
-.theme-terminal #bgLayer{ background:var(--navy1) !important; }
+.theme-terminal #bgLayer{ background:var(--navy1); }
 .theme-terminal .card,
 .theme-terminal .modal,
 .theme-terminal .viol-card,
@@ -579,7 +597,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   background:
     radial-gradient(1200px 600px at 85% -10%, rgba(var(--cyan-rgb),.18), transparent 60%),
     radial-gradient(900px 700px at -10% 110%, rgba(var(--gold-rgb),.16), transparent 55%),
-    linear-gradient(160deg,var(--navy1),var(--navy3)) !important;
+    linear-gradient(160deg,var(--navy1),var(--navy3));
 }
 .theme-holo .card, .theme-holo .modal{ position:relative; }
 .theme-holo .card::before, .theme-holo .modal::before{
@@ -607,6 +625,12 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 
 /* ---------- ธีมกระดาษข้อสอบ (Light Mode) — พลิกเป็นพื้นสว่าง ---------- */
 .theme-paper body{ color:#2b2b2b !important; }
+.theme-paper #bgLayer{
+  background:
+    radial-gradient(1100px 600px at 85% -10%, rgba(var(--blue-rgb),.08), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(var(--cyan-rgb),.06), transparent 55%),
+    linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%) !important;
+}
 .theme-paper .card, .theme-paper .modal, .theme-paper .viol-card, .theme-paper .bc-card,
 .theme-paper .stat, .theme-paper .info-chip,
 .theme-paper #examHead, .theme-paper .chip, .theme-paper .choice, .theme-paper .stu-row,
@@ -876,6 +900,13 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
         </div>
         <p class="hint" id="bcStatus" style="margin-top:10px;">ยังไม่มีประกาศ</p>
       </div>
+
+      <div class="card">
+        <h2>🛑 หยุดสอบฉุกเฉิน</h2>
+        <p class="hint" style="margin-bottom:10px;">สั่งให้ระบบส่งคำตอบของนักเรียนที่ "กำลังสอบอยู่ตอนนี้" ทันที ด้วยคำตอบล่าสุดที่มีอยู่ ใช้เมื่อต้องการจบการสอบกะทันหัน</p>
+        <button class="btn btn-danger btn-block" id="btnStopAll">🛑 สั่งหยุด &amp; ส่งคำตอบทุกคนที่กำลังสอบอยู่ตอนนี้</button>
+      </div>
+
       <div class="filters">
         <select id="fClass"><option value="">ทุกชั้น</option></select>
         <select id="fRoom"><option value="">ทุกห้อง</option></select>
@@ -1000,6 +1031,14 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   </div>
 </div>
 
+<div id="pauseOverlay">
+  <div class="viol-card" style="border-color:var(--blue);">
+    <div class="big">⏸️</div>
+    <h3>ครูหยุดการสอบชั่วคราว</h3>
+    <p>กรุณารอสักครู่ ครูจะให้ทำต่อในไม่ช้า เวลาที่เสียไประหว่างนี้จะถูกเพิ่มคืนให้อัตโนมัติเมื่อทำต่อได้</p>
+  </div>
+</div>
+
 <div id="bcOverlay"><div class="bc-card"><div class="big">📣</div><h3>ประกาศจากครูผู้คุมสอบ</h3><p id="bcMsg"></p><button class="btn btn-gold btn-block" id="btnBcOk">รับทราบ</button></div></div>
 <div id="cdOverlay"><div id="cdNum">3</div></div>
 <div id="dangerEdge"></div>
@@ -1053,7 +1092,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1132,7 +1171,8 @@ const S = {
   qOrder:[], cOrder:[], answers:[], cur:0,
   violations:0, lastVio:0, submitted:false, submitting:false, phase:'boot', bcSeen:0,
   stream:null, timerInt:null, hbInt:null, adminInt:null,
-  warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false
+  warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false, stopSeen:0,
+  paused:false, resumeSeen:0, baseDurMs:0, extendMs:0, pausedRemainingSec:0
 };
 
 const $ = id => document.getElementById(id);
@@ -1502,7 +1542,9 @@ async function startExam(){
     S.startTime = r.startTime;
     S.offset = r.serverNow - Date.now();
     const durMs = (parseInt(S.config.durationMinutes,10)||60) * 60000;
-    S.endTime = S.startTime + durMs;
+    S.baseDurMs = durMs;
+    S.extendMs = Number(r.extendMs) || 0;
+    S.endTime = S.startTime + durMs + S.extendMs;
 
     const N = QUESTIONS.length;
     const rng = mulberry32(S.seed);
@@ -1585,6 +1627,7 @@ function fmtTime(ms){
   return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');
 }
 function tick(){
+  if(S.paused) return; // ครูสั่งพักอยู่ — หยุดนาฬิกาไว้ ไม่ตัดจบข้อสอบระหว่างนี้
   const rem = remainingMs();
   $('timerText').textContent = fmtTime(rem);
   $('timerBox').classList.toggle('low', rem <= 5*60000);
@@ -1697,15 +1740,38 @@ function renderQuestion(){
 async function sendHeartbeat(){
   if(S.phase !== 'exam' || S.submitted) return;
   try{
+    const remainingSec = S.paused ? S.pausedRemainingSec : Math.max(0, Math.round(remainingMs()/1000));
     const r = await api({action:'heartbeat', key:S.key, name:S.student.name, classLevel:S.classLevel, room:S.room, no:S.student.no,
       current:S.cur+1, answered:answeredCount(), total:QUESTIONS.length,
-      violations:S.violations, remaining:Math.max(0, Math.round(remainingMs()/1000)),
+      violations:S.violations, remaining:remainingSec,
       answers:S.answers});
     if(r && r.bc && r.bc.msg && Number(r.bc.ms) > S.bcSeen && S.phase === 'exam' && !S.submitted){
       S.bcSeen = Number(r.bc.ms);
       $('bcMsg').textContent = r.bc.msg;
       $('bcOverlay').classList.add('show');
       sfxBc();
+    }
+    if(r && r.stop && Number(r.stop.ms) > S.stopSeen && S.phase === 'exam' && !S.submitted){
+      S.stopSeen = Number(r.stop.ms);
+      toast('🛑 ครูสั่งจบการสอบ — กำลังส่งคำตอบให้อัตโนมัติ');
+      doSubmit('forced');
+    }
+    if(r && r.paused && !S.paused){
+      S.paused = true;
+      S.pausedRemainingSec = Math.max(0, Math.round(remainingMs()/1000)); // แช่ค่าตอนเพิ่งถูกพัก ไม่ให้เดินต่อระหว่างพัก
+      $('pauseOverlay').classList.add('show');
+      sfxWarn();
+    }
+    if(r && r.resume && Number(r.resume.ms) > S.resumeSeen){
+      S.resumeSeen = Number(r.resume.ms);
+      if(S.paused){
+        S.paused = false;
+        S.extendMs = Number(r.resume.totalExtendMs) || 0;
+        S.endTime = S.startTime + S.baseDurMs + S.extendMs;
+        $('pauseOverlay').classList.remove('show');
+        toast('▶ ครูให้ทำต่อได้แล้ว — เวลาที่เสียไปถูกเพิ่มคืนให้แล้ว');
+        sfxSuccess();
+      }
     }
   }catch(e){ /* รอบหน้าลองใหม่ */ }
 }
@@ -1828,7 +1894,7 @@ function showResult(score, auto, pending){
     $('stampEl').className = 'stamp'; $('stampEl').textContent = '';
   }
   fireConfetti();
-  let sub = (auto ? '⏰ หมดเวลา ระบบส่งคำตอบให้อัตโนมัติ<br>' : '');
+  let sub = (auto === 'forced' ? '🛑 ครูสั่งจบการสอบ ระบบส่งคำตอบให้อัตโนมัติ<br>' : auto ? '⏰ หมดเวลา ระบบส่งคำตอบให้อัตโนมัติ<br>' : '');
   sub += 'ชื่อ '+esc(S.student.name)+' · '+esc(S.classLevel)+'/'+esc(S.room)+' เลขที่ '+esc(S.student.no)+' · '+esc(setLabel(CUR_SET));
   if(S.violations > 0) sub += '<br><span style="color:#ff9d9d;">⚠ มีบันทึกพฤติกรรมผิดกติกา '+S.violations+' ครั้ง (แจ้งครูแล้ว)</span>';
   sub += '<br>ปิดหน้านี้ได้เลย';
@@ -1891,6 +1957,7 @@ async function downloadResultCard(){
 /* ══════════════════ ANTI-CHEAT ══════════════════ */
 function violation(type, detail){
   if(S.phase !== 'exam' || S.submitted) return;
+  if(S.paused) return; // ครูสั่งพักอยู่ ไม่นับเป็นทุจริตระหว่างนี้
   if(S.relax && (type === 'TAB_SWITCH' || type === 'WINDOW_BLUR')) return; // ชุดโหมดผ่อนปรน
   const now = Date.now();
   if(now - S.lastVio < 1200) return; // กันนับซ้ำ blur+visibility พร้อมกัน
@@ -2119,13 +2186,16 @@ function renderAdmin(){
   }else{
     ab.innerHTML = act.map(a=>{
       const fresh = a.lastSeen && (d.serverNow - a.lastSeen < 25000);
-      const sig = fresh ? '<span class="pill ok">● ออนไลน์</span>' : '<span class="pill warn">○ ขาดสัญญาณ</span>';
+      const sig = a.paused ? '<span class="pill warn">⏸ พักอยู่</span>' : (fresh ? '<span class="pill ok">● ออนไลน์</span>' : '<span class="pill warn">○ ขาดสัญญาณ</span>');
       const vio = a.violations > 0 ? '<span class="pill bad">'+a.violations+'</span>' : '<span class="pill ok">0</span>';
+      const pauseBtn = a.paused
+        ? '<button class="btn btn-sm btn-gold" data-resume="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">▶ ต่อ</button>'
+        : '<button class="btn btn-sm" data-pause="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">⏸ พัก</button>';
       return '<tr><td>'+esc(a.classLevel)+'/'+esc(a.room)+'</td><td>'+esc(a.no)+'</td><td class="name">'+esc(a.name)+'</td>'+
         '<td>'+esc(setLabel(a.setId))+'</td>'+
         '<td>'+(a.current||'–')+'</td><td>'+a.answered+'/'+(a.total||'–')+'</td><td>'+fmtSec(a.remaining)+'</td>'+
         '<td>'+vio+'</td><td>'+sig+'</td>'+
-        '<td><button class="btn btn-sm btn-danger" data-reset="'+esc(a.key)+'" data-name="'+esc(a.name)+'">ปลดล็อก</button></td></tr>';
+        '<td style="white-space:normal;">'+pauseBtn+'<button class="btn btn-sm" data-msg="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">💬</button><button class="btn btn-sm btn-danger" data-stop="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">หยุด</button><button class="btn btn-sm btn-danger" data-reset="'+esc(a.key)+'" data-name="'+esc(a.name)+'">ปลดล็อก</button></td></tr>';
     }).join('');
   }
 
@@ -2157,6 +2227,64 @@ function askReset(key, name){
       }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
     }}
   ]);
+}
+function askStopStudent(key, name){
+  modal('หยุดสอบนักเรียนคนนี้','สั่งให้ "'+name+'" ส่งคำตอบทันทีด้วยคำตอบล่าสุดที่มีอยู่ ใช่หรือไม่?\nจะมีผลภายในไม่กี่วินาที (รอบ heartbeat ถัดไปของนักเรียน)',[
+    {label:'ยกเลิก'},
+    {label:'ยืนยันหยุด', cls:'btn-danger', fn: async ()=>{
+      try{
+        const r = await api({action:'adminForceStop', pin:S.adminPin, key:key});
+        if(r.ok) toast('สั่งหยุด '+name+' แล้ว — กำลังส่งคำตอบให้อัตโนมัติ');
+        else toast('สั่งหยุดไม่สำเร็จ');
+      }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+    }}
+  ]);
+}
+function askStopAll(){
+  modal('หยุดสอบทุกคนตอนนี้','สั่งให้นักเรียนที่กำลังสอบอยู่ตอนนี้ทุกคน ส่งคำตอบทันที ใช่หรือไม่?\nการกระทำนี้มีผลกับทุกคนที่กำลังทำข้อสอบอยู่ ณ ขณะนี้',[
+    {label:'ยกเลิก'},
+    {label:'ยืนยันหยุดทุกคน', cls:'btn-danger', fn: async ()=>{
+      try{
+        const r = await api({action:'adminForceStop', pin:S.adminPin});
+        if(r.ok) toast('สั่งหยุดทุกคนแล้ว — กำลังส่งคำตอบให้อัตโนมัติ');
+        else toast('สั่งหยุดไม่สำเร็จ');
+      }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+    }}
+  ]);
+}
+async function pauseStudent(key, name){
+  try{
+    const r = await api({action:'adminPauseStudent', pin:S.adminPin, key:key});
+    if(r.ok){ toast('พักการสอบของ '+name+' แล้ว'); adminPollOnce(); }
+    else toast('พักไม่สำเร็จ');
+  }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+}
+async function resumeStudent(key, name){
+  try{
+    const r = await api({action:'adminResumeStudent', pin:S.adminPin, key:key});
+    if(r.ok){ toast('ให้ '+name+' สอบต่อแล้ว (ต่อเวลาชดเชยให้อัตโนมัติ)'); adminPollOnce(); }
+    else toast('สั่งต่อไม่สำเร็จ');
+  }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+}
+function askMessageStudent(key, name){
+  const box = $('modalBox');
+  box.className = 'modal';
+  box.innerHTML = '<h3>💬 ส่งข้อความถึง '+esc(name)+'</h3>'
+    + '<div class="set-field full" style="margin-bottom:14px;text-align:left;">'
+    + '<textarea id="dmText" rows="3" placeholder="เช่น อย่าคลิกขวานะ / ครูเห็นว่ากำลังทำอะไรแปลกๆ อยู่นะ" style="width:100%;font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;resize:vertical;"></textarea>'
+    + '</div>'
+    + '<div class="row"><button class="btn" id="dmCancel">ยกเลิก</button><button class="btn btn-gold" id="dmSend">ส่งข้อความ</button></div>';
+  $('modalWrap').classList.add('show');
+  box.querySelector('#dmCancel').addEventListener('click', closeModal);
+  box.querySelector('#dmSend').addEventListener('click', async ()=>{
+    const msg = $('dmText').value.trim();
+    if(!msg){ toast('พิมพ์ข้อความก่อนส่ง'); return; }
+    try{
+      const r = await api({action:'adminBroadcast', pin:S.adminPin, msg:msg, key:key});
+      if(r.ok){ closeModal(); toast('ส่งข้อความถึง '+name+' แล้ว 📣'); }
+      else toast('ส่งไม่สำเร็จ');
+    }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+  });
 }
 function buildSetMapUI(){
   const grid = $('setMapGrid');
@@ -2501,9 +2629,18 @@ document.addEventListener('click', e=>{
   if(!e.target.closest) return;
   const t = e.target.closest('[data-reset]');
   if(t){ askReset(t.getAttribute('data-reset'), t.getAttribute('data-name')); return; }
+  const st = e.target.closest('[data-stop]');
+  if(st){ askStopStudent(st.getAttribute('data-stop'), st.getAttribute('data-name')); return; }
+  const pu = e.target.closest('[data-pause]');
+  if(pu){ pauseStudent(pu.getAttribute('data-pause'), pu.getAttribute('data-name')); return; }
+  const re = e.target.closest('[data-resume]');
+  if(re){ resumeStudent(re.getAttribute('data-resume'), re.getAttribute('data-name')); return; }
+  const dm = e.target.closest('[data-msg]');
+  if(dm){ askMessageStudent(dm.getAttribute('data-msg'), dm.getAttribute('data-name')); return; }
   const g = e.target.closest('[data-grade]');
   if(g) openGrading(g.getAttribute('data-grade'));
 });
+$('btnStopAll').addEventListener('click', askStopAll);
 $('fClass').addEventListener('change', renderAdmin);
 $('fRoom').addEventListener('change', renderAdmin);
 $('btnBcOk').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); });
