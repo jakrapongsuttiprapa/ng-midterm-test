@@ -6,7 +6,7 @@
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
 <title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
 :root{
@@ -505,6 +505,180 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-neobu #modalWrap, .theme-neobu #violOverlay, .theme-neobu #bcOverlay, .theme-neobu #cdOverlay{
   backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
 }
+
+/* ---------- ธีม Retro Arcade — พิกเซล 8-bit ---------- */
+.theme-arcade #bgLayer{
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 2px, transparent 2px 4px),
+    linear-gradient(160deg,var(--navy1),var(--navy3)) !important;
+}
+.theme-arcade .card,
+.theme-arcade .modal,
+.theme-arcade .viol-card,
+.theme-arcade .bc-card,
+.theme-arcade .chip,
+.theme-arcade .choice,
+.theme-arcade #examHead,
+.theme-arcade .stat,
+.theme-arcade .info-chip{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  border:3px solid var(--gold) !important;
+  border-radius:4px !important;
+  box-shadow:4px 4px 0 rgba(0,0,0,.8) !important;
+}
+.theme-arcade .btn{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  border:3px solid #000 !important;
+  border-radius:4px !important;
+  box-shadow:4px 4px 0 rgba(0,0,0,.8) !important;
+  transition:transform .08s, box-shadow .08s !important;
+}
+.theme-arcade .btn:active{ box-shadow:1px 1px 0 rgba(0,0,0,.8) !important; transform:translate(3px,3px) !important; }
+.theme-arcade .pal{ border-radius:2px !important; border:2px solid var(--gold) !important; }
+.theme-arcade .score-ring{ border:4px solid var(--gold) !important; border-radius:50% !important; box-shadow:6px 6px 0 rgba(0,0,0,.8) !important; }
+.theme-arcade .hero-title, .theme-arcade #timerText, .theme-arcade .score-ring b, .theme-arcade #cdNum, .theme-arcade .stamp{
+  font-family:'Press Start 2P',monospace !important;
+}
+.theme-arcade .hero-title{ font-size:clamp(15px,3.6vw,22px) !important; line-height:1.7 !important; }
+.theme-arcade #timerText{ font-size:17px !important; }
+.theme-arcade .score-ring b{ font-size:44px !important; }
+
+/* ---------- ธีม Terminal แฮกเกอร์ — จอเขียวฟอสฟอรัส ---------- */
+.theme-terminal #bgLayer{ background:var(--navy1) !important; }
+.theme-terminal .card,
+.theme-terminal .modal,
+.theme-terminal .viol-card,
+.theme-terminal .bc-card,
+.theme-terminal .chip,
+.theme-terminal .choice,
+.theme-terminal #examHead,
+.theme-terminal .stat,
+.theme-terminal .info-chip{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  background:rgba(0,20,0,.55) !important;
+  border:1px solid var(--gold) !important;
+  border-radius:2px !important;
+  box-shadow:none !important;
+}
+.theme-terminal .btn{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  background:rgba(0,20,0,.7) !important;
+  border:1px solid var(--gold) !important;
+  border-radius:2px !important;
+  box-shadow:none !important;
+  color:var(--gold) !important;
+}
+.theme-terminal .btn-gold{ background:rgba(0,40,0,.85) !important; color:var(--gold) !important; }
+.theme-terminal .hero-title, .theme-terminal #timerText, .theme-terminal .score-ring b{ text-shadow:0 0 8px var(--gold); }
+.theme-terminal .score-ring{ border:2px solid var(--gold) !important; box-shadow:0 0 20px rgba(var(--gold-rgb),.4) !important; background:rgba(0,20,0,.6) !important; }
+.theme-terminal .hero-title::after{ content:'_'; animation:termBlink 1s step-end infinite; }
+@keyframes termBlink{ 50%{opacity:0;} }
+
+/* ---------- ธีม Holographic Y2K — ขอบไล่สีรุ้ง ---------- */
+.theme-holo #bgLayer{
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(var(--cyan-rgb),.18), transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, rgba(var(--gold-rgb),.16), transparent 55%),
+    linear-gradient(160deg,var(--navy1),var(--navy3)) !important;
+}
+.theme-holo .card, .theme-holo .modal{ position:relative; }
+.theme-holo .card::before, .theme-holo .modal::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:2px;
+  background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7,#ff6ec7);
+  background-size:300% 300%;
+  animation:holoShift 6s linear infinite;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none;
+}
+@keyframes holoShift{ 0%{background-position:0% 50%;} 100%{background-position:300% 50%;} }
+.theme-holo .btn-gold{
+  background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7) !important;
+  background-size:300% 300% !important;
+  animation:holoShift 4s linear infinite !important;
+  color:#1a0b2e !important;
+}
+.theme-holo .hero-title{
+  background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7);
+  background-size:300% 300%;
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:holoShift 5s linear infinite;
+}
+
+/* ---------- ธีมกระดาษข้อสอบ (Light Mode) — พลิกเป็นพื้นสว่าง ---------- */
+.theme-paper body{ color:#2b2b2b !important; }
+.theme-paper .card, .theme-paper .modal, .theme-paper .viol-card, .theme-paper .bc-card,
+.theme-paper .stat, .theme-paper .info-chip,
+.theme-paper #examHead, .theme-paper .chip, .theme-paper .choice, .theme-paper .stu-row,
+.theme-paper #studentList, .theme-paper #palette{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  background:#fffdf6 !important;
+  border:1px solid #d8cba8 !important;
+  box-shadow:0 2px 6px rgba(0,0,0,.08) !important;
+  color:#2b2b2b !important;
+}
+.theme-paper .hint{ color:#6b6152 !important; }
+.theme-paper .btn{
+  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
+  background:#efe6d3 !important; border:1px solid #c9b98f !important;
+  color:#2b2b2b !important; box-shadow:0 2px 4px rgba(0,0,0,.08) !important;
+}
+.theme-paper .btn-gold{ background:linear-gradient(135deg,var(--gold),var(--gold-deep)) !important; color:#fff !important; box-shadow:0 4px 10px rgba(var(--gold-rgb),.35) !important; }
+.theme-paper .btn-danger{ color:#fff !important; }
+.theme-paper .chip{ color:#2b2b2b !important; }
+.theme-paper .chip.sel{ background:linear-gradient(135deg,var(--gold),var(--gold-deep)) !important; color:#fff !important; }
+.theme-paper .stu-row{ color:#2b2b2b !important; }
+.theme-paper .stu-row.sel{ background:rgba(var(--gold-rgb),.15) !important; }
+.theme-paper .stu-row .no-badge{ background:rgba(var(--cyan-rgb),.12) !important; border:1px solid rgba(var(--cyan-rgb),.5) !important; color:var(--cyan) !important; }
+.theme-paper .hero-eyebrow{ color:var(--gold) !important; border-color:rgba(var(--gold-rgb),.5) !important; }
+.theme-paper .hero-title{ color:#1a1a1a !important; }
+.theme-paper .hero-sub{ color:#4a4a4a !important; }
+.theme-paper .hero-school{ color:var(--cyan) !important; }
+.theme-paper #heroDefault{ background:linear-gradient(135deg,#fffdf6,#f2ead9) !important; border:1px solid #d8cba8 !important; box-shadow:0 2px 8px rgba(0,0,0,.08) !important; }
+.theme-paper #heroDefault::after{ display:none !important; }
+.theme-paper .choice{ background:#fffdf6 !important; border:1.5px solid #d8cba8 !important; color:#2b2b2b !important; }
+.theme-paper .choice .abc{ background:rgba(0,0,0,.06) !important; color:#2b2b2b !important; }
+.theme-paper .choice.sel{ background:rgba(var(--gold-rgb),.15) !important; border-color:var(--gold) !important; }
+.theme-paper .choice.sel .abc{ background:var(--gold) !important; color:#fff !important; }
+.theme-paper .ans-ta{ background:#fffdf6 !important; border:1.5px solid #d8cba8 !important; color:#2b2b2b !important; }
+.theme-paper #stuChip b{ color:#1a1a1a !important; }
+.theme-paper #stuChip span, .theme-paper #timerBox span, .theme-paper #hudProg span{ color:#6b6152 !important; }
+.theme-paper .score-ring{ background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.6), transparent 55%), linear-gradient(150deg,#fffdf6,#f2ead9) !important; border-color:var(--gold) !important; box-shadow:0 4px 14px rgba(0,0,0,.1) !important; }
+.theme-paper .score-ring span{ color:#6b6152 !important; }
+.theme-paper .result-msg{ color:#1a1a1a !important; }
+.theme-paper .result-sub{ color:#4a4a4a !important; }
+.theme-paper .modal h3{ color:#1a1a1a !important; }
+.theme-paper .modal p{ color:#4a4a4a !important; }
+.theme-paper .rules li{ color:#2b2b2b !important; }
+.theme-paper .info-chip b{ color:var(--gold) !important; }
+.theme-paper .info-chip span{ color:#6b6152 !important; }
+.theme-paper .scan-frame{ background:#1a1a1a !important; border:1px solid #d8cba8 !important; }
+.theme-paper .ai-warn{ background:#fdeceb !important; border:1px solid #e6b8b3 !important; color:#7a1f1f !important; }
+.theme-paper #foot{ color:#4a4a4a !important; text-shadow:none !important; }
+.theme-paper #adminLink{ background:#efe6d3 !important; border:1px solid #c9b98f !important; color:#2b2b2b !important; }
+.theme-paper .toast{ background:#2b2b2b !important; color:#fffdf6 !important; }
+.theme-paper .ad-head h1{ color:#1a1a1a !important; }
+.theme-paper .stat b{ color:var(--gold) !important; }
+.theme-paper .stat span{ color:#6b6152 !important; }
+.theme-paper .tbl-wrap{ border:1px solid #d8cba8 !important; }
+.theme-paper table{ color:#2b2b2b !important; }
+.theme-paper th{ background:rgba(0,0,0,.04) !important; color:#4a4a4a !important; }
+.theme-paper td{ border-top:1px solid #e5dcc4 !important; }
+.theme-paper .tab-btn{ background:#efe6d3 !important; color:#4a4a4a !important; }
+.theme-paper .filters select, .theme-paper .set-field input, .theme-paper .set-field textarea, .theme-paper .map-row select, .theme-paper #bSetSel{
+  background:#fffdf6 !important; color:#2b2b2b !important; border:1px solid #d8cba8 !important;
+}
+.theme-paper .pill.ok{ background:rgba(22,163,74,.15) !important; color:#15803d !important; border-color:rgba(22,163,74,.4) !important; }
+.theme-paper .pill.warn{ background:rgba(217,119,6,.15) !important; color:#b45309 !important; border-color:rgba(217,119,6,.4) !important; }
+.theme-paper .pill.bad{ background:rgba(220,38,38,.15) !important; color:#b91c1c !important; border-color:rgba(220,38,38,.4) !important; }
+.theme-paper #annBar{ background:#fdf3d9 !important; color:#7a5c00 !important; border-color:rgba(var(--gold-rgb),.6) !important; }
+.theme-paper #closedBar{ background:#fdeceb !important; color:#7a1f1f !important; border-color:rgba(220,38,38,.5) !important; }
+.theme-paper .viol-card h3{ color:#b91c1c !important; }
+.theme-paper .viol-card p{ color:#7a1f1f !important; }
+.theme-paper .scan-steps li{ color:#6b6152 !important; }
+.theme-paper .scan-steps li.done{ color:#0a6e6e !important; }
+.theme-paper #camFail p{ color:#b91c1c !important; }
+.theme-paper #resSub span{ color:#b91c1c !important; }
 </style>
 </head>
 <body class="no-select">
@@ -785,6 +959,10 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
             <option value="ocean">ฟ้าสมุทร</option>
             <option value="neon">นีออนเกมมิ่ง</option>
             <option value="neobu">Neobu (นีโอบรูทัลลิสม์)</option>
+            <option value="arcade">Retro Arcade (พิกเซล 8-bit)</option>
+            <option value="terminal">Terminal แฮกเกอร์</option>
+            <option value="holo">Holographic Y2K</option>
+            <option value="paper">กระดาษข้อสอบ (Light Mode)</option>
           </select></div>
           <div class="set-field"><label>เวลาสอบ (นาที)</label><input type="number" id="cfgDur" min="1" max="240"></div>
           <div class="set-field full"><label>ประกาศถึงนักเรียน (แสดงหน้าแรก, เว้นว่าง = ไม่แสดง)</label><textarea id="cfgAnn"></textarea></div>
@@ -872,10 +1050,10 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
    ⚙️ ตั้งค่าหลัก — ครู OAT แก้ตรงนี้
    1) วาง URL ของ Web App (Google Apps Script) ที่ลงท้ายด้วย /exec
 ══════════════════════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
+const API_URL = 'วาง_URL_/exec_ตรงนี้';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1022,13 +1200,18 @@ function seededShuffle(arr, rng){ const a=arr.slice(); for(let i=a.length-1;i>0;
 const range = n => Array.from({length:n},(_,i)=>i);
 
 /* ---------- ธีมสี (เลือกได้จากแดชบอร์ดครู ไม่ต้องแก้โค้ด) ---------- */
+const DEFAULT_FONT = "'Kanit','Prompt','Noto Sans Thai',-apple-system,'Segoe UI',sans-serif";
 const THEMES = {
-  gold:    { navy1:'#0b1026', navy2:'#1b2350', navy3:'#2b2f77', gold:'#f7c948', goldDeep:'#e0a92e', cyan:'#5eead4', blue:'#60a5fa' },
-  emerald: { navy1:'#08160f', navy2:'#0f2a1d', navy3:'#163c29', gold:'#34d399', goldDeep:'#059669', cyan:'#6ee7b7', blue:'#38bdf8' },
-  rose:    { navy1:'#1a0b12', navy2:'#2c1220', navy3:'#3d1a2c', gold:'#fb7185', goldDeep:'#e11d48', cyan:'#fda4af', blue:'#f472b6' },
-  ocean:   { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee' },
-  neon:    { navy1:'#050014', navy2:'#0d0221', navy3:'#1a0b3d', gold:'#ff2fd1', goldDeep:'#b300ff', cyan:'#00fff2', blue:'#6f2dff' },
-  neobu:   { navy1:'#171717', navy2:'#171717', navy3:'#171717', gold:'#ffe100', goldDeep:'#ffe100', cyan:'#00e5ff', blue:'#00e5ff' }
+  gold:     { navy1:'#0b1026', navy2:'#1b2350', navy3:'#2b2f77', gold:'#f7c948', goldDeep:'#e0a92e', cyan:'#5eead4', blue:'#60a5fa', font:DEFAULT_FONT },
+  emerald:  { navy1:'#08160f', navy2:'#0f2a1d', navy3:'#163c29', gold:'#34d399', goldDeep:'#059669', cyan:'#6ee7b7', blue:'#38bdf8', font:DEFAULT_FONT },
+  rose:     { navy1:'#1a0b12', navy2:'#2c1220', navy3:'#3d1a2c', gold:'#fb7185', goldDeep:'#e11d48', cyan:'#fda4af', blue:'#f472b6', font:DEFAULT_FONT },
+  ocean:    { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee', font:DEFAULT_FONT },
+  neon:     { navy1:'#050014', navy2:'#0d0221', navy3:'#1a0b3d', gold:'#ff2fd1', goldDeep:'#b300ff', cyan:'#00fff2', blue:'#6f2dff', font:DEFAULT_FONT },
+  neobu:    { navy1:'#171717', navy2:'#171717', navy3:'#171717', gold:'#ffe100', goldDeep:'#ffe100', cyan:'#00e5ff', blue:'#00e5ff', font:DEFAULT_FONT },
+  arcade:   { navy1:'#0a0a0a', navy2:'#0a0a0a', navy3:'#140a1e', gold:'#ffcc00', goldDeep:'#ff6600', cyan:'#00ffff', blue:'#0066ff', font:DEFAULT_FONT },
+  terminal: { navy1:'#000000', navy2:'#000000', navy3:'#001a00', gold:'#33ff33', goldDeep:'#00cc00', cyan:'#00ff88', blue:'#00cc66', font:"'JetBrains Mono','Kanit','Noto Sans Thai',monospace" },
+  holo:     { navy1:'#0d0221', navy2:'#1a0b3d', navy3:'#2d1b5e', gold:'#ff6ec7', goldDeep:'#7b2ff7', cyan:'#5ffbf1', blue:'#77a6f7', font:DEFAULT_FONT },
+  paper:    { navy1:'#f2ead9', navy2:'#efe6d3', navy3:'#eadfc8', gold:'#c1121f', goldDeep:'#780000', cyan:'#0a6e6e', blue:'#1d4e89', font:DEFAULT_FONT }
 };
 function hexToRgbStr(hex){
   const h = String(hex||'').replace('#','');
@@ -1049,8 +1232,13 @@ function applyTheme(name){
   root.setProperty('--gold-rgb', hexToRgbStr(t.gold));
   root.setProperty('--cyan-rgb', hexToRgbStr(t.cyan));
   root.setProperty('--blue-rgb', hexToRgbStr(t.blue));
+  root.setProperty('--font', t.font || DEFAULT_FONT);
   document.body.classList.toggle('theme-neon', name === 'neon');
   document.body.classList.toggle('theme-neobu', name === 'neobu');
+  document.body.classList.toggle('theme-arcade', name === 'arcade');
+  document.body.classList.toggle('theme-terminal', name === 'terminal');
+  document.body.classList.toggle('theme-holo', name === 'holo');
+  document.body.classList.toggle('theme-paper', name === 'paper');
 }
 function themeColor(varName, fallback){
   try{
@@ -1357,8 +1545,9 @@ function runCountdown(done){
 function buildWatermark(){
   const raw = S.student.name+'   '+S.classLevel+'/'+S.room+' เลขที่ '+S.student.no;
   const safe = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const wmFill = document.body.classList.contains('theme-paper') ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.065)';
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="380" height="230">'
-    + '<text x="12" y="125" transform="rotate(-24 190 115)" font-size="17" font-family="sans-serif" font-weight="600" fill="rgba(255,255,255,0.065)">'+safe+'</text>'
+    + '<text x="12" y="125" transform="rotate(-24 190 115)" font-size="17" font-family="sans-serif" font-weight="600" fill="'+wmFill+'">'+safe+'</text>'
     + '</svg>';
   $('wmLayer').style.backgroundImage = "url('data:image/svg+xml;utf8,"+encodeURIComponent(svg)+"')";
   $('wmLayer').classList.add('show');
