@@ -13,12 +13,13 @@
   --cardw: 760px;
   --ink:#0e1330;
   --paper:rgba(255,255,255,.92);
-  --glass:rgba(15,19,48,.68);
+  --glass:rgba(var(--glass-rgb),.68);
   --glass-line:rgba(255,255,255,.18);
   --navy1:#0b1026; --navy2:#1b2350; --navy3:#2b2f77;
   --gold:#f7c948; --gold-deep:#e0a92e;
   --cyan:#5eead4; --blue:#60a5fa;
   --gold-rgb:247,201,72; --cyan-rgb:94,234,212; --blue-rgb:96,165,250;
+  --panel-rgb:13,17,45; --glass-rgb:15,19,48;
   --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
   --radius:20px;
   --shadow:0 18px 50px rgba(5,8,30,.45);
@@ -60,7 +61,7 @@ body{
 #heroImg{display:none;width:100%;height:auto;border-radius:var(--radius);box-shadow:var(--shadow);}
 #heroDefault{
   border-radius:var(--radius);padding:30px 26px;box-shadow:var(--shadow);
-  background:linear-gradient(135deg,#141a3f 0%,#232a66 60%,#37317f 100%);
+  background:linear-gradient(135deg,var(--navy2) 0%,var(--navy3) 60%,var(--navy2) 100%);
   border:1px solid var(--glass-line);position:relative;overflow:hidden;
 }
 #heroDefault::after{
@@ -80,6 +81,7 @@ body{
 
 /* ---------- cards / common ---------- */
 .card{
+  position:relative;
   background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border:1px solid var(--glass-line);border-radius:var(--radius);
   padding:22px 20px;margin-bottom:14px;box-shadow:var(--shadow), inset 0 0 0 1px rgba(var(--gold-rgb),.16);
@@ -115,7 +117,7 @@ body{
 .chips.rooms{grid-template-columns:repeat(4,1fr);}
 .chip{
   padding:14px 6px;border-radius:14px;text-align:center;font-size:16px;font-weight:700;cursor:pointer;color:#fff;font-family:var(--font);
-  background:rgba(13,17,45,.62);border:1.5px solid rgba(var(--cyan-rgb),.28);transition:all .15s;touch-action:manipulation;
+  background:rgba(var(--panel-rgb),.62);border:1.5px solid rgba(var(--cyan-rgb),.28);transition:all .15s;touch-action:manipulation;
 }
 .chip:active{transform:scale(.96);}
 .chip.sel{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;border-color:transparent;box-shadow:0 8px 22px rgba(var(--gold-rgb),.35);}
@@ -124,7 +126,7 @@ body{
 #studentList{max-height:330px;overflow-y:auto;border-radius:14px;border:1px solid var(--glass-line);-webkit-overflow-scrolling:touch;}
 .stu-row{
   display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
-  padding:13px 14px;background:rgba(13,17,45,.5);border:none;border-bottom:1px solid rgba(255,255,255,.09);
+  padding:13px 14px;background:rgba(var(--panel-rgb),.5);border:none;border-bottom:1px solid rgba(255,255,255,.09);
   color:#fff;font-family:var(--font);font-size:15px;font-weight:500;touch-action:manipulation;
 }
 .stu-row:last-child{border-bottom:none;}
@@ -178,7 +180,7 @@ body{
 
 /* ---------- rules ---------- */
 .info-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
-.info-chip{flex:1;min-width:130px;border-radius:14px;padding:12px;text-align:center;background:rgba(13,17,45,.55);border:1px solid var(--glass-line);}
+.info-chip{flex:1;min-width:130px;border-radius:14px;padding:12px;text-align:center;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);}
 .info-chip b{display:block;font-size:24px;font-weight:800;color:var(--gold);}
 .info-chip span{font-size:12.5px;color:#aab4e8;}
 .rules{list-style:none;}
@@ -220,11 +222,11 @@ body{
 .choice{
   display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;margin-bottom:10px;
   border-radius:14px;padding:14px 15px;font-family:var(--font);font-size:16px;font-weight:500;line-height:1.5;color:#fff;
-  background:rgba(13,17,45,.6);border:1.5px solid var(--glass-line);transition:all .13s;touch-action:manipulation;
+  background:rgba(var(--panel-rgb),.6);border:1.5px solid var(--glass-line);transition:all .13s;touch-action:manipulation;
 }
 .choice:active{transform:scale(.985);}
 .ans-ta{width:100%;min-height:150px;resize:vertical;font-family:var(--font);font-size:16px;line-height:1.7;color:#fff;
-  background:rgba(13,17,45,.6);border:1.5px solid var(--glass-line);border-radius:14px;padding:14px 15px;}
+  background:rgba(var(--panel-rgb),.6);border:1.5px solid var(--glass-line);border-radius:14px;padding:14px 15px;}
 .ans-ta:focus{outline:none;border-color:var(--gold);}
 textarea,input{-webkit-user-select:text;user-select:text;}
 .wr-badge{display:inline-block;font-size:11.5px;font-weight:700;color:#d8c9ff;background:rgba(126,87,255,.22);border:1px solid rgba(167,139,250,.55);padding:3px 10px;border-radius:99px;margin-left:8px;}
@@ -242,11 +244,18 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 #palette{display:none;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:8px;margin-top:14px;}
 #palette.show{display:grid;}
 .pal{
-  aspect-ratio:1;border-radius:11px;border:1.5px solid rgba(var(--cyan-rgb),.28);background:rgba(13,17,45,.6);
+  aspect-ratio:1;border-radius:11px;border:1.5px solid rgba(var(--cyan-rgb),.28);background:rgba(var(--panel-rgb),.6);
   color:#fff;font-family:var(--font);font-weight:700;font-size:14px;cursor:pointer;touch-action:manipulation;
 }
 .pal.done{background:rgba(var(--cyan-rgb),.25);border-color:var(--cyan);}
 .pal.cur{outline:2.5px solid var(--gold);outline-offset:1.5px;}
+#paletteLegend{display:none;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12px;color:#aab4e8;font-weight:500;}
+#palette.show ~ #paletteLegend{display:flex;}
+#paletteLegend span{display:inline-flex;align-items:center;gap:6px;}
+#paletteLegend i{width:14px;height:14px;border-radius:4px;display:inline-block;flex:none;
+  border:1.5px solid rgba(var(--cyan-rgb),.28);background:rgba(var(--panel-rgb),.6);}
+#paletteLegend i.lg-done{background:rgba(var(--cyan-rgb),.25);border-color:var(--cyan);}
+#paletteLegend i.lg-cur{background:rgba(var(--panel-rgb),.6);border-color:var(--gold);box-shadow:0 0 0 2px rgba(var(--gold-rgb),.55);}
 
 #monitorBox{
   position:fixed;right:12px;bottom:12px;z-index:60;width:108px;border-radius:14px;overflow:hidden;
@@ -262,6 +271,9 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 #violOverlay.show{display:flex;}
 #pauseOverlay{position:fixed;inset:0;z-index:91;display:none;align-items:center;justify-content:center;background:rgba(10,20,45,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:20px;}
 #pauseOverlay.show{display:flex;}
+#pauseOverlay .viol-card{background:var(--navy2);border-color:var(--blue);}
+#pauseOverlay .viol-card h3{color:var(--cyan);}
+#pauseOverlay .viol-card p{color:#dbe4ff;}
 .viol-card{max-width:420px;width:100%;text-align:center;border-radius:22px;padding:30px 24px;background:#1a0b0f;border:1.5px solid var(--bad);box-shadow:0 24px 70px rgba(0,0,0,.6);}
 .viol-card .big{font-size:48px;}
 .viol-card h3{font-size:20px;font-weight:800;color:#ff9d9d;margin:8px 0 6px;}
@@ -269,14 +281,14 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 
 #modalWrap{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(4,6,18,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px;}
 #modalWrap.show{display:flex;}
-.modal{max-width:400px;width:100%;border-radius:20px;padding:26px 22px;background:#141a3f;border:1px solid var(--glass-line);box-shadow:0 24px 70px rgba(0,0,0,.55);text-align:center;}
+.modal{max-width:400px;width:100%;border-radius:20px;padding:26px 22px;background:var(--navy2);border:1px solid var(--glass-line);box-shadow:0 24px 70px rgba(0,0,0,.55);text-align:center;}
 .modal h3{font-size:18px;font-weight:700;margin-bottom:8px;}
 .modal p{font-size:14.5px;line-height:1.7;color:#c6cdf5;margin-bottom:18px;white-space:pre-line;}
 .modal .row{display:flex;gap:10px;}
 .modal .row .btn{flex:1;}
 
 #toastWrap{position:fixed;left:0;right:0;bottom:18px;z-index:120;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding:0 16px;}
-.toast{background:#10163a;border:1px solid var(--glass-line);color:#fff;font-size:13.5px;font-weight:500;border-radius:12px;padding:10px 18px;box-shadow:var(--shadow);animation:fadeUp .3s;}
+.toast{background:var(--navy2);border:1px solid var(--glass-line);color:#fff;font-size:13.5px;font-weight:500;border-radius:12px;padding:10px 18px;box-shadow:var(--shadow);animation:fadeUp .3s;}
 
 /* ---------- result ---------- */
 .result-card{text-align:center;padding:38px 24px;background-image:repeating-linear-gradient(115deg,transparent 0 26px,rgba(var(--gold-rgb),.03) 26px 27px);}
@@ -302,7 +314,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 /* ---------- footer ---------- */
 #foot{text-align:center;margin-top:22px;font-size:12.5px;color:#e3e8ff;text-shadow:0 1px 10px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.8);}
 #foot,#adminLink{font-weight:500;}
-#adminLink{color:#e3e8ff;text-decoration:underline;cursor:pointer;background:rgba(13,17,45,.55);border:1px solid var(--glass-line);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;margin-left:4px;}
+#adminLink{color:#e3e8ff;text-decoration:underline;cursor:pointer;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;margin-left:4px;}
 
 /* ---------- admin ---------- */
 .ad-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
@@ -315,12 +327,12 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .stat.gold b{color:var(--gold);}
 .stat span{font-size:11.5px;color:#aab4e8;}
 .tabs{display:flex;gap:8px;margin-bottom:14px;}
-.tab-btn{flex:1;padding:11px;border-radius:12px;font-family:var(--font);font-size:14.5px;font-weight:700;cursor:pointer;color:#c3cbf5;background:rgba(13,17,45,.6);border:1px solid var(--glass-line);}
+.tab-btn{flex:1;padding:11px;border-radius:12px;font-family:var(--font);font-size:14.5px;font-weight:700;cursor:pointer;color:#c3cbf5;background:rgba(var(--panel-rgb),.6);border:1px solid var(--glass-line);}
 .tab-btn.on{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;border-color:transparent;}
 .filters{display:flex;gap:10px;margin-bottom:12px;}
 .filters select{
   flex:1;font-family:var(--font);font-size:14px;font-weight:500;padding:10px 12px;border-radius:11px;
-  background:#141a3f;color:#fff;border:1px solid var(--glass-line);
+  background:var(--navy2);color:#fff;border:1px solid var(--glass-line);
 }
 .tbl-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--glass-line);-webkit-overflow-scrolling:touch;}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px;}
@@ -343,10 +355,10 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .set-field textarea{resize:vertical;min-height:64px;}
 .map-row{display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:center;margin-bottom:8px;}
 .map-row label{font-size:13.5px;font-weight:700;color:#cdd6ff;}
-.map-row select{font-family:var(--font);font-size:13.5px;font-weight:500;padding:9px 11px;border-radius:10px;background:#141a3f;color:#fff;border:1px solid var(--glass-line);width:100%;}
+.map-row select{font-family:var(--font);font-size:13.5px;font-weight:500;padding:9px 11px;border-radius:10px;background:var(--navy2);color:#fff;border:1px solid var(--glass-line);width:100%;}
 .map-class-head{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--gold);margin:12px 0 6px;}
 .map-class-head:first-child{margin-top:0;}
-.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:12px 14px;background:rgba(13,17,45,.55);border:1px solid var(--glass-line);}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:12px 14px;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);}
 .switch-row span{font-size:13.5px;font-weight:600;}
 .sw{position:relative;width:50px;height:28px;flex:none;}
 .sw input{opacity:0;width:0;height:0;}
@@ -358,7 +370,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 /* ---------- ประกาศจากครู ---------- */
 #bcOverlay{position:fixed;inset:0;z-index:95;display:none;align-items:center;justify-content:center;background:rgba(4,6,18,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:20px;}
 #bcOverlay.show{display:flex;}
-.bc-card{max-width:460px;width:100%;text-align:center;border-radius:22px;padding:30px 24px;background:#132045;border:1.5px solid var(--gold);box-shadow:0 24px 70px rgba(0,0,0,.6);animation:fadeUp .3s;}
+.bc-card{max-width:460px;width:100%;text-align:center;border-radius:22px;padding:30px 24px;background:var(--navy2);border:1.5px solid var(--gold);box-shadow:0 24px 70px rgba(0,0,0,.6);animation:fadeUp .3s;}
 .bc-card .big{font-size:46px;}
 .bc-card h3{font-size:19px;font-weight:800;color:var(--gold);margin:8px 0 6px;}
 .bc-card p{font-size:16.5px;line-height:1.75;white-space:pre-line;margin-bottom:18px;}
@@ -388,7 +400,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .stamp.t-ok{color:#8df0b2;border-color:#22c55e;}
 .stamp.t-red{color:#ff9d9d;border-color:var(--bad);}
 
-.bq{display:flex;align-items:center;gap:10px;border-radius:12px;padding:11px 13px;margin-bottom:8px;background:rgba(13,17,45,.55);border:1px solid var(--glass-line);}
+.bq{display:flex;align-items:center;gap:10px;border-radius:12px;padding:11px 13px;margin-bottom:8px;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);}
 .bq .tp{flex:none;font-size:11px;font-weight:800;border-radius:8px;padding:3px 9px;background:rgba(var(--cyan-rgb),.15);color:var(--cyan);border:1px solid rgba(var(--cyan-rgb),.4);}
 .bq .tp.wr{background:rgba(126,87,255,.2);color:#d8c9ff;border-color:rgba(167,139,250,.5);}
 .bq .tx{flex:1;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
@@ -398,7 +410,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .echoice input[type=radio]{width:20px;height:20px;accent-color:var(--gold);flex:none;}
 .echoice input[type=text]{flex:1;font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;}
 .modal.wide{max-width:640px;text-align:left;max-height:86vh;overflow-y:auto;}
-.gr-item{border-radius:12px;padding:13px 14px;margin-bottom:12px;background:rgba(13,17,45,.6);border:1px solid var(--glass-line);}
+.gr-item{border-radius:12px;padding:13px 14px;margin-bottom:12px;background:rgba(var(--panel-rgb),.6);border:1px solid var(--glass-line);}
 .gr-item .gq{font-size:14px;font-weight:600;margin-bottom:8px;}
 .gr-item .ga{font-size:14.5px;line-height:1.7;white-space:pre-wrap;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px;margin-bottom:10px;color:#e8ecff;}
 .gr-item .ga.empty{color:#8e98cf;font-style:italic;}
@@ -412,19 +424,19 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 #warRoom.show{display:flex;}
 .war-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
 .war-head h1{font-size:clamp(20px,2.6vw,30px);font-weight:800;}
-.war-head select{font-family:var(--font);font-size:14px;padding:8px 12px;border-radius:10px;background:#141a3f;color:#fff;border:1px solid var(--glass-line);}
+.war-head select{font-family:var(--font);font-size:14px;padding:8px 12px;border-radius:10px;background:var(--navy2);color:#fff;border:1px solid var(--glass-line);}
 .war-vio-tg{display:flex;align-items:center;gap:7px;font-size:13px;color:#aab4e8;font-weight:600;}
 .war-vio-tg input{width:18px;height:18px;accent-color:var(--bad);}
 #btnWarClose{margin-left:auto;}
 #warBc{display:none;border-radius:14px;padding:13px 18px;margin-bottom:14px;font-size:clamp(15px,1.9vw,20px);font-weight:600;background:rgba(56,44,6,.85);border:1.5px solid var(--gold);color:#ffe9a8;animation:fadeUp .3s;}
 #warBc.show{display:block;}
 .war-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px;}
-.war-stat{border-radius:18px;padding:16px;text-align:center;background:rgba(13,17,45,.75);border:1px solid var(--glass-line);}
+.war-stat{border-radius:18px;padding:16px;text-align:center;background:rgba(var(--panel-rgb),.75);border:1px solid var(--glass-line);}
 .war-stat b{display:block;font-size:clamp(40px,6vw,70px);font-weight:800;color:var(--cyan);line-height:1.1;}
 .war-stat.gold b{color:var(--gold);}
 .war-stat span{font-size:clamp(12px,1.4vw,16px);color:#aab4e8;font-weight:600;}
 .war-main{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-bottom:14px;}
-.war-panel{border-radius:18px;padding:16px 18px;background:rgba(13,17,45,.75);border:1px solid var(--glass-line);}
+.war-panel{border-radius:18px;padding:16px 18px;background:rgba(var(--panel-rgb),.75);border:1px solid var(--glass-line);}
 .war-panel h2{font-size:15px;font-weight:700;color:#cdd6ff;margin-bottom:12px;letter-spacing:.05em;}
 #warChart{display:flex;align-items:flex-end;gap:12px;height:210px;}
 .war-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
@@ -435,7 +447,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .feed-item{border-radius:12px;padding:10px 14px;font-size:clamp(13px,1.5vw,16px);font-weight:500;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);animation:fadeUp .4s;}
 .feed-item.vio{background:rgba(58,8,10,.72);border-color:rgba(239,68,68,.5);}
 #warActive{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;}
-.war-chip{border-radius:12px;padding:10px 12px;background:rgba(13,17,45,.75);border:1px solid var(--glass-line);}
+.war-chip{border-radius:12px;padding:10px 12px;background:rgba(var(--panel-rgb),.75);border:1px solid var(--glass-line);}
 .war-chip.vio{border-color:rgba(239,68,68,.65);}
 .war-chip .nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .war-chip .meta{font-size:11px;color:#9aa6e6;margin:3px 0 6px;}
@@ -689,12 +701,50 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-paper th{ background:rgba(0,0,0,.04) !important; color:#4a4a4a !important; }
 .theme-paper td{ border-top:1px solid #e5dcc4 !important; }
 .theme-paper .tab-btn{ background:#efe6d3 !important; color:#4a4a4a !important; }
+.theme-paper .tab-btn.on{ background:linear-gradient(135deg,var(--gold),var(--gold-deep)) !important; color:#fff !important; border-color:transparent !important; }
 .theme-paper .filters select, .theme-paper .set-field input, .theme-paper .set-field textarea, .theme-paper .map-row select, .theme-paper #bSetSel{
   background:#fffdf6 !important; color:#2b2b2b !important; border:1px solid #d8cba8 !important;
 }
 .theme-paper .pill.ok{ background:rgba(22,163,74,.15) !important; color:#15803d !important; border-color:rgba(22,163,74,.4) !important; }
 .theme-paper .pill.warn{ background:rgba(217,119,6,.15) !important; color:#b45309 !important; border-color:rgba(217,119,6,.4) !important; }
 .theme-paper .pill.bad{ background:rgba(220,38,38,.15) !important; color:#b91c1c !important; border-color:rgba(220,38,38,.4) !important; }
+/* จอฉายหน้าห้อง (War Room) ไม่เข้าโหมดสว่าง — บังคับพื้นเข้มทั้งจอ ไม่งั้นตัวหนังสือสีอ่อนจะจมหาย */
+.theme-paper #warRoom{
+  background:radial-gradient(1000px 500px at 80% -10%,rgba(96,165,250,.18),transparent 60%),
+             linear-gradient(160deg,#070a1e,#141a3f) !important;
+  color:#fff !important;
+}
+.theme-paper .war-head h1{ color:#fff !important; text-shadow:none !important; }
+.theme-paper .war-vio-tg{ color:#aab4e8 !important; }
+.theme-paper .war-head select{ background:#141a3f !important; color:#fff !important; border:1px solid rgba(255,255,255,.18) !important; }
+.theme-paper #warBc{ background:rgba(56,44,6,.85) !important; color:#ffe9a8 !important; }
+.theme-paper .war-panel, .theme-paper .war-stat, .theme-paper .war-chip{
+  background:rgba(13,17,45,.75) !important; border:1px solid rgba(255,255,255,.18) !important; color:#fff !important;
+}
+.theme-paper .war-panel h2{ color:#cdd6ff !important; }
+.theme-paper .war-stat b{ color:#5eead4 !important; }
+.theme-paper .war-stat.gold b{ color:#f7c948 !important; }
+.theme-paper .war-stat span{ color:#aab4e8 !important; }
+.theme-paper .war-chip .nm{ color:#fff !important; }
+.theme-paper .war-chip .meta{ color:#9aa6e6 !important; }
+.theme-paper .war-bar b{ color:#fff !important; }
+.theme-paper .war-bar span{ color:#aab4e8 !important; }
+.theme-paper .feed-item{ background:rgba(255,255,255,.06) !important; color:#fff !important; }
+.theme-paper .feed-item.vio{ background:rgba(58,8,10,.72) !important; }
+/* พื้นสว่างแล้ว ตัวหนังสือต้องเข้มตาม */
+.theme-paper .pal{ color:#2b2b2b !important; border-color:#d8cba8 !important; }
+.theme-paper .pal.done{ background:rgba(var(--cyan-rgb),.18) !important; border-color:var(--cyan) !important; }
+.theme-paper .switch-row{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
+.theme-paper .bq{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
+.theme-paper .bq button{ background:#efe6d3 !important; border:1px solid #c9b98f !important; color:#2b2b2b !important; }
+.theme-paper .gr-item{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
+.theme-paper .gr-item .ga{ background:rgba(0,0,0,.04) !important; color:#2b2b2b !important; }
+.theme-paper .gr-btns button{ background:#efe6d3 !important; border:1.5px solid #c9b98f !important; color:#2b2b2b !important; }
+.theme-paper .modal{ background:#fffdf6 !important; }
+.theme-paper .toast{ background:#2b2b2b !important; color:#fffdf6 !important; }
+.theme-paper .bc-card{ background:#fffdf6 !important; color:#2b2b2b !important; }
+.theme-paper .bc-card p{ color:#2b2b2b !important; }
+.theme-paper .war-head select, .theme-paper .map-row select{ background:#fffdf6 !important; color:#2b2b2b !important; }
 .theme-paper #annBar{ background:#fdf3d9 !important; color:#7a5c00 !important; border-color:rgba(var(--gold-rgb),.6) !important; }
 .theme-paper #closedBar{ background:#fdeceb !important; color:#7a1f1f !important; border-color:rgba(220,38,38,.5) !important; }
 .theme-paper .viol-card h3{ color:#b91c1c !important; }
@@ -703,6 +753,268 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-paper .scan-steps li.done{ color:#0a6e6e !important; }
 .theme-paper #camFail p{ color:#b91c1c !important; }
 .theme-paper #resSub span{ color:#b91c1c !important; }
+.theme-paper #paletteLegend{ color:#6b6152 !important; }
+.theme-paper #paletteLegend i{ background:#fffdf6 !important; border-color:#d8cba8 !important; }
+.theme-paper #paletteLegend i.lg-done{ background:rgba(var(--cyan-rgb),.18) !important; border-color:var(--cyan) !important; }
+.theme-paper #paletteLegend i.lg-cur{ background:#fffdf6 !important; border-color:var(--gold) !important; }
+
+/* ══════════ ขัดเงา: hover / focus / scrollbar / การเลือกข้อความ ══════════ */
+
+/* hover เฉพาะเครื่องที่มีเมาส์จริง (Chromebook) — ไม่ให้ค้างบน iPad ที่ใช้นิ้วแตะ */
+@media (hover:hover) and (pointer:fine){
+  .choice:hover{ border-color:rgba(var(--gold-rgb),.55); background:rgba(var(--panel-rgb),.78); transform:translateX(2px); }
+  .choice.sel:hover{ transform:none; }
+  .stu-row:hover{ background:rgba(var(--cyan-rgb),.12); }
+  .chip:hover{ border-color:rgba(var(--gold-rgb),.5); }
+  .chip.sel:hover{ filter:brightness(1.06); }
+  .pal:hover{ border-color:var(--gold); }
+  .btn:hover:not(:disabled){ filter:brightness(1.12); }
+  .tab-btn:hover{ filter:brightness(1.12); }
+  .bq button:hover{ filter:brightness(1.2); }
+  #adminLink:hover{ filter:brightness(1.15); }
+}
+
+/* วงแหวนโฟกัสสำหรับคนที่กด Tab เลื่อน (คีย์บอร์ด) — ไม่ขึ้นตอนคลิกเมาส์ */
+.btn:focus-visible,
+.chip:focus-visible,
+.choice:focus-visible,
+.stu-row:focus-visible,
+.pal:focus-visible,
+.tab-btn:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+}
+
+/* แถบเลื่อนรายชื่อนักเรียน — ให้เข้าธีมแทนแถบเทามาตรฐาน */
+#studentList{ scrollbar-width:thin; scrollbar-color:rgba(var(--gold-rgb),.55) transparent; }
+#studentList::-webkit-scrollbar{ width:9px; }
+#studentList::-webkit-scrollbar-track{ background:transparent; }
+#studentList::-webkit-scrollbar-thumb{
+  background:rgba(var(--gold-rgb),.5); border-radius:99px;
+  border:2px solid transparent; background-clip:content-box;
+}
+#studentList::-webkit-scrollbar-thumb:hover{ background:rgba(var(--gold-rgb),.75); background-clip:content-box; }
+.modal.wide{ scrollbar-width:thin; scrollbar-color:rgba(var(--gold-rgb),.5) transparent; }
+.tbl-wrap{ scrollbar-width:thin; scrollbar-color:rgba(var(--cyan-rgb),.5) transparent; }
+
+/* สีตอนลากเลือกข้อความ (ในช่องข้อเขียน/ฝั่งครู) */
+::selection{ background:rgba(var(--gold-rgb),.35); color:#fff; }
+.theme-paper ::selection{ background:rgba(var(--gold-rgb),.28); color:#1a1a1a; }
+
+/* ══════════ ลูกเล่น: อนิเมชันตกแต่ง ══════════ */
+
+/* การ์ดค่อย ๆ ลอยขึ้นทีละใบตอนเปลี่ยนหน้า */
+@keyframes cardIn{ from{opacity:0; transform:translateY(16px) scale(.985);} to{opacity:1; transform:none;} }
+.screen.active .card{ animation:cardIn .5s cubic-bezier(.2,.8,.2,1) both; }
+.screen.active .card:nth-child(1){ animation-delay:.02s; }
+.screen.active .card:nth-child(2){ animation-delay:.08s; }
+.screen.active .card:nth-child(3){ animation-delay:.14s; }
+.screen.active .card:nth-child(4){ animation-delay:.20s; }
+.screen.active .card:nth-child(5){ animation-delay:.26s; }
+.screen.active .card:nth-child(6){ animation-delay:.32s; }
+.screen.active .card:nth-child(7){ animation-delay:.38s; }
+
+/* ปุ่มหลักมีแสงกวาดผ่านเป็นระยะ — ดึงสายตาไปที่ปุ่มที่ต้องกด */
+.btn-gold{ position:relative; overflow:hidden; }
+.btn-gold::after{
+  content:''; position:absolute; top:0; left:0; width:45%; height:100%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.42), transparent);
+  pointer-events:none; will-change:transform;
+  animation:sheen 4.5s ease-in-out infinite;
+}
+@keyframes sheen{
+  0%,72%{ transform:translateX(-160%) skewX(-18deg); }
+  92%,100%{ transform:translateX(280%) skewX(-18deg); }
+}
+
+/* แถบความคืบหน้ามีประกายวิ่ง */
+#answerProgressFill{ position:relative; overflow:hidden; }
+#answerProgressFill::after{
+  content:''; position:absolute; inset:0; border-radius:99px; pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  transform:translateX(-100%);
+  animation:barShine 2.6s ease-in-out infinite;
+}
+@keyframes barShine{ 0%,55%{transform:translateX(-100%);} 100%{transform:translateX(100%);} }
+
+/* วงแหวนคะแนนมีแสงหมุนรอบ ๆ ตอนโชว์ผล */
+.score-ring::after{
+  content:''; position:absolute; inset:-16px; border-radius:50%; pointer-events:none;
+  background:conic-gradient(from 0deg, transparent 0deg, rgba(var(--gold-rgb),.5) 40deg, transparent 90deg);
+  animation:ringSpin 3.6s linear infinite;
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+          mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+}
+@keyframes ringSpin{ to{ transform:rotate(360deg);} }
+.theme-neobu .score-ring::after, .theme-arcade .score-ring::after{ display:none; }
+
+/* ยกการ์ดขึ้นเล็กน้อยตอนเอาเมาส์ชี้ (เฉพาะเครื่องที่มีเมาส์) */
+@media (hover:hover) and (pointer:fine){
+  .card{ transition:transform .22s ease, box-shadow .22s ease; }
+  .screen.active .card:hover{ transform:translateY(-3px); }
+  .stat, .info-chip{ transition:transform .18s ease; }
+  .stat:hover, .info-chip:hover{ transform:translateY(-2px); }
+}
+
+/* ป้ายหัวเรื่องเรืองแสงเบา ๆ ให้ดูมีชีวิต */
+@keyframes eyebrowGlow{ 0%,100%{ box-shadow:0 0 0 0 rgba(var(--gold-rgb),0); } 50%{ box-shadow:0 0 14px 0 rgba(var(--gold-rgb),.35); } }
+.hero-eyebrow{ animation:eyebrowGlow 3.2s ease-in-out infinite; }
+
+/* ══════════ ลูกเล่นชุดที่ 2 ══════════ */
+
+/* คลื่นกระเพื่อมตอนกดปุ่ม — วาดบนเลเยอร์แยก จะได้ไม่หายตอนปุ่มถูกวาดใหม่ */
+#rippleLayer{ position:fixed; inset:0; z-index:45; pointer-events:none; overflow:hidden; }
+.ripple-wrap{ position:absolute; overflow:hidden; pointer-events:none; }
+.rippler{ position:absolute; border-radius:50%; transform:scale(0); pointer-events:none;
+  background:rgba(255,255,255,.45); animation:rippleGo .55s ease-out forwards; }
+@keyframes rippleGo{ to{ transform:scale(2.6); opacity:0; } }
+
+/* ปุ่มเลือกชั้น/ห้อง และรายชื่อ ทยอยโผล่ทีละอัน */
+@keyframes popIn{ from{opacity:0; transform:translateY(9px) scale(.94);} to{opacity:1; transform:none;} }
+.chips .chip{ animation:popIn .34s cubic-bezier(.2,.9,.3,1.3) both; }
+.chips .chip:nth-child(1){animation-delay:.02s} .chips .chip:nth-child(2){animation-delay:.06s}
+.chips .chip:nth-child(3){animation-delay:.10s} .chips .chip:nth-child(4){animation-delay:.14s}
+.chips .chip:nth-child(5){animation-delay:.18s} .chips .chip:nth-child(6){animation-delay:.22s}
+
+@keyframes slideInRow{ from{opacity:0; transform:translateX(-12px);} to{opacity:1; transform:none;} }
+.stu-row{ animation:slideInRow .3s ease both; }
+.stu-row:nth-child(1){animation-delay:.02s} .stu-row:nth-child(2){animation-delay:.05s}
+.stu-row:nth-child(3){animation-delay:.08s} .stu-row:nth-child(4){animation-delay:.11s}
+.stu-row:nth-child(5){animation-delay:.14s} .stu-row:nth-child(6){animation-delay:.17s}
+.stu-row:nth-child(7){animation-delay:.20s} .stu-row:nth-child(8){animation-delay:.23s}
+
+/* ตัวเลขข้อในตารางเลขข้อ ทยอยโผล่ */
+#palette.show .pal{ animation:popIn .28s cubic-bezier(.2,.9,.3,1.3) both; }
+#palette.show .pal:nth-child(n+1){ animation-delay:.02s }
+#palette.show .pal:nth-child(n+6){ animation-delay:.06s }
+#palette.show .pal:nth-child(n+11){ animation-delay:.10s }
+#palette.show .pal:nth-child(n+16){ animation-delay:.14s }
+
+/* ข้อความแจ้งเตือนเด้งขึ้นแบบสปริง */
+@keyframes toastPop{ 0%{opacity:0; transform:translateY(18px) scale(.9);} 60%{opacity:1; transform:translateY(-3px) scale(1.02);} 100%{opacity:1; transform:none;} }
+.toast{ animation:toastPop .4s cubic-bezier(.2,1.5,.4,1) both; }
+
+/* จุดแสงลอยอยู่ด้านหลัง — เพิ่มมิติให้พื้นหลังดูไม่แบน */
+#orbLayer{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+#orbLayer i{ position:absolute; display:block; border-radius:50%; filter:blur(1px);
+  background:radial-gradient(circle, rgba(var(--gold-rgb),.5), transparent 70%);
+  animation:orbFloat linear infinite; opacity:.4; }
+@keyframes orbFloat{ from{ transform:translateY(12vh) translateX(0); } to{ transform:translateY(-112vh) translateX(28px); } }
+.theme-paper #orbLayer i{ opacity:.22; }
+.theme-neobu #orbLayer, .theme-arcade #orbLayer, .theme-terminal #orbLayer{ display:none; }
+
+/* ตอบครบทุกข้อแล้ว → ปุ่มส่งเต้นเบา ๆ บอกว่าพร้อมส่งได้ */
+@keyframes readyPulse{ 0%,100%{ box-shadow:0 10px 26px rgba(var(--gold-rgb),.3); } 50%{ box-shadow:0 10px 34px rgba(var(--gold-rgb),.75); } }
+#btnSubmit.ready{ animation:readyPulse 1.6s ease-in-out infinite; }
+
+/* ══════════ ลูกเล่นชุดที่ 3 ══════════ */
+
+/* เปลี่ยนข้อ → การ์ดคำถามเลื่อนเข้ามาตามทิศทางที่กด */
+@keyframes qSwapNext{ from{opacity:0; transform:translateX(26px);} to{opacity:1; transform:none;} }
+@keyframes qSwapPrev{ from{opacity:0; transform:translateX(-26px);} to{opacity:1; transform:none;} }
+.q-card.swap-next{ animation:qSwapNext .26s cubic-bezier(.2,.8,.2,1) both; }
+.q-card.swap-prev{ animation:qSwapPrev .26s cubic-bezier(.2,.8,.2,1) both; }
+
+/* กล่องข้อความเด้งขึ้นตอนเปิด */
+@keyframes modalPop{ from{opacity:0; transform:translateY(18px) scale(.94);} to{opacity:1; transform:none;} }
+#modalWrap.show .modal{ animation:modalPop .3s cubic-bezier(.2,1.3,.4,1) both; }
+@keyframes overlayFade{ from{opacity:0;} to{opacity:1;} }
+#modalWrap.show, #violOverlay.show, #bcOverlay.show, #pauseOverlay.show{ animation:overlayFade .22s ease both; }
+
+/* ตัวเลขในกติกาการสอบวิ่งขึ้น */
+.info-chip b{ font-variant-numeric:tabular-nums; }
+
+/* ══════════ ตกแต่ง: ลวดลายและกรอบประดับ ══════════ */
+
+/* เส้นไล่สีบางบนขอบบนของทุกการ์ด */
+.card::after{
+  content:''; position:absolute; top:0; left:20px; right:20px; height:2px; border-radius:2px;
+  background:linear-gradient(90deg, transparent, rgba(var(--gold-rgb),.7), transparent);
+  pointer-events:none;
+}
+
+/* กรอบมุมประดับรอบการ์ดคำถาม — ให้ความรู้สึกเหมือนกรอบข้อสอบ
+   วาดบน ::before เพราะบางธีมเขียนทับ background ของ .card ทั้งชุด (ลายจะหายถ้าวาดที่ตัวการ์ด) */
+.q-card::before{
+  content:''; position:absolute; inset:11px; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(var(--gold),var(--gold)), linear-gradient(var(--gold),var(--gold)),
+    linear-gradient(var(--gold),var(--gold)), linear-gradient(var(--gold),var(--gold)),
+    linear-gradient(var(--gold),var(--gold)), linear-gradient(var(--gold),var(--gold)),
+    linear-gradient(var(--gold),var(--gold)), linear-gradient(var(--gold),var(--gold));
+  background-repeat:no-repeat;
+  background-size:16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px;
+  background-position:
+    0 0, 0 0,
+    100% 0, 100% 0,
+    0 100%, 0 100%,
+    100% 100%, 100% 100%;
+  opacity:.55;
+}
+
+/* ลายจุดจาง ๆ ทั่วพื้นหลัง — เพิ่มผิวสัมผัสให้ไม่เรียบโล่ง */
+#bgLayer::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size:24px 24px;
+}
+.theme-paper #bgLayer::before{ background-image:radial-gradient(rgba(0,0,0,.055) 1px, transparent 1px); }
+.theme-terminal #bgLayer::before, .theme-arcade #bgLayer::before{ content:none; }
+
+/* เลขลำดับขั้นตอนมีวงแหวนเรืองรอบ */
+.stepnum{ box-shadow:0 0 0 3px rgba(var(--gold-rgb),.16); }
+
+/* แถบสีเน้นด้านบนของกล่องข้อมูลในหน้ากติกา */
+.info-chip{ position:relative; overflow:hidden; }
+.info-chip::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--cyan), var(--gold));
+  opacity:.75; pointer-events:none;
+}
+
+/* ══════════ ตกแต่งชุดที่ 2 ══════════ */
+
+/* หน้าจอกำลังโหลด — วงแหวนซ้อนสองชั้นหมุนสวนกัน */
+.center-box{ position:relative; }
+.spinner{ position:relative; width:58px; height:58px; border-width:3px; }
+.spinner::before, .spinner::after{
+  content:''; position:absolute; border-radius:50%; border:3px solid transparent;
+}
+.spinner::before{
+  inset:-11px; border-top-color:rgba(var(--cyan-rgb),.85); border-left-color:rgba(var(--cyan-rgb),.35);
+  animation:spin 1.7s linear infinite reverse;
+}
+.spinner::after{
+  inset:7px; border-bottom-color:rgba(var(--blue-rgb),.75);
+  animation:spin 1.2s linear infinite;
+}
+#scrLoading .center-box::after{
+  content:''; position:absolute; left:50%; top:104px; transform:translateX(-50%);
+  width:120px; height:3px; border-radius:3px;
+  background:linear-gradient(90deg, transparent, rgba(var(--gold-rgb),.55), transparent);
+}
+
+/* ช่องตารางตอนยังไม่มีข้อมูล — ให้ดูตั้งใจ ไม่ใช่ว่างเปล่า */
+.empty-cell{
+  text-align:center !important; color:#8e98cf; font-size:14px; padding:26px 10px !important;
+  letter-spacing:.02em;
+}
+.theme-paper .empty-cell{ color:#6b6152 !important; }
+
+/* การ์ดตัวเลขสรุปฝั่งครู — มีแถบสีเน้นด้านบน */
+.stat{ position:relative; overflow:hidden; }
+.stat::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--cyan), transparent); opacity:.8; pointer-events:none;
+}
+.stat.gold::before{ background:linear-gradient(90deg, var(--gold), transparent); }
+
+/* ประกายบนแถบความคืบหน้า — หน่วงให้นาน ๆ ครั้ง ไม่รบกวนสมาธิตอนทำข้อสอบ */
+@keyframes barShine{ 0%,88%{transform:translateX(-100%);} 100%{transform:translateX(100%);} }
+#answerProgressFill::after{ animation-duration:7s; }
 </style>
 </head>
 <body class="no-select">
@@ -836,6 +1148,11 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
       <button class="btn" id="btnNext">ถัดไป ▶</button>
     </div>
     <div id="palette"></div>
+    <div id="paletteLegend">
+      <span><i class="lg-done"></i> ตอบแล้ว</span>
+      <span><i class="lg-todo"></i> ยังไม่ตอบ</span>
+      <span><i class="lg-cur"></i> ข้อที่อยู่</span>
+    </div>
     <button class="btn btn-gold btn-block" id="btnSubmit" style="margin-top:16px;">📨 ส่งคำตอบ</button>
   </section>
 
@@ -916,7 +1233,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
         <h2>🟢 กำลังสอบอยู่ตอนนี้ <span class="hint">(อัปเดตทุก 2 วินาที)</span></h2>
         <div class="tbl-wrap"><table>
           <thead><tr><th>ชั้น/ห้อง</th><th>เลขที่</th><th>ชื่อ</th><th>ชุด</th><th>ทำถึงข้อ</th><th>ตอบแล้ว</th><th>เหลือเวลา</th><th>ทุจริต</th><th>สัญญาณ</th><th></th></tr></thead>
-          <tbody id="activeBody"><tr><td colspan="10" style="text-align:center;color:#8e98cf;">ยังไม่มีนักเรียนกำลังสอบ</td></tr></tbody>
+          <tbody id="activeBody"><tr><td colspan="10" class="empty-cell">🕒 ยังไม่มีนักเรียนกำลังสอบ</td></tr></tbody>
         </table></div>
       </div>
 
@@ -924,7 +1241,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
         <h2>📦 ส่งคำตอบแล้ว</h2>
         <div class="tbl-wrap"><table>
           <thead><tr><th>เวลาส่ง</th><th>ชั้น/ห้อง</th><th>เลขที่</th><th>ชื่อ</th><th>ชุด</th><th>คะแนน</th><th>ใช้เวลา</th><th>ทุจริต</th><th></th></tr></thead>
-          <tbody id="resultBody"><tr><td colspan="9" style="text-align:center;color:#8e98cf;">ยังไม่มีผู้ส่งคำตอบ</td></tr></tbody>
+          <tbody id="resultBody"><tr><td colspan="9" class="empty-cell">📭 ยังไม่มีผู้ส่งคำตอบ</td></tr></tbody>
         </table></div>
       </div>
     </div>
@@ -933,7 +1250,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
       <div class="card">
         <h2>📝 Exam Builder <span class="hint">เพิ่มข้อสอบปรนัย + ข้อเขียน แล้วบันทึกลง Google Sheets ให้เอง</span></h2>
         <div class="set-grid">
-          <div class="set-field"><label>เลือกชุดที่จะแก้ไข</label><select id="bSetSel" style="font-family:var(--font);font-size:14px;padding:11px 12px;border-radius:11px;background:#141a3f;color:#fff;border:1px solid var(--glass-line);"></select></div>
+          <div class="set-field"><label>เลือกชุดที่จะแก้ไข</label><select id="bSetSel" style="font-family:var(--font);font-size:14px;padding:11px 12px;border-radius:11px;background:var(--navy2);color:#fff;border:1px solid var(--glass-line);"></select></div>
           <div class="set-field"><label>&nbsp;</label><button class="btn" id="bNewSet" style="width:100%;">➕ สร้างชุดใหม่</button></div>
           <div class="set-field"><label>รหัสชุด (A-Z 0-9 _ เท่านั้น)</label><input type="text" id="bSetId"></div>
           <div class="set-field"><label>ชื่อชุด</label><input type="text" id="bTitle"></div>
@@ -1092,7 +1409,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1161,6 +1478,7 @@ function setLabel(id){ return EXAM_SETS[id] ? EXAM_SETS[id].title : (id || '–'
 
 /* ══════════════════ ระบบ (ไม่ต้องแก้ด้านล่างนี้) ══════════════════ */
 const SPD = (typeof window!=='undefined' && window.__TEST_SPEED) ? window.__TEST_SPEED : 1;
+const REDUCED_MOTION = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const CLASSES = ['ม.4','ม.5','ม.6'];
 const ROOMS = [1,2,3,4];
 
@@ -1242,16 +1560,16 @@ const range = n => Array.from({length:n},(_,i)=>i);
 /* ---------- ธีมสี (เลือกได้จากแดชบอร์ดครู ไม่ต้องแก้โค้ด) ---------- */
 const DEFAULT_FONT = "'Kanit','Prompt','Noto Sans Thai',-apple-system,'Segoe UI',sans-serif";
 const THEMES = {
-  gold:     { navy1:'#0b1026', navy2:'#1b2350', navy3:'#2b2f77', gold:'#f7c948', goldDeep:'#e0a92e', cyan:'#5eead4', blue:'#60a5fa', font:DEFAULT_FONT },
-  emerald:  { navy1:'#08160f', navy2:'#0f2a1d', navy3:'#163c29', gold:'#34d399', goldDeep:'#059669', cyan:'#6ee7b7', blue:'#38bdf8', font:DEFAULT_FONT },
-  rose:     { navy1:'#1a0b12', navy2:'#2c1220', navy3:'#3d1a2c', gold:'#fb7185', goldDeep:'#e11d48', cyan:'#fda4af', blue:'#f472b6', font:DEFAULT_FONT },
-  ocean:    { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee', font:DEFAULT_FONT },
-  neon:     { navy1:'#050014', navy2:'#0d0221', navy3:'#1a0b3d', gold:'#ff2fd1', goldDeep:'#b300ff', cyan:'#00fff2', blue:'#6f2dff', font:DEFAULT_FONT },
-  neobu:    { navy1:'#171717', navy2:'#171717', navy3:'#171717', gold:'#ffe100', goldDeep:'#ffe100', cyan:'#00e5ff', blue:'#00e5ff', font:DEFAULT_FONT },
-  arcade:   { navy1:'#0a0a0a', navy2:'#0a0a0a', navy3:'#140a1e', gold:'#ffcc00', goldDeep:'#ff6600', cyan:'#00ffff', blue:'#0066ff', font:DEFAULT_FONT },
-  terminal: { navy1:'#000000', navy2:'#000000', navy3:'#001a00', gold:'#33ff33', goldDeep:'#00cc00', cyan:'#00ff88', blue:'#00cc66', font:"'JetBrains Mono','Kanit','Noto Sans Thai',monospace" },
-  holo:     { navy1:'#0d0221', navy2:'#1a0b3d', navy3:'#2d1b5e', gold:'#ff6ec7', goldDeep:'#7b2ff7', cyan:'#5ffbf1', blue:'#77a6f7', font:DEFAULT_FONT },
-  paper:    { navy1:'#f2ead9', navy2:'#efe6d3', navy3:'#eadfc8', gold:'#c1121f', goldDeep:'#780000', cyan:'#0a6e6e', blue:'#1d4e89', font:DEFAULT_FONT }
+  gold:     { navy1:'#0b1026', navy2:'#1b2350', navy3:'#2b2f77', gold:'#f7c948', goldDeep:'#e0a92e', cyan:'#5eead4', blue:'#60a5fa', panelRgb:'13,17,45', glassRgb:'15,19,48', font:DEFAULT_FONT },
+  emerald:  { navy1:'#08160f', navy2:'#0f2a1d', navy3:'#163c29', gold:'#34d399', goldDeep:'#059669', cyan:'#6ee7b7', blue:'#38bdf8', panelRgb:'10,30,20', glassRgb:'12,34,24', font:DEFAULT_FONT },
+  rose:     { navy1:'#1a0b12', navy2:'#2c1220', navy3:'#3d1a2c', gold:'#fb7185', goldDeep:'#e11d48', cyan:'#fda4af', blue:'#f472b6', panelRgb:'40,16,28', glassRgb:'44,18,32', font:DEFAULT_FONT },
+  ocean:    { navy1:'#05131f', navy2:'#0b2740', navy3:'#123655', gold:'#38bdf8', goldDeep:'#0284c7', cyan:'#67e8f9', blue:'#22d3ee', panelRgb:'8,32,52', glassRgb:'10,36,58', font:DEFAULT_FONT },
+  neon:     { navy1:'#050014', navy2:'#0d0221', navy3:'#1a0b3d', gold:'#ff2fd1', goldDeep:'#b300ff', cyan:'#00fff2', blue:'#6f2dff', panelRgb:'20,8,44', glassRgb:'22,10,48', font:DEFAULT_FONT },
+  neobu:    { navy1:'#171717', navy2:'#171717', navy3:'#171717', gold:'#ffe100', goldDeep:'#ffe100', cyan:'#00e5ff', blue:'#00e5ff', panelRgb:'32,32,32', glassRgb:'38,38,38', font:DEFAULT_FONT },
+  arcade:   { navy1:'#0a0a0a', navy2:'#0a0a0a', navy3:'#140a1e', gold:'#ffcc00', goldDeep:'#ff6600', cyan:'#00ffff', blue:'#0066ff', panelRgb:'18,18,26', glassRgb:'20,20,30', font:DEFAULT_FONT },
+  terminal: { navy1:'#000000', navy2:'#000000', navy3:'#001a00', gold:'#33ff33', goldDeep:'#00cc00', cyan:'#00ff88', blue:'#00cc66', panelRgb:'0,22,0', glassRgb:'0,26,0', font:"'JetBrains Mono','Kanit','Noto Sans Thai',monospace" },
+  holo:     { navy1:'#0d0221', navy2:'#1a0b3d', navy3:'#2d1b5e', gold:'#ff6ec7', goldDeep:'#7b2ff7', cyan:'#5ffbf1', blue:'#77a6f7', panelRgb:'26,14,58', glassRgb:'30,16,64', font:DEFAULT_FONT },
+  paper:    { navy1:'#f2ead9', navy2:'#efe6d3', navy3:'#eadfc8', gold:'#c1121f', goldDeep:'#780000', cyan:'#0a6e6e', blue:'#1d4e89', panelRgb:'255,253,246', glassRgb:'255,253,246', font:DEFAULT_FONT }
 };
 function hexToRgbStr(hex){
   const h = String(hex||'').replace('#','');
@@ -1272,6 +1590,8 @@ function applyTheme(name){
   root.setProperty('--gold-rgb', hexToRgbStr(t.gold));
   root.setProperty('--cyan-rgb', hexToRgbStr(t.cyan));
   root.setProperty('--blue-rgb', hexToRgbStr(t.blue));
+  root.setProperty('--panel-rgb', t.panelRgb || '13,17,45');
+  root.setProperty('--glass-rgb', t.glassRgb || '15,19,48');
   root.setProperty('--font', t.font || DEFAULT_FONT);
   document.body.classList.toggle('theme-neon', name === 'neon');
   document.body.classList.toggle('theme-neobu', name === 'neobu');
@@ -1508,10 +1828,23 @@ function stopCamera(){
 }
 
 /* ══════════════════ RULES → START ══════════════════ */
+/* ตัวเลขวิ่งขึ้นจาก 0 ถึงค่าจริง */
+function countUpTo(el, target, dur){
+  if(!el) return;
+  target = Number(target) || 0;
+  if(REDUCED_MOTION || target <= 0){ el.textContent = target; return; }
+  const t0 = Date.now(), D = dur || 900;
+  (function step(){
+    const p = Math.min(1, (Date.now()-t0)/D);
+    const ease = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(target*ease);
+    if(p < 1) setTimeout(step, 32); else el.textContent = target;
+  })();
+}
 function gotoRules(){
   S.phase = 'rules';
-  $('ruleQty').textContent = QUESTIONS.length;
-  $('ruleTime').textContent = parseInt(S.config.durationMinutes,10)||60;
+  countUpTo($('ruleQty'), QUESTIONS.length);
+  countUpTo($('ruleTime'), parseInt(S.config.durationMinutes,10)||60);
   $('ruleSet').textContent = setLabel(CUR_SET);
   const relax = !!(EXAM_SETS[CUR_SET] && EXAM_SETS[CUR_SET].relax);
   $('ruleTabLi').querySelector('i').textContent = relax ? '📝' : '🚫';
@@ -1668,6 +2001,8 @@ function updateHud(){
   });
   updateAnswerProgress();
   checkEncouragement();
+  const sb = $('btnSubmit');
+  if(sb) sb.classList.toggle('ready', QUESTIONS.length > 0 && answeredCount() === QUESTIONS.length);
 }
 function updateAnswerProgress(){
   const fill = $('answerProgressFill');
@@ -1700,6 +2035,25 @@ function renderQuestion(){
   const pos = S.cur;
   const orig = S.qOrder[pos];
   const q = QUESTIONS[orig];
+  // เปลี่ยนข้อจริง ๆ เท่านั้นถึงจะเล่นอนิเมชัน (ไม่เล่นตอนแค่เลือกคำตอบ)
+  const posChanged = (S._lastPos !== undefined && S._lastPos !== pos);
+  const dir = (S._lastPos !== undefined && pos < S._lastPos) ? 'prev' : 'next';
+  S._lastPos = pos;
+  if(posChanged){
+    const card = document.querySelector('#scrExam .q-card');
+    if(card){
+      card.classList.remove('swap-next','swap-prev');
+      void card.offsetWidth; // รีสตาร์ทอนิเมชัน
+      card.classList.add(dir === 'prev' ? 'swap-prev' : 'swap-next');
+      // เลื่อนกลับไปหัวข้อคำถาม — โจทย์ยาว ๆ กดถัดไปแล้วจะได้ไม่ค้างกลางหน้า
+      const head = document.getElementById('examHead');
+      const top = card.getBoundingClientRect().top + window.scrollY - (head ? head.offsetHeight + 24 : 20);
+      if(window.scrollY > top + 4){
+        try{ window.scrollTo({top: Math.max(0, top), behavior:'smooth'}); }
+        catch(e){ window.scrollTo(0, Math.max(0, top)); }
+      }
+    }
+  }
   $('qNum').innerHTML = 'ข้อ '+(pos+1)+' / '+QUESTIONS.length + (q.type==='written' ? '<span class="wr-badge">✍️ ข้อเขียน</span>' : '');
   $('qText').textContent = q.q;
   if(q.image && q.image.trim()){ $('qImg').src = q.image; $('qImg').style.display='block'; }
@@ -2186,7 +2540,7 @@ function renderAdmin(){
   const ab = $('activeBody');
   const act = d.active.filter(passFilter);
   if(!act.length){
-    ab.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#8e98cf;">ยังไม่มีนักเรียนกำลังสอบ</td></tr>';
+    ab.innerHTML = '<tr><td colspan="10" class="empty-cell">🕒 ยังไม่มีนักเรียนกำลังสอบ</td></tr>';
   }else{
     ab.innerHTML = act.map(a=>{
       const fresh = a.lastSeen && (d.serverNow - a.lastSeen < 25000);
@@ -2206,7 +2560,7 @@ function renderAdmin(){
   const rb = $('resultBody');
   const res = d.results.filter(passFilter);
   if(!res.length){
-    rb.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#8e98cf;">ยังไม่มีผู้ส่งคำตอบ</td></tr>';
+    rb.innerHTML = '<tr><td colspan="9" class="empty-cell">📭 ยังไม่มีผู้ส่งคำตอบ</td></tr>';
   }else{
     rb.innerHTML = res.map(r=>{
       const t = (r.submitText||'').split(' ')[1] || r.submitText || '–';
@@ -2663,6 +3017,52 @@ $('warVioToggle').addEventListener('change', renderWar);
 /* debug hook สำหรับการทดสอบอัตโนมัติ (ไม่มีผลกับการใช้งานจริง) */
 window.__EXAM_DEBUG = { S, EXAM_SETS, resolveSet, parseSetMap, mergeSheetSets, doSubmit, sendHeartbeat, adminPollOnce, tick,
   get QUESTIONS(){ return QUESTIONS; }, get CUR_SET(){ return CUR_SET; } };
+
+/* ---------- คลื่นกระเพื่อมตอนกดปุ่ม ---------- */
+const rippleLayer = document.createElement('div');
+rippleLayer.id = 'rippleLayer';
+document.body.appendChild(rippleLayer);
+document.addEventListener('pointerdown', e=>{
+  if(REDUCED_MOTION) return;
+  const t = e.target.closest && e.target.closest('.btn, .chip, .choice, .stu-row, .pal, .tab-btn');
+  if(!t || t.disabled) return;
+  const r = t.getBoundingClientRect();
+  if(r.width < 4 || r.height < 4) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'ripple-wrap';
+  wrap.style.left = r.left+'px';
+  wrap.style.top = r.top+'px';
+  wrap.style.width = r.width+'px';
+  wrap.style.height = r.height+'px';
+  wrap.style.borderRadius = getComputedStyle(t).borderRadius;
+  const size = Math.max(r.width, r.height);
+  const d = document.createElement('span');
+  d.className = 'rippler';
+  d.style.width = d.style.height = size+'px';
+  d.style.left = (e.clientX - r.left - size/2)+'px';
+  d.style.top  = (e.clientY - r.top  - size/2)+'px';
+  wrap.appendChild(d);
+  rippleLayer.appendChild(wrap);
+  setTimeout(()=>wrap.remove(), 620);
+}, {passive:true});
+
+/* ---------- จุดแสงลอยพื้นหลัง ---------- */
+(function buildOrbs(){
+  if(REDUCED_MOTION) return;
+  const layer = document.createElement('div');
+  layer.id = 'orbLayer';
+  let html = '';
+  for(let i=0;i<7;i++){
+    const size = 60 + Math.round(Math.random()*130);
+    const left = Math.round(Math.random()*100);
+    const dur  = 26 + Math.round(Math.random()*26);
+    const delay= -Math.round(Math.random()*dur);
+    html += '<i style="width:'+size+'px;height:'+size+'px;left:'+left+'%;'
+          + 'animation-duration:'+dur+'s;animation-delay:'+delay+'s;"></i>';
+  }
+  layer.innerHTML = html;
+  document.body.appendChild(layer);
+})();
 
 /* face monitor video element (สร้างท้ายสุดเพื่อไม่บังเนื้อหา) */
 const monBox = document.createElement('div');
