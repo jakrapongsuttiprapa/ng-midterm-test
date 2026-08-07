@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
-<title>ENGLISH TEST @ high school by T.OAT</title>
+<title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
@@ -1035,9 +1035,9 @@ textarea:focus-visible{
     <div id="heroWrap">
       <img id="heroImg" alt="banner">
       <div id="heroDefault">
-        <div class="hero-eyebrow">✦ ENGLISH EXAMINATION</div>
-        <div class="hero-title" id="heroTitle">ENGLISH 🍁 TEST</div>
-        <div class="hero-sub" id="heroSub">QUIZ วิชาภาษาอังกฤษพื้นฐาน</div>
+        <div class="hero-eyebrow">✦ MIDTERM EXAMINATION</div>
+        <div class="hero-title" id="heroTitle">ENGLISH MIDTERM TEST</div>
+        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1056,13 +1056,13 @@ textarea:focus-visible{
     </div>
 
     <div class="card hidden" id="stuCard">
-      <h2><span class="stepnum">3</span> Choose Name <span class="hint">(เลื่อนหา แล้วแตะเลือก)</span></h2>
+      <h2><span class="stepnum">3</span> เลือกชื่อของคุณ <span class="hint">(เลื่อนหา แล้วแตะเลือก)</span></h2>
       <div id="studentList"><div class="list-note">กำลังโหลดรายชื่อ...</div></div>
       <div id="selSummary"></div>
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH T.OAT SYSTEM · <button id="adminLink">สำหรับครูโอ๊ต</button></div>
+    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1087,7 +1087,7 @@ textarea:focus-visible{
       </ul>
       <div class="scan-progress"><i id="scanBar"></i></div>
 
-      <div class="ai-warn">⚠️ ระบบ AI จะตรวจจับใบหน้าของคุณ<b>ตลอดเวลาการสอบ</b> หากตรวจไม่พบใบหน้า พบบุคคลอื่น หรือพบอุปกรณ์อื่น ระบบจะบันทึกหลักฐานและแจ้งเตือนไปยังครูโอ๊ตทันที</div>
+      <div class="ai-warn">⚠️ ระบบ AI จะตรวจจับใบหน้าของคุณ<b>ตลอดเวลาการสอบ</b> หากตรวจไม่พบใบหน้า พบบุคคลอื่น หรือพบอุปกรณ์อื่น ระบบจะบันทึกหลักฐานและแจ้งเตือนไปยังครูผู้คุมสอบทันที</div>
 
       <button class="btn btn-gold btn-block" id="btnScanNext" disabled>กำลังตรวจสอบใบหน้า...</button>
 
@@ -1208,6 +1208,7 @@ textarea:focus-visible{
         <div class="filters" style="margin-bottom:10px;">
           <select id="bcClass"><option value="">ทุกชั้น</option></select>
           <select id="bcRoom"><option value="">ทุกห้อง</option></select>
+          <select id="bcStudent"><option value="">ทุกคน (ตามชั้น/ห้อง)</option></select>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <input type="text" id="bcInput" maxlength="300" placeholder="เช่น ข้อ 5 แก้โจทย์เป็น... / เหลือเวลา 10 นาที"
@@ -2460,8 +2461,26 @@ function renderWar(){
   if(d.bc && d.bc.msg){ $('warBc').textContent = '📣 ถึง '+bcTargetLabel(d.bc)+': '+d.bc.msg; $('warBc').classList.add('show'); }
   else $('warBc').classList.remove('show');
 }
+function refreshBcStudentPicker(active){
+  const sel = $('bcStudent');
+  if(!sel) return;
+  const list = (active||[]).slice().sort((a,b)=>
+    String(a.classLevel).localeCompare(String(b.classLevel)) || (a.room-b.room) || (a.no-b.no));
+  const sig = list.map(a=>a.key).join('|');
+  if(sel.dataset.sig === sig) return;   // ไม่มีอะไรเปลี่ยน — อย่าสร้างใหม่ ไม่งั้นตัวเลือกที่ครูเลือกไว้จะเด้งกลับทุก 2 วิ
+  const keep = sel.value;
+  sel.innerHTML = '<option value="">ทุกคน (ตามชั้น/ห้อง)</option>' +
+    list.map(a=>'<option value="'+esc(a.key)+'">'+esc(a.classLevel)+'/'+esc(a.room)+' เลขที่ '+esc(a.no)+' — '+esc(a.name)+'</option>').join('');
+  if(keep && list.some(a=>a.key===keep)) sel.value = keep;   // คนที่เลือกไว้ยังสอบอยู่ → คงไว้
+  sel.dataset.sig = sig;
+}
 function bcTargetLabel(bc){
   if(!bc) return '';
+  if(bc.key){
+    const d = S.adminData;
+    const hit = d && d.active ? d.active.find(a=>a.key===bc.key) : null;
+    return hit ? hit.name : 'นักเรียนที่เลือก';
+  }
   if(bc.classLevel && bc.room) return bc.classLevel+'/'+bc.room;
   if(bc.classLevel) return bc.classLevel+' (ทุกห้อง)';
   return 'ทุกชั้น ทุกห้อง';
@@ -2472,12 +2491,16 @@ function updateBcStatus(bc){
 async function sendBroadcast(msg){
   try{
     const payload = {action:'adminBroadcast', pin:S.adminPin, msg:msg};
-    if(msg){ payload.classLevel = $('bcClass').value; payload.room = $('bcRoom').value; }
+    const stuKey = $('bcStudent') ? $('bcStudent').value : '';
+    if(msg){
+      if(stuKey){ payload.key = stuKey; }   // เจาะจงคนเดียว
+      else { payload.classLevel = $('bcClass').value; payload.room = $('bcRoom').value; }
+    }
     const r = await api(payload);
     if(r.ok){
-      updateBcStatus(r.bc);
+      if(!stuKey) updateBcStatus(r.bc);
       toast(msg ? 'ส่งประกาศถึง '+bcTargetLabel(r.bc)+' แล้ว 📣' : 'ล้างประกาศแล้ว');
-      if(msg) $('bcInput').value = '';
+      if(msg){ $('bcInput').value = ''; if($('bcStudent')) $('bcStudent').value = ''; }
       adminPollOnce();
     }else toast('ส่งไม่สำเร็จ');
   }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
@@ -2533,6 +2556,7 @@ function renderAdmin(){
   $('stMax').textContent = d.stats.maxScore;
 
   updateBcStatus(d.bc);
+  refreshBcStudentPicker(d.active);
   if($('warRoom').classList.contains('show')) renderWar();
   const open = d.config.examOpen === 'true';
   $('btnExamToggle').textContent = open ? '🟢 เปิดสอบอยู่ (แตะเพื่อปิด)' : '🔴 ปิดสอบอยู่ (แตะเพื่อเปิด)';
