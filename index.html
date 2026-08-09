@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
-<title>ENGLISH TEST @ high school by T.OAT</title>
+<title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
@@ -158,6 +158,16 @@ body{
 .corner.tr{top:10px;right:10px;border-left:none;border-bottom:none;border-radius:0 8px 0 0;}
 .corner.bl{bottom:10px;left:10px;border-right:none;border-top:none;border-radius:0 0 0 8px;}
 .corner.br{bottom:10px;right:10px;border-left:none;border-top:none;border-radius:0 0 8px 0;}
+.scan-frame.success{animation:scanSuccessPulse .6s ease;}
+@keyframes scanSuccessPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,0);}30%{box-shadow:0 0 0 10px rgba(34,197,94,.35);}100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}}
+.scan-frame.success .corner{border-color:var(--ok) !important;animation:cornerSnap .5s cubic-bezier(.2,1.6,.4,1) both;}
+@keyframes cornerSnap{0%{transform:scale(1.3);opacity:.4;}60%{transform:scale(.92);opacity:1;}100%{transform:scale(1);opacity:1;}}
+.scan-frame.success .scan-grid{opacity:0;transition:opacity .4s;}
+#scanCheck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;}
+#scanCheck.show{animation:scanCheckPop .55s cubic-bezier(.2,1.7,.3,1) both;}
+#scanCheck .ring{width:78px;height:78px;border-radius:50%;border:4px solid var(--ok);display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,.16);box-shadow:0 0 30px rgba(34,197,94,.55);}
+#scanCheck .ring span{font-size:38px;color:var(--ok);font-weight:800;}
+@keyframes scanCheckPop{0%{transform:scale(0);opacity:0;}55%{transform:scale(1.15);opacity:1;}100%{transform:scale(1);opacity:1;}}
 .scan-steps{list-style:none;margin:0 auto 14px;max-width:340px;}
 .scan-steps li{display:flex;align-items:center;gap:10px;font-size:14px;padding:6px 4px;color:#8e98cf;font-weight:500;transition:color .3s;}
 .scan-steps li .dot{width:20px;height:20px;border-radius:50%;border:2px solid #58629c;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s;}
@@ -196,18 +206,25 @@ body{
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:1px solid rgba(var(--cyan-rgb),.25);border-radius:16px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--shadow);
 }
+#examHead.practice-mode{
+  background:linear-gradient(120deg, rgba(10,14,38,.85), rgba(var(--gold-rgb),.16)), rgba(10,14,38,.85);
+  border-color:rgba(var(--gold-rgb),.4);
+}
+#examHead.practice-mode #timerBox b{color:var(--gold);}
 #stuChip{font-size:12.5px;line-height:1.35;font-weight:500;min-width:0;}
 #stuChip b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;}
-#stuChip span{color:#9aa6e6;}
+#stuChip span{color:rgba(255,255,255,.62);}
 #timerBox{margin-left:auto;text-align:center;flex:none;}
 #timerBox b{display:block;font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--cyan);letter-spacing:.03em;}
 #timerBox.low b{color:var(--bad);animation:pulse 1s infinite;border-radius:8px;}
-#timerBox span{font-size:10.5px;color:#9aa6e6;letter-spacing:.12em;}
+#timerBox span{font-size:10.5px;color:rgba(255,255,255,.62);letter-spacing:.12em;}
 #hudProg{flex:none;text-align:center;}
 #hudProg b{display:block;font-size:15px;font-weight:700;color:var(--gold);}
-#hudProg span{font-size:10.5px;color:#9aa6e6;}
+#hudProg span{font-size:10.5px;color:rgba(255,255,255,.62);}
 
 #answerProgress{height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:14px;}
+.mini-progress{height:7px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:6px;}
+.mini-progress i{display:block;height:100%;width:0%;border-radius:99px;transition:width .5s ease;}
 #answerProgressFill{display:block;height:100%;width:0%;border-radius:99px;transition:width .4s ease,background .4s ease,box-shadow .4s ease;background:linear-gradient(90deg,var(--cyan),var(--blue));}
 #answerProgressFill.mid{background:linear-gradient(90deg,var(--blue),var(--gold));}
 #answerProgressFill.high{background:linear-gradient(90deg,var(--gold),var(--gold-deep));box-shadow:0 0 10px rgba(var(--gold-rgb),.55);}
@@ -315,6 +332,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 #foot{text-align:center;margin-top:22px;font-size:12.5px;color:#e3e8ff;text-shadow:0 1px 10px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.8);}
 #foot,#adminLink{font-weight:500;}
 #adminLink{color:#e3e8ff;text-decoration:underline;cursor:pointer;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;margin-left:4px;}
+#practiceLink{color:var(--gold);text-decoration:underline;cursor:pointer;background:rgba(var(--gold-rgb),.12);border:1px solid rgba(var(--gold-rgb),.4);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;}
 
 /* ---------- admin ---------- */
 .ad-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
@@ -378,8 +396,22 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 /* ---------- นับถอยหลังก่อนเริ่ม ---------- */
 #cdOverlay{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;background:rgba(4,6,18,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
 #cdOverlay.show{display:flex;}
+#cdWrap{position:relative;width:clamp(160px,32vw,240px);height:clamp(160px,32vw,240px);display:flex;align-items:center;justify-content:center;}
+#cdRingSvg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none;}
+#cdRingC{fill:none;stroke:var(--gold);stroke-width:5;stroke-linecap:round;
+  stroke-dasharray:339.3;stroke-dashoffset:339.3;
+  filter:drop-shadow(0 0 8px rgba(var(--gold-rgb),.7));}
+#cdRingC.run{stroke-dashoffset:0;transition:stroke-dashoffset linear;}
 #cdNum{font-size:clamp(90px,22vw,150px);font-weight:800;color:var(--gold);text-shadow:0 0 60px rgba(var(--gold-rgb),.55);animation:cdpop .68s ease both;}
 @keyframes cdpop{0%{transform:scale(2.3);opacity:0;}30%{transform:scale(1);opacity:1;}100%{opacity:.9;}}
+#cdNum.go{animation:cdGoPop .55s cubic-bezier(.2,1.8,.3,1) both !important;}
+@keyframes cdGoPop{0%{transform:scale(3.4) rotate(-10deg);opacity:0;}55%{transform:scale(.9) rotate(3deg);opacity:1;}100%{transform:scale(1.08) rotate(0);opacity:1;}}
+#cdOverlay.flash::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle, rgba(255,255,255,.6), transparent 62%);
+  animation:cdFlash .28s ease-out;
+}
+@keyframes cdFlash{from{opacity:1;}to{opacity:0;}}
 
 /* ---------- ขอบจอแดง 5 นาทีสุดท้าย ---------- */
 #dangerEdge{position:fixed;inset:0;z-index:55;pointer-events:none;display:none;box-shadow:inset 0 0 0 4px rgba(239,68,68,.85),inset 0 0 70px rgba(239,68,68,.35);animation:edgepulse 1.1s infinite;}
@@ -444,11 +476,19 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .war-bar b{font-size:20px;font-weight:800;margin-bottom:6px;}
 .war-bar span{font-size:11.5px;color:#aab4e8;margin-top:8px;font-weight:600;}
 #warFeed{display:flex;flex-direction:column;gap:8px;max-height:212px;overflow:hidden;}
-.feed-item{border-radius:12px;padding:10px 14px;font-size:clamp(13px,1.5vw,16px);font-weight:500;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);animation:fadeUp .4s;}
+.feed-item{border-radius:12px;padding:10px 14px;font-size:clamp(13px,1.5vw,16px);font-weight:500;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);}
+.feed-item.new{animation:feedNewIn .6s ease both;}
+@keyframes feedNewIn{0%{opacity:0;transform:translateX(16px);background:rgba(var(--gold-rgb),.3);}55%{background:rgba(var(--gold-rgb),.16);}100%{opacity:1;transform:none;background:rgba(255,255,255,.06);}}
+.feed-item.vio.new{animation:feedNewInVio .6s ease both;}
+@keyframes feedNewInVio{0%{opacity:0;transform:translateX(16px);background:rgba(239,68,68,.4);}55%{background:rgba(239,68,68,.28);}100%{opacity:1;transform:none;background:rgba(58,8,10,.72);}}
 .feed-item.vio{background:rgba(58,8,10,.72);border-color:rgba(239,68,68,.5);}
 #warActive{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;}
 .war-chip{border-radius:12px;padding:10px 12px;background:rgba(var(--panel-rgb),.75);border:1px solid var(--glass-line);}
 .war-chip.vio{border-color:rgba(239,68,68,.65);}
+.war-chip.bump{animation:chipBump .6s ease;}
+@keyframes chipBump{0%{box-shadow:0 0 0 0 rgba(var(--cyan-rgb),0);transform:scale(1);}30%{box-shadow:0 0 0 7px rgba(var(--cyan-rgb),.32);transform:scale(1.015);}100%{box-shadow:0 0 0 0 rgba(var(--cyan-rgb),0);transform:scale(1);}}
+.war-chip.vio.bump{animation:chipBumpVio .6s ease;}
+@keyframes chipBumpVio{0%{box-shadow:0 0 0 0 rgba(239,68,68,0);transform:scale(1);}30%{box-shadow:0 0 0 7px rgba(239,68,68,.4);transform:scale(1.015);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);transform:scale(1);}}
 .war-chip .nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .war-chip .meta{font-size:11px;color:#9aa6e6;margin:3px 0 6px;}
 .war-chip .pgw{height:6px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;}
@@ -694,7 +734,8 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-paper #adminLink{ background:#efe6d3 !important; border:1px solid #c9b98f !important; color:#2b2b2b !important; }
 .theme-paper .toast{ background:#2b2b2b !important; color:#fffdf6 !important; }
 .theme-paper .ad-head h1{ color:#1a1a1a !important; }
-.theme-paper .stat b{ color:var(--gold) !important; }
+.theme-paper .stat b{ color:var(--cyan) !important; }
+.theme-paper .stat.gold b{ color:var(--gold) !important; }
 .theme-paper .stat span{ color:#6b6152 !important; }
 .theme-paper .tbl-wrap{ border:1px solid #d8cba8 !important; }
 .theme-paper table{ color:#2b2b2b !important; }
@@ -753,6 +794,14 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-paper .scan-steps li.done{ color:#0a6e6e !important; }
 .theme-paper #camFail p{ color:#b91c1c !important; }
 .theme-paper #resSub span{ color:#b91c1c !important; }
+.theme-paper .stamp.t-ok{ color:#15803d !important; border-color:#15803d !important; }
+.theme-paper .stamp.t-red{ color:#b91c1c !important; border-color:#b91c1c !important; }
+.theme-paper .wr-badge{ color:#5b21b6 !important; background:rgba(124,58,237,.12) !important; border-color:rgba(124,58,237,.4) !important; }
+.theme-paper .list-note{ color:#6b6152 !important; }
+.theme-paper .set-field label{ color:#6b6152 !important; }
+.theme-paper #vioBadge{ color:#b91c1c !important; background:rgba(220,38,38,.15) !important; border-color:rgba(220,38,38,.4) !important; }
+.theme-paper #selSummary{ background:#fffdf6 !important; border:1px solid rgba(var(--cyan-rgb),.5) !important; color:#2b2b2b !important; }
+.theme-paper #selSummary b{ color:var(--cyan) !important; }
 .theme-paper #paletteLegend{ color:#6b6152 !important; }
 .theme-paper #paletteLegend i{ background:#fffdf6 !important; border-color:#d8cba8 !important; }
 .theme-paper #paletteLegend i.lg-done{ background:rgba(var(--cyan-rgb),.18) !important; border-color:var(--cyan) !important; }
@@ -1035,9 +1084,9 @@ textarea:focus-visible{
     <div id="heroWrap">
       <img id="heroImg" alt="banner">
       <div id="heroDefault">
-        <div class="hero-eyebrow">✦ ENGLISH EXAMINATION</div>
-        <div class="hero-title" id="heroTitle">ENGLISH  TEST</div>
-        <div class="hero-sub" id="heroSub">Quiz ENGLISH </div>
+        <div class="hero-eyebrow">✦ MIDTERM EXAMINATION</div>
+        <div class="hero-title" id="heroTitle">ENGLISH MIDTERM TEST</div>
+        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1062,7 +1111,7 @@ textarea:focus-visible{
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button></div>
+    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1077,6 +1126,7 @@ textarea:focus-visible{
         <div class="scan-line" id="scanLine"></div>
         <span class="corner tl"></span><span class="corner tr"></span>
         <span class="corner bl"></span><span class="corner br"></span>
+        <div id="scanCheck"><div class="ring"><span>✓</span></div></div>
       </div>
 
       <ul class="scan-steps" id="scanSteps">
@@ -1166,6 +1216,64 @@ textarea:focus-visible{
       <div id="stampWrap"><span class="stamp" id="stampEl"></span></div>
       <div class="result-sub" id="resSub" style="margin-top:12px;"></div>
       <button class="btn btn-gold btn-block" id="btnDownloadCard" style="margin-top:18px;">📸 บันทึกภาพผลสอบ</button>
+      <button class="btn btn-block hidden" id="btnResPractice" style="margin-top:10px;border:1.5px solid rgba(var(--gold-rgb),.5);">🎯 ยังไม่ผ่านเกณฑ์ — ฝึกฝนเพื่อแก้คะแนน</button>
+      <button id="linkResPractice" class="hidden" style="margin-top:12px;background:none;border:none;color:var(--gold);text-decoration:underline;cursor:pointer;font-family:var(--font);font-size:12.5px;">🎯 ฝึกฝนกู้คะแนน (ถ้ายังไม่ผ่านเกณฑ์)</button>
+    </div>
+  </section>
+
+  <!-- ================= PRACTICE HOME ================= -->
+  <section class="screen" id="scrPracticeHome">
+    <div class="card" style="text-align:center;">
+      <h2 style="justify-content:center;">🎯 ฝึกฝนเพื่อแก้คะแนน</h2>
+      <p class="hint" id="pgName">–</p>
+      <p class="hint" style="margin-bottom:16px;">ชุดข้อสอบ: <b id="pgSetLabel" style="color:var(--gold);">–</b></p>
+
+      <div class="info-chips" style="margin-bottom:6px;">
+        <div class="info-chip"><b id="pgRoundsDone">0</b><span>รอบที่ทำแล้ว (ต้องครบ <span id="pgRoundsGoal">15</span>)</span></div>
+        <div class="info-chip"><b id="pgAvgPct">0%</b><span>% เฉลี่ยรวม (ต้องถึง <span id="pgMinPct">90</span>%)</span></div>
+      </div>
+      <div class="mini-progress" style="margin:14px 0 4px;"><i id="pgRoundsBar" style="background:linear-gradient(90deg,var(--cyan),var(--blue));"></i></div>
+      <p class="hint" style="text-align:left;margin-bottom:10px;">ความคืบหน้าจำนวนรอบ</p>
+      <div class="mini-progress"><i id="pgAvgBar" style="background:linear-gradient(90deg,var(--blue),var(--gold));"></i></div>
+      <p class="hint" style="text-align:left;margin-bottom:16px;">ความคืบหน้า % เฉลี่ย</p>
+
+      <p id="pgGoalMsg" style="font-size:14.5px;font-weight:600;margin-bottom:16px;">ฝึกต่อไปเรื่อยๆ จนกว่าจะครบเกณฑ์ทั้งสองอย่างนะครับ</p>
+
+      <button class="btn btn-gold btn-block" id="btnStartPracticeRound">🚀 เริ่มฝึกรอบใหม่</button>
+      <button class="btn btn-block hidden" id="btnPracticeProof" style="margin-top:10px;">📋 ดูหน้าจอสรุปเพื่อแคปส่งครู</button>
+      <button id="btnPracticeBack" style="margin-top:16px;background:none;border:none;color:#aab4e8;text-decoration:underline;cursor:pointer;font-family:var(--font);font-size:12.5px;">← กลับหน้าแรก</button>
+    </div>
+  </section>
+
+  <!-- ================= PRACTICE ROUND RESULT ================= -->
+  <section class="screen" id="scrPracticeRoundResult">
+    <div class="card result-card">
+      <div class="score-ring"><b id="prScore">0</b><span id="prTotal">จาก 0 ข้อ</span></div>
+      <div class="result-msg" id="prMsg">รอบนี้ทำได้เท่านี้!</div>
+      <div class="result-sub" id="prSub" style="margin-top:12px;"></div>
+      <button class="btn btn-gold btn-block" id="btnPracticeAgain" style="margin-top:18px;">🔁 ฝึกรอบถัดไป</button>
+      <button class="btn btn-block hidden" id="btnPracticeProof2" style="margin-top:10px;">📋 ครบเกณฑ์แล้ว! ดูหน้าจอสรุป</button>
+    </div>
+  </section>
+
+  <!-- ================= PRACTICE PROOF (แคปส่งครู) ================= -->
+  <section class="screen" id="scrPracticeProof">
+    <div class="card" id="proofCard" style="text-align:center;">
+      <div style="font-size:44px;">🏅</div>
+      <h2 style="justify-content:center;">ผ่านเกณฑ์ฝึกฝนกู้คะแนนแล้ว!</h2>
+      <p class="hint" style="margin-bottom:16px;">แคปหน้าจอนี้ทั้งหมด แล้วนำไปส่งครูเพื่อแก้คะแนนสอบจริง</p>
+      <div class="info-chips">
+        <div class="info-chip"><b id="pfRounds">0</b><span>รอบที่ฝึกทั้งหมด</span></div>
+        <div class="info-chip"><b id="pfAvg">0%</b><span>% เฉลี่ยรวม</span></div>
+      </div>
+      <div style="text-align:left;margin-top:16px;padding:14px 16px;border-radius:14px;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);">
+        <div style="margin-bottom:6px;">👤 <b id="pfName">–</b></div>
+        <div class="hint">ชั้น/ห้อง/เลขที่: <span id="pfClass">–</span></div>
+        <div class="hint">ชุดข้อสอบ: <span id="pfSet">–</span></div>
+        <div class="hint">วันเวลา: <span id="pfTime">–</span></div>
+      </div>
+      <p class="hint" style="margin-top:14px;">ข้อมูลนี้บันทึกในระบบแล้ว ครูตรวจสอบย้อนหลังได้จากแดชบอร์ด</p>
+      <button class="btn btn-gold btn-block" id="btnPracticeProofBack" style="margin-top:18px;">← กลับหน้าฝึกฝน</button>
     </div>
   </section>
 
@@ -1198,6 +1306,7 @@ textarea:focus-visible{
 
     <div class="tabs">
       <button class="tab-btn on" id="tabBtnLive">📡 LIVE สด</button>
+      <button class="tab-btn" id="tabBtnPrac">🎯 กู้คะแนน</button>
       <button class="tab-btn" id="tabBtnSet">⚙️ ตั้งค่า</button>
       <button class="tab-btn" id="tabBtnBuild">📝 สร้างข้อสอบ</button>
     </div>
@@ -1247,6 +1356,16 @@ textarea:focus-visible{
       </div>
     </div>
 
+    <div id="tabPrac" class="hidden">
+      <div class="card">
+        <h2>🎯 ความคืบหน้าฝึกฝนกู้คะแนน <span class="hint">(รีเฟรชเมื่อเข้าแท็บนี้)</span></h2>
+        <p class="hint" style="margin-bottom:10px;">เกณฑ์ปัจจุบัน: ต้องทำ <b id="pracMinRoundsLbl" style="color:var(--gold);">–</b> รอบขึ้นไป และเฉลี่ยรวมไม่น้อยกว่า <b id="pracMinPctLbl" style="color:var(--gold);">–</b>% (แก้ไขได้ที่แท็บตั้งค่า)</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>ชั้น/ห้อง</th><th>เลขที่</th><th>ชื่อ</th><th>ชุด</th><th>รอบที่ทำ</th><th>% เฉลี่ย</th><th>สถานะ</th><th></th></tr></thead>
+          <tbody id="pracBody"><tr><td colspan="8" class="empty-cell">🎯 ยังไม่มีใครเริ่มฝึกฝนกู้คะแนน</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
     <div id="tabBuild" class="hidden">
       <div class="card">
         <h2>📝 Exam Builder <span class="hint">เพิ่มข้อสอบปรนัย + ข้อเขียน แล้วบันทึกลง Google Sheets ให้เอง</span></h2>
@@ -1314,6 +1433,7 @@ textarea:focus-visible{
             <option value="paper">กระดาษข้อสอบ (Light Mode)</option>
           </select></div>
           <div class="set-field"><label>เวลาสอบ (นาที)</label><input type="number" id="cfgDur" min="1" max="240"></div>
+          <div class="set-field"><label>เกณฑ์ผ่าน (%) — ใช้ตัดสินตราปั๊ม "ผ่านเกณฑ์" และปุ่มฝึกกู้คะแนน</label><input type="number" id="cfgPassPct" min="1" max="100"></div>
           <div class="set-field full"><label>ประกาศถึงนักเรียน (แสดงหน้าแรก, เว้นว่าง = ไม่แสดง)</label><textarea id="cfgAnn"></textarea></div>
         </div>
       </div>
@@ -1332,6 +1452,15 @@ textarea:focus-visible{
           <div class="switch-row"><span>สลับตัวเลือก (รายคน)</span><label class="sw"><input type="checkbox" id="cfgShufC"><i></i></label></div>
           <div class="switch-row"><span>แสดงคะแนนให้นักเรียนเห็น</span><label class="sw"><input type="checkbox" id="cfgShowScore"><i></i></label></div>
           <div class="switch-row"><span>สแกนใบหน้าก่อนสอบ</span><label class="sw"><input type="checkbox" id="cfgFace"><i></i></label></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🎯 ฝึกฝนกู้คะแนน (สำหรับคนสอบไม่ผ่าน)</h2>
+        <p class="hint" style="margin-bottom:12px;">นักเรียนที่สอบไม่ผ่าน ฝึกซ้ำด้วยข้อสอบชุดเดิม (สลับลำดับใหม่ทุกรอบ) ได้ไม่จำกัด จนครบเกณฑ์ทั้งสองข้อด้านล่างพร้อมกัน ระบบจะให้แคปหน้าจอสรุปมาส่งครู</p>
+        <div class="set-grid">
+          <div class="set-field"><label>จำนวนรอบฝึกขั้นต่ำ</label><input type="number" id="cfgPracRounds" min="1" max="200"></div>
+          <div class="set-field"><label>% เฉลี่ยขั้นต่ำ (ทุกรอบรวมกัน)</label><input type="number" id="cfgPracPct" min="1" max="100"></div>
         </div>
       </div>
       <button class="btn btn-gold btn-block" id="btnSaveCfg">💾 บันทึกการตั้งค่า</button>
@@ -1358,7 +1487,10 @@ textarea:focus-visible{
 </div>
 
 <div id="bcOverlay"><div class="bc-card"><div class="big">📣</div><h3>ประกาศจากครูผู้คุมสอบ</h3><p id="bcMsg"></p><button class="btn btn-gold btn-block" id="btnBcOk">รับทราบ</button></div></div>
-<div id="cdOverlay"><div id="cdNum">3</div></div>
+<div id="cdOverlay"><div id="cdWrap">
+  <svg id="cdRingSvg" viewBox="0 0 120 120"><circle id="cdRingC" cx="60" cy="60" r="54"/></svg>
+  <div id="cdNum">3</div>
+</div></div>
 <div id="dangerEdge"></div>
 <div id="wmLayer"></div>
 <canvas id="confettiCv"></canvas>
@@ -1491,7 +1623,8 @@ const S = {
   violations:0, lastVio:0, submitted:false, submitting:false, phase:'boot', bcSeen:0,
   stream:null, timerInt:null, hbInt:null, adminInt:null,
   warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false, stopSeen:0,
-  paused:false, resumeSeen:0, baseDurMs:0, extendMs:0, pausedRemainingSec:0
+  paused:false, resumeSeen:0, baseDurMs:0, extendMs:0, pausedRemainingSec:0,
+  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null
 };
 
 const $ = id => document.getElementById(id);
@@ -1743,6 +1876,7 @@ function pickStudent(stu, btn){
 }
 async function confirmIdentity(){
   if(!S.student) return;
+  if(S.entryMode === 'practice'){ return confirmIdentityForPractice(); }
   if(S.config.examOpen !== 'true'){
     modal('ยังไม่เปิดการสอบ','ขณะนี้ครูยังไม่เปิดระบบสอบ กรุณารอประกาศจากครูผู้คุมสอบ',[{label:'รับทราบ',cls:'btn-gold'}]);
     return;
@@ -1772,6 +1906,157 @@ async function confirmIdentity(){
     btn.disabled = false; btn.textContent = 'ยืนยันตัวตน ➜';
   }
 }
+/** ตรวจสิทธิ์เข้าโหมดฝึกฝน — คืน true ถ้าควรพาไปหน้าฝึกต่อ, false ถ้าจัดการ (โชว์ modal) ให้แล้ว */
+async function practiceEligibilityGate(cls, no, name){
+  const r = await api({action:'practiceCheckEligibility', classLevel:cls, no:no, name:name});
+  if(!r.ok) throw new Error();
+  if(!r.found){
+    modal('ยังไม่พบผลสอบ','ยังไม่พบว่าคุณเคยทำข้อสอบชุดนี้มาก่อน กรุณาทำข้อสอบจริงให้เสร็จก่อน แล้วค่อยกลับมาฝึกเพื่อแก้คะแนนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
+    return false;
+  }
+  if(r.pending > 0){
+    modal('มีข้อเขียนรอตรวจ','ข้อสอบของคุณยังมีข้อเขียนที่ครูยังไม่ได้ตรวจให้เสร็จ กรุณารอครูตรวจให้เสร็จก่อนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
+    return false;
+  }
+  S.practiceKey = r.key;
+  S.practiceSetId = r.setId;
+  useSet(r.setId);
+  const pct = r.total ? r.score/r.total : 0;
+  const passPct = (parseInt(S.config.passThreshold,10)||50)/100;
+  if(pct >= passPct){
+    modal('ผ่านเกณฑ์อยู่แล้ว 🎉','คุณผ่านเกณฑ์ข้อสอบชุดนี้แล้ว ('+r.score+'/'+r.total+') ไม่จำเป็นต้องฝึกเพิ่มก็ได้ครับ\nถ้าอยากฝึกฝนเพิ่มเติมก็ทำได้เลย',[
+      {label:'กลับหน้าแรก'},
+      {label:'ฝึกฝนต่อเลย', cls:'btn-gold', fn: enterPracticeHome}
+    ]);
+    return false;
+  }
+  return true;
+}
+async function confirmIdentityForPractice(){
+  const btn = $('btnConfirmId');
+  btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ...';
+  try{
+    const proceed = await practiceEligibilityGate(S.classLevel, S.student.no, S.student.name);
+    if(proceed) enterPracticeHome();
+  }catch(err){
+    toast('เชื่อมต่อไม่สำเร็จ ลองอีกครั้ง');
+  }finally{
+    btn.disabled = false; btn.textContent = 'เข้าสู่โหมดฝึกฝน ➜';
+  }
+}
+async function enterPracticeFromResult(){
+  S.entryMode = 'practice';
+  try{
+    const proceed = await practiceEligibilityGate(S.classLevel, S.student.no, S.student.name);
+    if(proceed) enterPracticeHome();
+  }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+}
+async function enterPracticeHome(){
+  S.phase = 'practiceHome';
+  $('pgName').textContent = S.student.name+' — '+S.classLevel+'/'+S.room+' เลขที่ '+S.student.no;
+  $('pgSetLabel').textContent = setLabel(S.practiceSetId);
+  show('scrPracticeHome');
+  await refreshPracticeSummary();
+}
+async function refreshPracticeSummary(){
+  try{
+    const r = await api({action:'practiceGetSummary', classLevel:S.classLevel, no:S.student.no, name:S.student.name, setId:S.practiceSetId});
+    if(!r.ok) throw new Error();
+    S.practiceSummary = r;
+    renderPracticeHome();
+  }catch(e){ toast('โหลดข้อมูลไม่สำเร็จ'); }
+}
+function renderPracticeHome(){
+  const r = S.practiceSummary;
+  if(!r) return;
+  $('pgRoundsDone').textContent = r.roundsDone;
+  $('pgRoundsGoal').textContent = r.minRounds;
+  $('pgAvgPct').textContent = r.avgPct+'%';
+  $('pgMinPct').textContent = r.minPct+'%';
+  $('pgRoundsBar').style.width = Math.min(100, Math.round(r.roundsDone/r.minRounds*100))+'%';
+  $('pgAvgBar').style.width = Math.min(100, Math.round(r.avgPct/r.minPct*100))+'%';
+  $('btnPracticeProof').classList.toggle('hidden', !r.meetsGoal);
+  $('pgGoalMsg').textContent = r.meetsGoal
+    ? '🎉 ครบเกณฑ์แล้ว! กดดูหน้าจอสรุปเพื่อแคปส่งครูได้เลย'
+    : 'ฝึกต่อไปเรื่อยๆ จนกว่าจะครบเกณฑ์ทั้งสองอย่างพร้อมกันนะครับ';
+}
+function startPracticeRound(){
+  S.phase = 'practice';
+  const N = QUESTIONS.length;
+  const rng = mulberry32(Math.floor(Math.random()*1000000000));
+  S.qOrder = seededShuffle(range(N), rng);
+  S.cOrder = QUESTIONS.map((q,i)=> seededShuffle(range((q.choices||[]).length), mulberry32(Math.floor(Math.random()*1000000000)+i)));
+  S.answers = new Array(N).fill(-1);
+  S.cur = 0; S._lastPos = undefined;
+  $('examHead').classList.add('practice-mode');
+  $('hudName').textContent = S.student.name;
+  $('hudClass').textContent = '🎯 โหมดฝึกฝน · '+setLabel(S.practiceSetId);
+  $('timerText').textContent = '∞';
+  $('timerBox').classList.remove('low'); // กันสไตล์ "ใกล้หมดเวลา" ค้างมาจากข้อสอบจริงรอบก่อน
+  $('timerBox').querySelector('span').textContent = 'ไม่จำกัดเวลา';
+  $('vioBadge').classList.remove('show'); // กันป้ายทุจริตค้างมาจากข้อสอบจริงรอบก่อน
+  $('btnSubmit').textContent = '📨 ส่งรอบฝึกนี้';
+  buildPalette();
+  renderQuestion();
+  updateHud();
+  show('scrExam');
+}
+function confirmPracticeSubmit(){
+  const un = QUESTIONS.length - answeredCount();
+  const msg = un > 0
+    ? 'ยังไม่ได้ตอบ '+un+' ข้อ ต้องการส่งรอบฝึกนี้เลยหรือไม่?'
+    : 'ตอบครบทุกข้อแล้ว ส่งรอบฝึกนี้เลยไหมครับ?';
+  modal('ส่งรอบฝึกนี้', msg, [
+    {label:'ยกเลิก'},
+    {label:'ส่งเลย', cls:'btn-gold', fn: doPracticeSubmit}
+  ]);
+}
+async function doPracticeSubmit(){
+  const cs = computeScore();
+  const score = cs.auto;
+  const total = QUESTIONS.length - cs.manualIdx.length; // ไม่นับข้อที่ต้องให้ครูตรวจเอง (ไม่มีเฉลย) เป็นตัวหาร กันคะแนน% ถูกกดต่ำเกินจริง
+  if(total <= 0){
+    modal('ชุดนี้ยังฝึกอัตโนมัติไม่ได้','ชุดข้อสอบนี้เป็นข้อเขียนที่ต้องให้ครูตรวจเองทั้งหมด ระบบฝึกอัตโนมัติใช้ไม่ได้กับชุดนี้ กรุณาแจ้งครูผู้คุมสอบนะครับ',[{label:'กลับหน้าฝึกฝน', cls:'btn-gold', fn:enterPracticeHome}]);
+    return;
+  }
+  try{
+    const r = await api({action:'practiceSubmitRound', classLevel:S.classLevel, room:S.room, no:S.student.no, name:S.student.name,
+      setId:S.practiceSetId, score:score, total:total});
+    if(!r.ok) throw new Error();
+    S.practiceSummary = r;
+    showPracticeRoundResult(score, total);
+  }catch(e){
+    modal('ส่งไม่สำเร็จ','การเชื่อมต่อขัดข้อง คำตอบรอบนี้ยังอยู่ครบ\nตรวจสอบอินเทอร์เน็ตแล้วลองส่งอีกครั้งนะครับ',[{label:'ลองอีกครั้ง', cls:'btn-gold', fn:doPracticeSubmit}]);
+  }
+}
+function showPracticeRoundResult(score, total){
+  const r = S.practiceSummary;
+  const pct = total ? score/total : 0;
+  const pctInt = Math.round(pct*100);
+  $('prScore').textContent = score;
+  $('prTotal').textContent = 'จาก '+total+' ข้อ ('+pctInt+'%)';
+  $('prMsg').textContent = pctInt>=90 ? '🌟 เยี่ยมมาก!' : pctInt>=70 ? '👍 ดีขึ้นเรื่อยๆ!' : '💪 ฝึกต่ออีกนิดนะ';
+  $('prSub').innerHTML = 'ทำไปแล้ว <b style="color:var(--gold);">'+r.roundsDone+'</b>/'+r.minRounds+' รอบ · เฉลี่ยรวม <b style="color:var(--gold);">'+r.avgPct+'%</b> (ต้องถึง '+r.minPct+'%)';
+  $('btnPracticeProof2').classList.toggle('hidden', !r.meetsGoal);
+  show('scrPracticeRoundResult');
+  fireConfetti(pct);
+}
+function showPracticeProof(){
+  const r = S.practiceSummary;
+  if(!r || !r.meetsGoal) return;
+  $('pfRounds').textContent = r.roundsDone;
+  $('pfAvg').textContent = r.avgPct+'%';
+  $('pfName').textContent = S.student.name;
+  $('pfClass').textContent = S.classLevel+'/'+S.room+' เลขที่ '+S.student.no;
+  $('pfSet').textContent = setLabel(S.practiceSetId);
+  $('pfTime').textContent = new Date().toLocaleString('th-TH',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  show('scrPracticeProof');
+  fireConfetti(1);
+}
+function exitPracticeMode(){
+  S.entryMode = 'exam';
+  location.reload();
+}
 
 /* ══════════════════ FACE SCAN ══════════════════ */
 async function startScan(){
@@ -1782,6 +2067,9 @@ async function startScan(){
   $('btnScanNext').textContent = 'กำลังตรวจสอบใบหน้า...';
   document.querySelectorAll('#scanSteps li').forEach(li=>li.classList.remove('doing','done'));
   $('scanBar').style.width = '0%';
+  $('scanFrame').classList.remove('success');
+  $('scanCheck').classList.remove('show');
+  $('scanLine').style.display = '';
   try{
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('no cam api');
     S.stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:640}, height:{ideal:480} }, audio:false });
@@ -1811,6 +2099,8 @@ function runScanSeq(){
       $('scanBar').style.width = Math.round(((i+1)/lis.length)*100)+'%';
       if(i === lis.length-1){
         $('scanLine').style.display = 'none';
+        $('scanFrame').classList.add('success');
+        $('scanCheck').classList.add('show');
         $('btnScanNext').disabled = false;
         $('btnScanNext').textContent = '✅ ยืนยันใบหน้าสำเร็จ — ไปต่อ';
         sfxSuccess();
@@ -1904,18 +2194,67 @@ async function startExam(){
   }
 }
 function runCountdown(done){
-  const ov = $('cdOverlay'), num = $('cdNum');
+  const ov = $('cdOverlay'), num = $('cdNum'), ring = $('cdRingC');
   const steps = ['3','2','1','GO!'];
   ov.classList.add('show');
+  const beatMs = 700*SPD;
   let i = 0;
   (function next(){
-    if(i >= steps.length){ ov.classList.remove('show'); done(); return; }
+    if(i >= steps.length){ ov.classList.remove('show'); ring.classList.remove('run'); done(); return; }
+    const isGo = i === steps.length-1;
     num.textContent = steps[i];
+    num.classList.toggle('go', isGo);
     num.style.animation = 'none'; void num.offsetWidth; num.style.animation = '';
-    tone(i===3 ? 880 : 440 + i*70, .16, 'sine', 0, .1);
+    // รีเซ็ตวงแหวนแล้วปล่อยให้หดจนหมดพอดีตอนจบจังหวะนี้
+    ring.classList.remove('run');
+    ring.style.transitionDuration = '0s';
+    ring.style.strokeDashoffset = '339.3';
+    void ring.offsetWidth;
+    ring.style.transitionDuration = beatMs+'ms';
+    ring.classList.add('run');
+    if(isGo){
+      ov.classList.add('flash');
+      setTimeout(()=>ov.classList.remove('flash'), 280);
+      fireCdBurst();
+    }
+    tone(isGo ? 880 : 440 + i*70, .16, 'sine', 0, .1);
     i++;
-    setTimeout(next, 700*SPD);
+    setTimeout(next, beatMs);
   })();
+}
+/* ระเบิดประกายเล็กๆ รอบจุดกึ่งกลางจอตอนขึ้น GO! */
+function fireCdBurst(){
+  try{
+    const cv = $('confettiCv');
+    const ctx = cv.getContext ? cv.getContext('2d') : null;
+    if(!ctx) return;
+    cv.style.display = 'block';
+    cv.width = window.innerWidth; cv.height = window.innerHeight;
+    const cx = cv.width/2, cy = cv.height/2;
+    const colors = [themeColor('--gold','#f7c948'), themeColor('--cyan','#5eead4'), themeColor('--blue','#60a5fa'), '#ffffff'];
+    const ps = Array.from({length:44}, ()=>{
+      const ang = Math.random()*6.28, spd = 5+Math.random()*9;
+      return { x:cx, y:cy, vx:Math.cos(ang)*spd, vy:Math.sin(ang)*spd,
+        r:3+Math.random()*4, c:colors[Math.floor(Math.random()*colors.length)],
+        rot:Math.random()*6.3, vr:-.2+Math.random()*.4 };
+    });
+    const raf = window.requestAnimationFrame || function(f){ setTimeout(f, 16); };
+    const t0 = Date.now(), life = Math.max(220, 780*SPD);
+    (function frame(){
+      ctx.clearRect(0,0,cv.width,cv.height);
+      const t = (Date.now()-t0)/life;
+      ps.forEach(p=>{
+        p.vy += 0.17;
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        ctx.save(); ctx.globalAlpha = Math.max(0,1-t);
+        ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.7);
+        ctx.restore();
+      });
+      if(Date.now()-t0 < life) raf(frame);
+      else { ctx.clearRect(0,0,cv.width,cv.height); cv.style.display='none'; }
+    })();
+  }catch(e){}
 }
 /* ลายน้ำชื่อนักเรียนทั่วหน้าจอ — แอบถ่ายจอส่งต่อ รูปจะติดชื่อตัวเองไปด้วย */
 function buildWatermark(){
@@ -1931,6 +2270,8 @@ function buildWatermark(){
 function enterExamUI(){
   S.phase = 'exam'; S.cur = 0;
   S.relax = !!(EXAM_SETS[CUR_SET] && EXAM_SETS[CUR_SET].relax);
+  $('examHead').classList.remove('practice-mode');
+  $('btnSubmit').textContent = '📨 ส่งคำตอบ';
   $('hudName').textContent = S.student.name;
   $('hudClass').textContent = S.classLevel+'/'+S.room+' เลขที่ '+S.student.no;
   buildPalette();
@@ -1994,8 +2335,10 @@ function computeScore(){
 }
 function updateHud(){
   $('hudAnswered').textContent = answeredCount()+'/'+QUESTIONS.length;
-  $('vioBadge').textContent = '⚠ ทุจริต '+S.violations+' ครั้ง';
-  $('vioBadge').classList.toggle('show', S.violations > 0);
+  if(S.phase !== 'practice'){
+    $('vioBadge').textContent = '⚠ ทุจริต '+S.violations+' ครั้ง';
+    $('vioBadge').classList.toggle('show', S.violations > 0);
+  }
   document.querySelectorAll('#palette .pal').forEach((p,i)=>{
     p.classList.toggle('done', isAnswered(S.qOrder[i]));
     p.classList.toggle('cur', i === S.cur);
@@ -2137,6 +2480,7 @@ async function sendHeartbeat(){
 
 /* ---------- SUBMIT ---------- */
 function confirmSubmit(){
+  if(S.phase === 'practice'){ confirmPracticeSubmit(); return; }
   const un = QUESTIONS.length - answeredCount();
   const msg = un > 0
     ? 'ยังไม่ได้ตอบ '+un+' ข้อ!\nต้องการส่งคำตอบเลยหรือไม่? ส่งแล้วแก้ไขไม่ได้'
@@ -2194,37 +2538,62 @@ function animateScore(target){
 }
 function showStamp(pct){
   const el = $('stampEl');
+  const passPct = (parseInt(S.config.passThreshold,10)||50)/100;
   let txt, cls;
   if(pct >= 0.8){ txt='EXCELLENT'; cls='t-gold'; }
   else if(pct >= 0.6){ txt='GREAT JOB'; cls='t-cyan'; }
-  else if(pct >= 0.5){ txt='PASSED'; cls='t-ok'; }
+  else if(pct >= passPct){ txt='PASSED'; cls='t-ok'; }
   else { txt='KEEP FIGHTING'; cls='t-red'; }
   el.className = 'stamp '+cls;
   el.textContent = txt;
   setTimeout(()=>{ el.classList.add('show'); tone(150,.18,'square',0,.12); }, Math.max(40, 900*SPD));
 }
-function fireConfetti(){
+function fireConfetti(pct){
   try{
     const cv = $('confettiCv');
     const ctx = cv.getContext ? cv.getContext('2d') : null;
     if(!ctx) return;
+    // สเกลปริมาณตามคะแนน — คะแนนดีฉลองใหญ่ คะแนนต่ำก็ยังมีฉลองเล็กๆ ให้กำลังใจที่ทำจนจบ
+    const tier = (typeof pct !== 'number') ? 0.85 : pct>=0.8 ? 1 : pct>=0.6 ? 0.75 : pct>=0.5 ? 0.55 : 0.32;
+    const count = Math.round(70*tier)+18;
     cv.style.display = 'block';
     cv.width = window.innerWidth; cv.height = window.innerHeight;
     const colors = [themeColor('--gold','#f7c948'), themeColor('--cyan','#5eead4'), themeColor('--blue','#60a5fa'), '#ef4444', '#a78bfa', '#ffffff'];
-    const ps = Array.from({length:90}, ()=>({
-      x:Math.random()*cv.width, y:-20-Math.random()*cv.height*.4,
-      r:4+Math.random()*6, c:colors[Math.floor(Math.random()*colors.length)],
-      vy:2.2+Math.random()*3, vx:-1.5+Math.random()*3,
-      rot:Math.random()*6.3, vr:-.15+Math.random()*.3
-    }));
+    const shapes = ['rect','circle','ribbon'];
+    const ps = Array.from({length:count}, ()=>{
+      const shape = shapes[Math.floor(Math.random()*shapes.length)];
+      return {
+        x:Math.random()*cv.width, y:-20-Math.random()*cv.height*.4,
+        r:4+Math.random()*6, len:9+Math.random()*9,
+        c:colors[Math.floor(Math.random()*colors.length)], shape,
+        vy:1.5+Math.random()*2.1, vx:-1.2+Math.random()*2.4,
+        rot:Math.random()*6.3, vr:-.18+Math.random()*.36,
+        sway:Math.random()*6.28, swaySpeed:.025+Math.random()*.035, swayAmp:.5+Math.random()*1.1
+      };
+    });
     const raf = window.requestAnimationFrame || function(f){ setTimeout(f, 16); };
-    const t0 = Date.now(), life = Math.max(300, 2600*SPD);
+    const t0 = Date.now(), life = Math.max(300, 2800*SPD);
     (function frame(){
       ctx.clearRect(0,0,cv.width,cv.height);
       ps.forEach(p=>{
-        p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+        p.vy += 0.024; // แรงโน้มถ่วงเบาๆ ให้เร่งตกเหมือนของจริง
+        p.sway += p.swaySpeed;
+        p.x += p.vx + Math.sin(p.sway)*p.swayAmp*0.32;
+        p.y += p.vy;
+        p.rot += p.vr;
         ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
-        ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.62); ctx.restore();
+        ctx.fillStyle = p.c;
+        if(p.shape === 'circle'){
+          ctx.beginPath();
+          ctx.ellipse(0,0,p.r*.56,p.r*.56*Math.max(.18,Math.abs(Math.sin(p.sway))),0,0,6.28);
+          ctx.fill();
+        }else if(p.shape === 'ribbon'){
+          const w = p.r*(0.35+0.65*Math.abs(Math.sin(p.sway)));
+          ctx.fillRect(-w/2, -p.len/2, w, p.len);
+        }else{
+          ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.62);
+        }
+        ctx.restore();
       });
       if(Date.now()-t0 < life) raf(frame);
       else { ctx.clearRect(0,0,cv.width,cv.height); cv.style.display='none'; }
@@ -2234,6 +2603,7 @@ function fireConfetti(){
 function showResult(score, auto, pending){
   const total = QUESTIONS.length;
   const pct = total ? score/total : 0;
+  const passPct = (parseInt(S.config.passThreshold,10)||50)/100;
   S.lastResult = { score:score, total:total, pending:pending, showScore: S.config.showScore === 'true' };
   if(S.config.showScore === 'true'){
     $('resultScoreWrap').style.display = '';
@@ -2243,7 +2613,7 @@ function showResult(score, auto, pending){
       $('resMsg').textContent = '📝 ส่งแล้ว! ข้อเขียน '+pending+' ข้อรอครูตรวจ';
       $('stampEl').className = 'stamp'; $('stampEl').textContent = '';
     }else{
-      $('resMsg').textContent = pct>=0.8 ? '🏆 ยอดเยี่ยมมาก!' : pct>=0.6 ? '👍 ทำได้ดี!' : pct>=0.5 ? '🙂 ผ่านเกณฑ์' : '💪 ครั้งหน้าสู้ใหม่นะ';
+      $('resMsg').textContent = pct>=0.8 ? '🏆 ยอดเยี่ยมมาก!' : pct>=0.6 ? '👍 ทำได้ดี!' : pct>=passPct ? '🙂 ผ่านเกณฑ์' : '💪 ครั้งหน้าสู้ใหม่นะ';
       showStamp(pct);
     }
     animateScore(score);
@@ -2252,12 +2622,16 @@ function showResult(score, auto, pending){
     $('resMsg').textContent = pending > 0 ? 'ส่งเรียบร้อย ✓ ข้อเขียน '+pending+' ข้อรอครูตรวจ' : 'ส่งคำตอบเรียบร้อยแล้ว ✓';
     $('stampEl').className = 'stamp'; $('stampEl').textContent = '';
   }
-  fireConfetti();
+  fireConfetti((S.config.showScore === 'true' && pending === 0) ? pct : undefined);
   let sub = (auto === 'forced' ? '🛑 ครูสั่งจบการสอบ ระบบส่งคำตอบให้อัตโนมัติ<br>' : auto ? '⏰ หมดเวลา ระบบส่งคำตอบให้อัตโนมัติ<br>' : '');
   sub += 'ชื่อ '+esc(S.student.name)+' · '+esc(S.classLevel)+'/'+esc(S.room)+' เลขที่ '+esc(S.student.no)+' · '+esc(setLabel(CUR_SET));
   if(S.violations > 0) sub += '<br><span style="color:#ff9d9d;">⚠ มีบันทึกพฤติกรรมผิดกติกา '+S.violations+' ครั้ง (แจ้งครูแล้ว)</span>';
   sub += '<br>ปิดหน้านี้ได้เลย';
   $('resSub').innerHTML = sub;
+  // ปุ่มฝึกกู้คะแนน — เด่นชัดถ้ารู้แน่ว่าไม่ผ่าน, ไม่งั้นแสดงเป็นลิงก์เล็กๆ ไว้เผื่อ (กรณีซ่อนคะแนน/รอตรวจข้อเขียน)
+  const knownFail = (S.config.showScore === 'true' && pending === 0 && pct < passPct);
+  $('btnResPractice').classList.toggle('hidden', !knownFail);
+  $('linkResPractice').classList.toggle('hidden', knownFail);
   show('scrResult');
 }
 
@@ -2280,7 +2654,14 @@ async function downloadResultCard(){
   ctx.fillStyle = goldColor;
   ctx.font = 'bold 32px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.config.examTitle || 'ENGLISH MIDTERM TEST', 450, 95);
-  ctx.fillStyle = '#cdd6ff';
+  const isLight = document.body.classList.contains('theme-paper');
+  const txtSchool = isLight ? '#4a4a4a' : '#cdd6ff';
+  const txtMuted  = isLight ? '#6b6152' : '#aab4e8';
+  const txtName   = isLight ? '#1a1a1a' : '#ffffff';
+  const txtMeta   = isLight ? '#6b6152' : '#9aa6e6';
+  const txtDate   = isLight ? '#8a7f6b' : '#8e98cf';
+  const txtDone   = isLight ? '#15803d' : '#8df0b2';
+  ctx.fillStyle = txtSchool;
   ctx.font = '17px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.config.schoolName || '', 450, 128);
   const r = S.lastResult || { score:0, total:QUESTIONS.length, pending:0, showScore:false };
@@ -2288,23 +2669,23 @@ async function downloadResultCard(){
     ctx.fillStyle = goldColor;
     ctx.font = 'bold 130px "Kanit","Noto Sans Thai",sans-serif';
     ctx.fillText(String(r.score), 450, 310);
-    ctx.fillStyle = '#aab4e8';
+    ctx.fillStyle = txtMuted;
     ctx.font = '22px "Kanit","Noto Sans Thai",sans-serif';
     ctx.fillText('จาก '+r.total+' คะแนน'+(r.pending>0?' (รอตรวจข้อเขียน)':''), 450, 350);
   }else{
-    ctx.fillStyle = '#8df0b2';
+    ctx.fillStyle = txtDone;
     ctx.font = 'bold 40px "Kanit","Noto Sans Thai",sans-serif';
     ctx.fillText('✓ ส่งคำตอบเรียบร้อยแล้ว', 450, 300);
   }
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = txtName;
   ctx.font = 'bold 26px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.student.name, 450, 420);
-  ctx.fillStyle = '#9aa6e6';
+  ctx.fillStyle = txtMeta;
   ctx.font = '17px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.classLevel+'/'+S.room+' เลขที่ '+S.student.no+' · '+setLabel(CUR_SET), 450, 448);
   const now = new Date();
   const dateStr = now.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});
-  ctx.fillStyle = '#8e98cf';
+  ctx.fillStyle = txtDate;
   ctx.font = '15px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(dateStr, 450, 530);
   const link = document.createElement('a');
@@ -2411,16 +2792,34 @@ function warFilter(cls, room){
   if(r && String(room) !== r) return false;
   return true;
 }
+function countTransition(el, from, to, dur){
+  if(REDUCED_MOTION || from === to){ el.textContent = to; return; }
+  const t0 = Date.now(), D = dur || 450;
+  (function step(){
+    const p = Math.min(1, (Date.now()-t0)/D);
+    const ease = 1 - Math.pow(1-p, 2);
+    el.textContent = Math.round(from + (to-from)*ease);
+    if(p < 1) setTimeout(step, 28); else el.textContent = to;
+  })();
+}
+function warSetStat(el, key, val){
+  if(!S.warStatPrev) S.warStatPrev = {};
+  const prev = S.warStatPrev[key];
+  S.warStatPrev[key] = val;
+  if(typeof val !== 'number'){ el.textContent = val; return; }
+  countTransition(el, (typeof prev === 'number') ? prev : val, val, 550);
+}
 function renderWar(){
   const d = S.adminData; if(!d) return;
   $('warTitle').textContent = d.config.examTitle;
   const act = d.active.filter(a=>warFilter(a.classLevel, a.room));
   const res = d.results.filter(r=>warFilter(r.classLevel, r.room));
-  $('wsActive').textContent = act.length;
-  $('wsDone').textContent = res.length;
+  warSetStat($('wsActive'), 'active', act.length);
+  warSetStat($('wsDone'), 'done', res.length);
   let pctSum = 0;
   res.forEach(r=>{ if(r.total) pctSum += r.score/r.total; });
-  $('wsAvg').textContent = res.length ? Math.round(pctSum/res.length*100)+'%' : '–';
+  const avgVal = res.length ? Math.round(pctSum/res.length*100) : null;
+  warSetStat($('wsAvg'), 'avg', avgVal===null ? '–' : avgVal+'%');
 
   const buckets = [0,0,0,0,0];
   res.forEach(r=>{
@@ -2436,7 +2835,7 @@ function renderWar(){
   const items = [];
   res.forEach(r=>{
     const t = (r.submitText||'').split(' ')[1] || '';
-    items.push({ms:r.submitMs, vio:false, html:'✅ <b>'+esc(r.name)+'</b> ('+esc(r.classLevel)+'/'+esc(r.room)+') ส่งคำตอบแล้ว <span style="color:#9aa6e6;">· '+esc(t)+'</span>'});
+    items.push({id:'s'+r.key, ms:r.submitMs, vio:false, html:'✅ <b>'+esc(r.name)+'</b> ('+esc(r.classLevel)+'/'+esc(r.room)+') ส่งคำตอบแล้ว <span style="color:#9aa6e6;">· '+esc(t)+'</span>'});
   });
   if($('warVioToggle').checked && d.recentViolations){
     d.recentViolations.forEach(v=>{
@@ -2444,19 +2843,31 @@ function renderWar(){
       const kp = String(v.key||'').split('|');
       if(!warFilter(kp[0], kp[1])) return;
       const t = (v.timeText||'').split(' ')[1] || '';
-      items.push({ms:Number(v.ms)||0, vio:true, html:'🚨 <b>'+esc(v.name)+'</b> · '+esc(VIO_LABELS[v.type]||v.type)+' <span style="color:#e0a5a5;">· '+esc(t)+'</span>'});
+      items.push({id:'v'+v.key+v.ms, ms:Number(v.ms)||0, vio:true, html:'🚨 <b>'+esc(v.name)+'</b> · '+esc(VIO_LABELS[v.type]||v.type)+' <span style="color:#e0a5a5;">· '+esc(t)+'</span>'});
     });
   }
   items.sort((a,b)=>b.ms-a.ms);
-  $('warFeed').innerHTML = items.slice(0,9).map(it=>'<div class="feed-item'+(it.vio?' vio':'')+'">'+it.html+'</div>').join('')
-    || '<div class="feed-item">รอเหตุการณ์...</div>';
+  const shownFeed = items.slice(0,9);
+  if(!S.warSeenIds) S.warSeenIds = new Set();
+  const prevSeen = S.warSeenIds, curSeen = new Set();
+  $('warFeed').innerHTML = shownFeed.map(it=>{
+    curSeen.add(it.id);
+    const isNew = !prevSeen.has(it.id);
+    return '<div class="feed-item'+(it.vio?' vio':'')+(isNew?' new':'')+'">'+it.html+'</div>';
+  }).join('') || '<div class="feed-item">รอเหตุการณ์...</div>';
+  S.warSeenIds = curSeen;
 
+  if(!S.warChipProg) S.warChipProg = {};
+  const prevProg = S.warChipProg, curProg = {};
   $('warActive').innerHTML = act.map(a=>{
     const p = a.total ? Math.round(a.answered/a.total*100) : 0;
-    return '<div class="war-chip'+(a.violations>0?' vio':'')+'"><div class="nm">'+esc(a.name)+(a.violations>0?' 🚨':'')+'</div>'
+    curProg[a.key] = a.answered;
+    const bumped = prevProg[a.key] !== undefined && prevProg[a.key] !== a.answered;
+    return '<div class="war-chip'+(a.violations>0?' vio':'')+(bumped?' bump':'')+'"><div class="nm">'+esc(a.name)+(a.violations>0?' 🚨':'')+'</div>'
       +'<div class="meta">'+esc(a.classLevel)+'/'+esc(a.room)+' เลขที่ '+esc(a.no)+' · ตอบแล้ว '+a.answered+'/'+(a.total||'–')+'</div>'
       +'<div class="pgw"><span class="pg" style="width:'+p+'%"></span></div></div>';
   }).join('') || '<div class="feed-item">ยังไม่มีนักเรียนกำลังสอบ</div>';
+  S.warChipProg = curProg;
 
   if(d.bc && d.bc.msg){ $('warBc').textContent = '📣 ถึง '+bcTargetLabel(d.bc)+': '+d.bc.msg; $('warBc').classList.add('show'); }
   else $('warBc').classList.remove('show');
@@ -2469,7 +2880,7 @@ function refreshBcStudentPicker(active){
   const sig = list.map(a=>a.key).join('|');
   if(sel.dataset.sig === sig) return;   // ไม่มีอะไรเปลี่ยน — อย่าสร้างใหม่ ไม่งั้นตัวเลือกที่ครูเลือกไว้จะเด้งกลับทุก 2 วิ
   const keep = sel.value;
-  sel.innerHTML = '<option value="">ทุกคน (ตามชั้น/ห้อง)</option>' +
+  sel.innerHTML = (list.length ? '<option value="">ทุกคน (ตามชั้น/ห้อง)</option>' : '<option value="">— ยังไม่มีใครกำลังสอบอยู่ตอนนี้ —</option>') +
     list.map(a=>'<option value="'+esc(a.key)+'">'+esc(a.classLevel)+'/'+esc(a.room)+' เลขที่ '+esc(a.no)+' — '+esc(a.name)+'</option>').join('');
   if(keep && list.some(a=>a.key===keep)) sel.value = keep;   // คนที่เลือกไว้ยังสอบอยู่ → คงไว้
   sel.dataset.sig = sig;
@@ -2597,6 +3008,64 @@ function renderAdmin(){
         '<td>'+gradeBtn+'<button class="btn btn-sm btn-danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'">สอบใหม่</button></td></tr>';
     }).join('');
   }
+}
+async function loadPracticeList(){
+  try{
+    const r = await api({action:'adminPracticeList', pin:S.adminPin});
+    if(!r.ok) return;
+    S.pracList = r.list;
+    $('pracMinRoundsLbl').textContent = r.minRounds;
+    $('pracMinPctLbl').textContent = r.minPct;
+    renderPracticeList();
+  }catch(e){ toast('โหลดข้อมูลไม่สำเร็จ'); }
+}
+function renderPracticeList(){
+  const list = S.pracList || [];
+  const body = $('pracBody');
+  if(!list.length){
+    body.innerHTML = '<tr><td colspan="8" class="empty-cell">🎯 ยังไม่มีใครเริ่มฝึกฝนกู้คะแนน</td></tr>';
+    return;
+  }
+  body.innerHTML = list.map(g=>{
+    const status = g.meetsGoal ? '<span class="pill ok">✅ ครบเกณฑ์</span>' : '<span class="pill warn">⏳ กำลังฝึก</span>';
+    return '<tr><td>'+esc(g.classLevel)+'/'+esc(g.room)+'</td><td>'+esc(g.no)+'</td><td class="name">'+esc(g.name)+'</td>'+
+      '<td>'+esc(setLabel(g.setId))+'</td><td>'+g.roundsDone+'</td><td>'+g.avgPct+'%</td><td>'+status+'</td>'+
+      '<td style="white-space:normal;"><button class="btn btn-sm btn-gold" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'" data-pname="'+esc(g.name)+'" style="margin-right:4px;">ปรับให้ผ่าน</button>'+
+      '<button class="btn btn-sm btn-danger" data-pclr="'+esc(g.key)+'" data-pname="'+esc(g.name)+'">ล้างประวัติ</button></td></tr>';
+  }).join('');
+}
+function askAdjustScore(clsNo, name){
+  const parts = clsNo.split('|');
+  const cls = parts[0], no = parts[1];
+  const box = $('modalBox');
+  box.className = 'modal';
+  box.innerHTML = '<h3>✅ ปรับคะแนนให้ '+esc(name)+'</h3>'
+    + '<p class="hint" style="text-align:left;margin-bottom:10px;">ตรวจสอบหลักฐานที่นักเรียนแคปมาก่อน แล้วพิมพ์คะแนนใหม่ที่จะบันทึกแทนคะแนนสอบจริงเดิม</p>'
+    + '<div class="set-field full" style="margin-bottom:14px;text-align:left;"><label>คะแนนใหม่</label><input type="number" id="adjScoreInput" min="0" style="font-family:var(--font);font-size:16px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;width:100%;"></div>'
+    + '<div class="row"><button class="btn" id="adjCancel">ยกเลิก</button><button class="btn btn-gold" id="adjSave">บันทึกคะแนนใหม่</button></div>';
+  $('modalWrap').classList.add('show');
+  box.querySelector('#adjCancel').addEventListener('click', closeModal);
+  box.querySelector('#adjSave').addEventListener('click', async ()=>{
+    const v = Number($('adjScoreInput').value);
+    if(isNaN(v) || v < 0){ toast('พิมพ์คะแนนให้ถูกต้องก่อน'); return; }
+    try{
+      const r = await api({action:'adminPracticeSetScore', pin:S.adminPin, classLevel:cls, no:no, name:name, score:v});
+      if(r.ok){ closeModal(); toast('ปรับคะแนน '+name+' จาก '+r.oldScore+' เป็น '+r.newScore+' แล้ว ✓'); adminPollOnce(); }
+      else toast('ปรับคะแนนไม่สำเร็จ: '+(r.error||''));
+    }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+  });
+}
+function askClearPractice(key, name){
+  modal('ล้างประวัติการฝึก','ล้างประวัติการฝึกฝนกู้คะแนนทั้งหมดของ "'+name+'" เพื่อให้เริ่มนับใหม่ ใช่หรือไม่?\nการกระทำนี้ย้อนกลับไม่ได้',[
+    {label:'ยกเลิก'},
+    {label:'ยืนยันล้าง', cls:'btn-danger', fn: async ()=>{
+      try{
+        const r = await api({action:'adminPracticeClear', pin:S.adminPin, key:key});
+        if(r.ok){ toast('ล้างประวัติของ '+name+' แล้ว ('+r.removed+' รอบ)'); loadPracticeList(); }
+        else toast('ล้างไม่สำเร็จ');
+      }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+    }}
+  ]);
 }
 function askReset(key, name){
   modal('ปลดล็อกให้สอบใหม่','ลบข้อมูลการสอบของ "'+name+'"\nเพื่อให้เข้าสอบใหม่ได้ ใช่หรือไม่?',[
@@ -2728,6 +3197,9 @@ function fillSettingsForm(cfg){
   $('cfgCardW').value = parseInt(cfg.cardWidth,10)||760;
   $('cfgTheme').value = cfg.colorTheme || 'gold';
   $('cfgDur').value = parseInt(cfg.durationMinutes,10)||60;
+  $('cfgPassPct').value = parseInt(cfg.passThreshold,10)||50;
+  $('cfgPracRounds').value = parseInt(cfg.practiceMinRounds,10)||15;
+  $('cfgPracPct').value = parseInt(cfg.practiceMinPct,10)||90;
   $('cfgAnn').value = cfg.announcement;
   $('cfgOpen').checked = cfg.examOpen === 'true';
   $('cfgShufQ').checked = cfg.shuffleQuestions === 'true';
@@ -2746,6 +3218,9 @@ async function saveConfig(extra){
     cardWidth: String(Math.min(1100, Math.max(480, parseInt($('cfgCardW').value,10)||760))),
     colorTheme: $('cfgTheme').value,
     durationMinutes: String(Math.min(240, Math.max(1, parseInt($('cfgDur').value,10)||60))),
+    passThreshold: String(Math.min(100, Math.max(1, parseInt($('cfgPassPct').value,10)||50))),
+    practiceMinRounds: String(Math.min(200, Math.max(1, parseInt($('cfgPracRounds').value,10)||15))),
+    practiceMinPct: String(Math.min(100, Math.max(1, parseInt($('cfgPracPct').value,10)||90))),
     announcement: $('cfgAnn').value.trim(),
     setMap: collectSetMap(),
     examOpen: $('cfgOpen').checked ? 'true':'false',
@@ -2948,22 +3423,45 @@ $('btnNext').addEventListener('click', ()=>{ if(S.cur<QUESTIONS.length-1){ sfxCl
 $('btnPalette').addEventListener('click', ()=>{ sfxClick(); $('palette').classList.toggle('show'); updateHud(); });
 $('btnSubmit').addEventListener('click', confirmSubmit);
 $('btnDownloadCard').addEventListener('click', downloadResultCard);
+$('btnResPractice').addEventListener('click', enterPracticeFromResult);
+$('linkResPractice').addEventListener('click', enterPracticeFromResult);
+$('btnStartPracticeRound').addEventListener('click', startPracticeRound);
+$('btnPracticeProof').addEventListener('click', showPracticeProof);
+$('btnPracticeBack').addEventListener('click', exitPracticeMode);
+$('btnPracticeAgain').addEventListener('click', startPracticeRound);
+$('btnPracticeProof2').addEventListener('click', showPracticeProof);
+$('btnPracticeProofBack').addEventListener('click', enterPracticeHome);
 $('btnVioOk').addEventListener('click', ()=>{ $('violOverlay').classList.remove('show'); });
 $('adminLink').addEventListener('click', ()=>{
   const u = new URL(location.href); u.searchParams.set('admin','1'); location.href = u.toString();
 });
+$('practiceLink').addEventListener('click', ()=>{
+  if(S.entryMode === 'practice'){
+    S.entryMode = 'exam';
+    $('practiceLink').textContent = '🎯 ฝึกฝนกู้คะแนน';
+    $('btnConfirmId').textContent = 'ยืนยันตัวตน ➜';
+    toast('กลับสู่โหมดสอบปกติแล้ว');
+  }else{
+    S.entryMode = 'practice';
+    $('practiceLink').textContent = '✕ ยกเลิกโหมดฝึกฝน';
+    $('btnConfirmId').textContent = 'เข้าสู่โหมดฝึกฝน ➜';
+    toast('🎯 โหมดฝึกฝนกู้คะแนน — เลือกชั้น/ห้อง/ชื่อของคุณด้านล่างได้เลย');
+  }
+});
 $('btnAdminLogin').addEventListener('click', adminLogin);
 $('adminPin').addEventListener('keydown', e=>{ if(e.key==='Enter') adminLogin(); });
 function setTab(name){
-  const map = { live:['tabBtnLive','tabLive'], set:['tabBtnSet','tabSet'], build:['tabBtnBuild','tabBuild'] };
+  const map = { live:['tabBtnLive','tabLive'], prac:['tabBtnPrac','tabPrac'], set:['tabBtnSet','tabSet'], build:['tabBtnBuild','tabBuild'] };
   Object.keys(map).forEach(k=>{
     $(map[k][0]).classList.toggle('on', k === name);
     $(map[k][1]).classList.toggle('hidden', k !== name);
   });
   if(name === 'set' && S.adminData) fillSettingsForm(S.adminData.config);
   if(name === 'build'){ bRefreshSetSel($('bSetSel').value); if(!BLD.setId) bLoadSet($('bSetSel').value); }
+  if(name === 'prac'){ loadPracticeList(); }
 }
 $('tabBtnLive').addEventListener('click', ()=>setTab('live'));
+$('tabBtnPrac').addEventListener('click', ()=>setTab('prac'));
 $('tabBtnSet').addEventListener('click', ()=>setTab('set'));
 $('tabBtnBuild').addEventListener('click', ()=>setTab('build'));
 $('bSetSel').addEventListener('change', e=>bLoadSet(e.target.value));
@@ -3019,6 +3517,10 @@ document.addEventListener('click', e=>{
   if(re){ resumeStudent(re.getAttribute('data-resume'), re.getAttribute('data-name')); return; }
   const dm = e.target.closest('[data-msg]');
   if(dm){ askMessageStudent(dm.getAttribute('data-msg'), dm.getAttribute('data-name')); return; }
+  const padj = e.target.closest('[data-padj]');
+  if(padj){ askAdjustScore(padj.getAttribute('data-padj'), padj.getAttribute('data-pname')); return; }
+  const pclr = e.target.closest('[data-pclr]');
+  if(pclr){ askClearPractice(pclr.getAttribute('data-pclr'), pclr.getAttribute('data-pname')); return; }
   const g = e.target.closest('[data-grade]');
   if(g) openGrading(g.getAttribute('data-grade'));
 });
