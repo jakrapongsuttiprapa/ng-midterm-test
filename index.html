@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
-<title>ENGLISH  TEST @ high school by T.OAT</title>
+<title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
@@ -1084,9 +1084,9 @@ textarea:focus-visible{
     <div id="heroWrap">
       <img id="heroImg" alt="banner">
       <div id="heroDefault">
-        <div class="hero-eyebrow">✦ QUIZ EXAMINATION</div>
-        <div class="hero-title" id="heroTitle">ENGLISH TEST 🇹🇭 🇬🇧 </div>
-        <div class="hero-sub" id="heroSub">🇹🇭วิชาภาษาอังกฤษพื้นฐาน🇬🇧</div>
+        <div class="hero-eyebrow">✦ MIDTERM EXAMINATION</div>
+        <div class="hero-title" id="heroTitle">ENGLISH MIDTERM TEST</div>
+        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1111,7 +1111,7 @@ textarea:focus-visible{
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
+    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1376,7 +1376,7 @@ textarea:focus-visible{
           <div class="set-field"><label>ชื่อชุด</label><input type="text" id="bTitle"></div>
           <div class="set-field"><label>ต้องได้กี่คะแนนถึงผ่าน (จาก <span id="bQCount">0</span> ข้อ)</label><input type="number" id="bPassScore" min="0"></div>
           <div class="set-field"><label>ฝึกกู้คะแนน: จำนวนรอบขั้นต่ำ</label><input type="number" id="bPracRounds" min="1" max="200"></div>
-          <div class="set-field"><label>ฝึกกู้คะแนน: เฉลี่ยต้องได้อย่างน้อย (คะแนน)</label><input type="number" id="bPracScore" min="0"></div>
+          <div class="set-field"><label>ฝึกกู้คะแนน: เฉลี่ยต้องได้อย่างน้อย (จาก <span id="bAutoCount">0</span> ข้อตรวจอัตโนมัติ)</label><input type="number" id="bPracScore" min="0"></div>
           <div class="switch-row full"><span>📱 โหมดผ่อนปรน: ไม่จับสลับหน้าจอ (แนะนำสำหรับชุดข้อเขียนบน iPad)</span><label class="sw"><input type="checkbox" id="bRelax"><i></i></label></div>
         </div>
       </div>
@@ -1536,7 +1536,7 @@ textarea:focus-visible{
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 5 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1608,9 +1608,11 @@ function applySetCriteria(cfg){
   const num = (v, def) => (v!==undefined && v!==null && v!=='') ? Number(v) : def;
   Object.keys(EXAM_SETS).forEach(id=>{
     const c = map[id] || {};
-    const total = (EXAM_SETS[id].questions || []).length;
+    const qs = EXAM_SETS[id].questions || [];
+    const total = qs.length;
+    const autoTotal = qs.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length;
     const defPass = total ? Math.max(1, Math.round(total*0.5)) : 1;
-    const defPracScore = total ? Math.max(1, Math.round(total*0.9)) : 1;
+    const defPracScore = autoTotal ? Math.max(1, Math.round(autoTotal*0.9)) : 1;
     EXAM_SETS[id].passScore = num(c.passScore, defPass);
     EXAM_SETS[id].practiceMinRounds = num(c.practiceMinRounds, 15);
     EXAM_SETS[id].practiceMinScore = num(c.practiceMinScore, defPracScore);
@@ -3271,7 +3273,8 @@ function bLoadSet(id){
   $('bRelax').checked = BLD.relax;
   $('bPassScore').value = (s.passScore !== undefined) ? s.passScore : Math.round(BLD.questions.length*0.5);
   $('bPracRounds').value = s.practiceMinRounds || 15;
-  $('bPracScore').value = (s.practiceMinScore !== undefined) ? s.practiceMinScore : Math.round(BLD.questions.length*0.9);
+  $('bPracScore').value = (s.practiceMinScore !== undefined) ? s.practiceMinScore
+    : Math.round(BLD.questions.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length*0.9);
   $('bDelSet').classList.toggle('hidden', !s.fromSheet);
   $('bEditor').classList.add('hidden');
   bRenderList();
@@ -3296,7 +3299,9 @@ function bRenderList(){
   $('bCount').textContent = BLD.questions.length;
   $('bQCount').textContent = BLD.questions.length;
   $('bPassScore').max = BLD.questions.length;
-  $('bPracScore').max = BLD.questions.length;
+  const autoCount = BLD.questions.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length;
+  $('bAutoCount').textContent = autoCount;
+  $('bPracScore').max = autoCount;
   const box = $('bQList');
   if(!BLD.questions.length){ box.innerHTML = '<p class="hint">ยังไม่มีข้อสอบในชุดนี้ กดปุ่มด้านล่างเพื่อเพิ่ม</p>'; return; }
   box.innerHTML = BLD.questions.map((q,i)=>{
