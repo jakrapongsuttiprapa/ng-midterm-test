@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
-<title>ENGLISH TEST @ high school by T.OAT</title>
+<title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
@@ -24,6 +24,11 @@
   --radius:20px;
   --shadow:0 18px 50px rgba(5,8,30,.45);
   --font:'Kanit','Prompt','Noto Sans Thai',-apple-system,'Segoe UI',sans-serif;
+  /* พื้นหลังหลัก (ธีม gold/emerald/rose/ocean ที่ไม่มีพื้นหลังเฉพาะของตัวเอง) — โทนอัญมณีเข้มหลายสีผสมกันนุ่มนวลแบบออโรร่า
+     ทอง + มรกต + ไวน์ + ม่วงเข้ม ไล่เฉดเข้าหากันบนพื้นเกือบดำ ให้ความรู้สึกพรีเมียมมีมิติ ไม่ใช่โทนน้ำเงินเรียบๆ แบบเดิม */
+  --bg-deep:#0a0810;
+  --bg-gold-glow:rgba(247,201,72,.22); --bg-emerald-glow:rgba(45,175,130,.17);
+  --bg-wine-glow:rgba(205,64,112,.15); --bg-violet-glow:rgba(124,92,220,.18);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 button{font-family:var(--font);color:#fff;}
@@ -31,7 +36,7 @@ html,body{height:100%;}
 body{
   font-family:var(--font);
   color:#fff;
-  background:#0b1026;
+  background:var(--bg-deep);
   overscroll-behavior:none;
   -webkit-touch-callout:none;
 }
@@ -41,9 +46,11 @@ body{
 #bgLayer{
   position:fixed;inset:0;z-index:-2;
   background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(var(--blue-rgb),.34), transparent 62%),
-    radial-gradient(900px 700px at -10% 110%, rgba(var(--cyan-rgb),.24), transparent 58%),
-    linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%);
+    radial-gradient(900px 800px at 12% -4%, var(--bg-gold-glow), transparent 55%),
+    radial-gradient(1000px 850px at 102% 18%, var(--bg-violet-glow), transparent 58%),
+    radial-gradient(950px 900px at 88% 104%, var(--bg-emerald-glow), transparent 55%),
+    radial-gradient(850px 750px at -4% 92%, var(--bg-wine-glow), transparent 55%),
+    var(--bg-deep);
   background-size:cover;background-position:center;
 }
 #bgLayer.hasimg{background-size:cover;background-position:center;}
@@ -134,6 +141,16 @@ body{
 .stu-row.sel{background:rgba(var(--gold-rgb),.2);}
 .stu-row.sel .no-badge{color:#241c05;background:var(--gold);border-color:var(--gold);}
 .list-note{padding:22px;text-align:center;font-size:14px;color:#aab4e8;}
+.practice-pick-row{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  padding:14px 16px;margin-bottom:10px;border-radius:14px;
+  background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);
+  color:#fff;font-family:var(--font);touch-action:manipulation;
+}
+.practice-pick-row:last-child{margin-bottom:0;}
+.practice-pick-row b{display:block;font-size:15px;margin-bottom:3px;}
+.practice-pick-row .hint{margin:0;}
+.theme-paper .practice-pick-row{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
 
 #selSummary{
   display:none;margin-top:14px;border-radius:14px;padding:14px 16px;
@@ -325,7 +342,26 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 
 /* ---------- loading ---------- */
 .center-box{text-align:center;padding:70px 20px;}
-.spinner{width:46px;height:46px;border-radius:50%;border:4px solid rgba(255,255,255,.15);border-top-color:var(--gold);margin:0 auto 16px;animation:spin .9s linear infinite;}
+.spinner{position:relative;width:64px;height:64px;margin:0 auto 20px;}
+.spinner::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:3px solid rgba(255,255,255,.10);
+}
+.spinner::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg, transparent 0%, transparent 70%, rgba(var(--cyan-rgb),.9) 88%, var(--gold) 100%);
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  animation:spin 1s linear infinite, spinGlow 2.2s ease-in-out infinite;
+  transition:opacity .3s;
+}
+@keyframes spinGlow{
+  0%,100%{ filter:drop-shadow(0 0 6px rgba(var(--gold-rgb),.35)); }
+  50%{ filter:drop-shadow(0 0 15px rgba(var(--gold-rgb),.65)); }
+}
+/* สถานะข้อผิดพลาด — วงแหวนหยุดนิ่งและจางลง กันไม่ให้ดูเหมือนยังพยายามเชื่อมต่ออยู่ทั้งที่ข้อความบอกว่าล้มเหลวแล้ว */
+.spinner.err::after{ animation:none; opacity:.35; filter:none; }
+.spinner.err::before{ opacity:.5; }
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* ---------- footer ---------- */
@@ -349,7 +385,7 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .tab-btn.on{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;border-color:transparent;}
 .filters{display:flex;gap:10px;margin-bottom:12px;}
 .filters select{
-  flex:1;font-family:var(--font);font-size:14px;font-weight:500;padding:10px 12px;border-radius:11px;
+  flex:1;min-width:0;font-family:var(--font);font-size:14px;font-weight:500;padding:10px 12px;border-radius:11px;
   background:var(--navy2);color:#fff;border:1px solid var(--glass-line);
 }
 .tbl-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--glass-line);-webkit-overflow-scrolling:touch;}
@@ -364,9 +400,9 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .score-cell{font-weight:800;color:var(--gold);font-size:14px;}
 .set-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
 .set-field{display:flex;flex-direction:column;gap:6px;}
-.set-field.full{grid-column:1/-1;}
+.set-field.full,.set-grid .full{grid-column:1/-1;}
 .set-field label{font-size:12.5px;font-weight:600;color:#aab4e8;}
-.set-field input[type=text],.set-field input[type=number],.set-field textarea{
+.set-field input[type=text],.set-field input[type=number],.set-field textarea,.set-field select{
   font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;
   background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;width:100%;
 }
@@ -694,6 +730,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   color:#2b2b2b !important;
 }
 .theme-paper .hint{ color:#6b6152 !important; }
+.theme-paper .sw i{ background:#e5dcc3 !important; border:1px solid #c9b98f; }
 .theme-paper .btn{
   backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
   background:#efe6d3 !important; border:1px solid #c9b98f !important;
@@ -1004,13 +1041,17 @@ textarea:focus-visible{
   opacity:.55;
 }
 
-/* ลายจุดจาง ๆ ทั่วพื้นหลัง — เพิ่มผิวสัมผัสให้ไม่เรียบโล่ง */
+/* พื้นผิวเกรนละเอียดทั่วพื้นหลัง — ให้มิติแบบฟิล์ม แทนลายจุดเรียบๆ แบบเดิม */
 #bgLayer::before{
   content:''; position:absolute; inset:0; pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.055) 1px, transparent 1px);
-  background-size:24px 24px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.05;
+  mix-blend-mode:overlay;
 }
-.theme-paper #bgLayer::before{ background-image:radial-gradient(rgba(0,0,0,.055) 1px, transparent 1px); }
+.theme-paper #bgLayer::before{
+  background-image:radial-gradient(rgba(0,0,0,.055) 1px, transparent 1px);
+  background-size:24px 24px; opacity:1; mix-blend-mode:normal;
+}
 .theme-terminal #bgLayer::before, .theme-arcade #bgLayer::before{ content:none; }
 
 /* เลขลำดับขั้นตอนมีวงแหวนเรืองรอบ */
@@ -1026,25 +1067,7 @@ textarea:focus-visible{
 
 /* ══════════ ตกแต่งชุดที่ 2 ══════════ */
 
-/* หน้าจอกำลังโหลด — วงแหวนซ้อนสองชั้นหมุนสวนกัน */
 .center-box{ position:relative; }
-.spinner{ position:relative; width:58px; height:58px; border-width:3px; }
-.spinner::before, .spinner::after{
-  content:''; position:absolute; border-radius:50%; border:3px solid transparent;
-}
-.spinner::before{
-  inset:-11px; border-top-color:rgba(var(--cyan-rgb),.85); border-left-color:rgba(var(--cyan-rgb),.35);
-  animation:spin 1.7s linear infinite reverse;
-}
-.spinner::after{
-  inset:7px; border-bottom-color:rgba(var(--blue-rgb),.75);
-  animation:spin 1.2s linear infinite;
-}
-#scrLoading .center-box::after{
-  content:''; position:absolute; left:50%; top:104px; transform:translateX(-50%);
-  width:120px; height:3px; border-radius:3px;
-  background:linear-gradient(90deg, transparent, rgba(var(--gold-rgb),.55), transparent);
-}
 
 /* ช่องตารางตอนยังไม่มีข้อมูล — ให้ดูตั้งใจ ไม่ใช่ว่างเปล่า */
 .empty-cell{
@@ -1074,8 +1097,8 @@ textarea:focus-visible{
   <!-- ================= LOADING ================= -->
   <section class="screen active" id="scrLoading">
     <div class="center-box">
-      <div class="spinner"></div>
-      <p id="loadMsg" style="font-size:15px;color:#aab4e8;">loading...</p>
+      <div class="spinner" id="loadSpinner"></div>
+      <p id="loadMsg" style="font-size:15px;color:#aab4e8;">กำลังโหลดระบบสอบ...</p>
     </div>
   </section>
 
@@ -1084,9 +1107,9 @@ textarea:focus-visible{
     <div id="heroWrap">
       <img id="heroImg" alt="banner">
       <div id="heroDefault">
-        <div class="hero-eyebrow">✦ ENGLISH EXAMINATION</div>
-        <div class="hero-title" id="heroTitle">ENGLISH 🇬🇧 TEST</div>
-        <div class="hero-sub" id="heroSub">วิชาภาษาอังกฤษพื้นฐาน</div>
+        <div class="hero-eyebrow">✦ MIDTERM EXAMINATION</div>
+        <div class="hero-title" id="heroTitle">ENGLISH MIDTERM TEST</div>
+        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1095,23 +1118,23 @@ textarea:focus-visible{
     <div class="bar" id="closedBar">⛔ ขณะนี้ยังไม่เปิดการสอบ กรุณารอครูผู้คุมสอบประกาศ</div>
 
     <div class="card">
-      <h2><span class="stepnum">1</span> Class</h2>
+      <h2><span class="stepnum">1</span> เลือกระดับชั้น</h2>
       <div class="chips" id="classChips"></div>
     </div>
 
     <div class="card hidden" id="roomCard">
-      <h2><span class="stepnum">2</span> room </h2>
+      <h2><span class="stepnum">2</span> เลือกห้อง</h2>
       <div class="chips rooms" id="roomChips"></div>
     </div>
 
     <div class="card hidden" id="stuCard">
-      <h2><span class="stepnum">3</span> your name <span class="hint">(เลื่อนหา แล้วแตะเลือก)</span></h2>
+      <h2><span class="stepnum">3</span> เลือกชื่อของคุณ <span class="hint">(เลื่อนหา แล้วแตะเลือก)</span></h2>
       <div id="studentList"><div class="list-note">กำลังโหลดรายชื่อ...</div></div>
       <div id="selSummary"></div>
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH SYSTEM · <button id="adminLink">สำหรับครูโอ๊ต</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
+    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1222,11 +1245,22 @@ textarea:focus-visible{
   </section>
 
   <!-- ================= PRACTICE HOME ================= -->
+  <!-- ================= PRACTICE SET PICKER (เมื่อมีผลสอบให้เลือกมากกว่า 1 ชุด) ================= -->
+  <section class="screen" id="scrPracticeSetPicker">
+    <div class="card" style="text-align:center;">
+      <h2 style="justify-content:center;">🎯 เลือกชุดที่จะฝึกฝน</h2>
+      <p class="hint" style="margin-bottom:16px;">คุณมีผลสอบมากกว่า 1 ชุด เลือกชุดที่ต้องการฝึกฝนกู้คะแนน</p>
+      <div id="practiceSetList"></div>
+      <button id="btnPracticePickerBack" style="margin-top:16px;background:none;border:none;color:#aab4e8;text-decoration:underline;cursor:pointer;font-family:var(--font);font-size:12.5px;">← กลับหน้าแรก</button>
+    </div>
+  </section>
+
   <section class="screen" id="scrPracticeHome">
     <div class="card" style="text-align:center;">
       <h2 style="justify-content:center;">🎯 ฝึกฝนเพื่อแก้คะแนน</h2>
       <p class="hint" id="pgName">–</p>
       <p class="hint" style="margin-bottom:16px;">ชุดข้อสอบ: <b id="pgSetLabel" style="color:var(--gold);">–</b></p>
+      <p class="hint" id="pgFormula" style="margin-bottom:16px;"></p>
 
       <div class="info-chips" style="margin-bottom:6px;">
         <div class="info-chip"><b id="pgRoundsDone">0</b><span>รอบที่ทำแล้ว (ต้องครบ <span id="pgRoundsGoal">15</span>)</span></div>
@@ -1375,8 +1409,9 @@ textarea:focus-visible{
           <div class="set-field"><label>รหัสชุด (A-Z 0-9 _ เท่านั้น)</label><input type="text" id="bSetId"></div>
           <div class="set-field"><label>ชื่อชุด</label><input type="text" id="bTitle"></div>
           <div class="set-field"><label>ต้องได้กี่คะแนนถึงผ่าน (จาก <span id="bQCount">0</span> ข้อ)</label><input type="number" id="bPassScore" min="0"></div>
-          <div class="set-field"><label>ฝึกกู้คะแนน: จำนวนรอบขั้นต่ำ</label><input type="number" id="bPracRounds" min="1" max="200"></div>
           <div class="set-field"><label>ฝึกกู้คะแนน: เฉลี่ยต้องได้อย่างน้อย (จาก <span id="bAutoCount">0</span> ข้อตรวจอัตโนมัติ)</label><input type="number" id="bPracScore" min="0"></div>
+          <div class="switch-row full"><span>🎯 เปิดให้ฝึกกู้คะแนนสำหรับชุดนี้ (ปิดไว้ = นักเรียนมองไม่เห็นเลยว่ามีโหมดนี้)</span><label class="sw"><input type="checkbox" id="bPracEnabled"><i></i></label></div>
+          <p class="hint full" style="margin:-4px 0 0;">💡 จำนวนรอบที่ต้องฝึกคำนวณอัตโนมัติจาก "เกณฑ์ผ่าน − คะแนนที่นักเรียนได้" เช่น ผ่าน 40 นักเรียนได้ 35 → ต้องฝึก 5 รอบ (ใครพลาดเยอะกว่าก็ฝึกเยอะกว่า)</p>
           <div class="switch-row full"><span>📱 โหมดผ่อนปรน: ไม่จับสลับหน้าจอ (แนะนำสำหรับชุดข้อเขียนบน iPad)</span><label class="sw"><input type="checkbox" id="bRelax"><i></i></label></div>
         </div>
       </div>
@@ -1455,7 +1490,7 @@ textarea:focus-visible{
           <div class="switch-row"><span>แสดงคะแนนให้นักเรียนเห็น</span><label class="sw"><input type="checkbox" id="cfgShowScore"><i></i></label></div>
           <div class="switch-row"><span>สแกนใบหน้าก่อนสอบ</span><label class="sw"><input type="checkbox" id="cfgFace"><i></i></label></div>
         </div>
-        <p class="hint" style="margin-top:10px;">💡 เกณฑ์ผ่าน และเกณฑ์ฝึกกู้คะแนน ตั้งแยกตามแต่ละชุดข้อสอบได้ที่แท็บ "📝 สร้างข้อสอบ" (แต่ละชุดยากง่ายไม่เท่ากัน จึงไม่ใช้ค่าเดียวกันทั้งระบบ)</p>
+        <p class="hint" style="margin-top:10px;">💡 เกณฑ์ผ่าน และเปิด/ปิดโหมดฝึกกู้คะแนน ตั้งแยกตามแต่ละชุดข้อสอบได้ที่แท็บ "📝 สร้างข้อสอบ" (แต่ละชุดยากง่ายไม่เท่ากัน และบางชุดอาจไม่อยากเปิดให้ฝึก จึงตั้งแยกทีละชุด)</p>
       </div>
       <button class="btn btn-gold btn-block" id="btnSaveCfg">💾 บันทึกการตั้งค่า</button>
     </div>
@@ -1536,7 +1571,7 @@ textarea:focus-visible{
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 5 วินาที
+const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1614,11 +1649,12 @@ function applySetCriteria(cfg){
     const defPass = total ? Math.max(1, Math.round(total*0.5)) : 1;
     const defPracScore = autoTotal ? Math.max(1, Math.round(autoTotal*0.9)) : 1;
     EXAM_SETS[id].passScore = num(c.passScore, defPass);
-    EXAM_SETS[id].practiceMinRounds = num(c.practiceMinRounds, 15);
     EXAM_SETS[id].practiceMinScore = num(c.practiceMinScore, defPracScore);
+    EXAM_SETS[id].practiceEnabled = (c.practiceEnabled === true);
   });
 }
 function setLabel(id){ return EXAM_SETS[id] ? EXAM_SETS[id].title : (id || '–'); }
+function anyPracticeEnabled(){ return Object.keys(EXAM_SETS).some(id => EXAM_SETS[id].practiceEnabled); }
 
 /* ══════════════════ ระบบ (ไม่ต้องแก้ด้านล่างนี้) ══════════════════ */
 const SPD = (typeof window!=='undefined' && window.__TEST_SPEED) ? window.__TEST_SPEED : 1;
@@ -1635,7 +1671,7 @@ const S = {
   stream:null, timerInt:null, hbInt:null, adminInt:null,
   warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false, stopSeen:0,
   paused:false, resumeSeen:0, baseDurMs:0, extendMs:0, pausedRemainingSec:0,
-  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null
+  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null, practiceChoices:null
 };
 
 const $ = id => document.getElementById(id);
@@ -1798,6 +1834,7 @@ function applyConfig(cfg){
 async function boot(){
   S.isAdmin = new URLSearchParams(location.search).has('admin');
   if(!API_URL || API_URL.indexOf('/exec') === -1){
+    $('loadSpinner').classList.add('err');
     $('loadMsg').innerHTML = '⚠️ ยังไม่ได้ตั้งค่า API_URL<br><span class="hint">เปิดไฟล์ index.html แล้ววาง URL /exec ของ Google Apps Script ที่บรรทัด API_URL</span>';
     return;
   }
@@ -1812,6 +1849,7 @@ async function boot(){
     if(S.isAdmin){ show('scrAdminLogin'); }
     else{ buildRegister(); show('scrRegister'); }
   }catch(err){
+    $('loadSpinner').classList.add('err');
     $('loadMsg').innerHTML = '❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้<br><span class="hint">ตรวจสอบอินเทอร์เน็ต แล้วรีเฟรชหน้านี้</span>';
   }
 }
@@ -1819,6 +1857,7 @@ async function boot(){
 /* ══════════════════ REGISTER ══════════════════ */
 function buildRegister(){
   S.phase = 'register';
+  $('practiceLink').classList.toggle('hidden', !anyPracticeEnabled());
   const cc = $('classChips'); cc.innerHTML = '';
   CLASSES.forEach(c=>{
     const b = document.createElement('button');
@@ -1922,32 +1961,48 @@ async function confirmIdentity(){
 async function practiceEligibilityGate(cls, no, name){
   const r = await api({action:'practiceCheckEligibility', classLevel:cls, no:no, name:name});
   if(!r.ok) throw new Error();
-  if(!r.found){
-    modal('ยังไม่พบผลสอบ','ยังไม่พบว่าคุณเคยทำข้อสอบชุดนี้มาก่อน กรุณาทำข้อสอบจริงให้เสร็จก่อน แล้วค่อยกลับมาฝึกเพื่อแก้คะแนนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
-    return false;
+  if(!r.list.length){
+    modal('ยังไม่พบผลสอบ','ยังไม่พบว่าคุณเคยทำข้อสอบมาก่อน กรุณาทำข้อสอบจริงให้เสร็จก่อน แล้วค่อยกลับมาฝึกเพื่อแก้คะแนนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
+    return;
   }
-  if(r.pending > 0){
-    modal('มีข้อเขียนรอตรวจ','ข้อสอบของคุณยังมีข้อเขียนที่ครูยังไม่ได้ตรวจให้เสร็จ กรุณารอครูตรวจให้เสร็จก่อนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
-    return false;
+  S.practiceChoices = r.list;
+  if(r.list.length === 1){
+    await selectPracticeExam(r.list[0]);
+    return;
   }
-  S.practiceKey = r.key;
-  S.practiceSetId = r.setId;
-  useSet(r.setId);
-  if(r.score >= r.passScore){
-    modal('ผ่านเกณฑ์อยู่แล้ว 🎉','คุณผ่านเกณฑ์ข้อสอบชุดนี้แล้ว ('+r.score+'/'+r.total+') ไม่จำเป็นต้องฝึกเพิ่มก็ได้ครับ\nถ้าอยากฝึกฝนเพิ่มเติมก็ทำได้เลย',[
-      {label:'กลับหน้าแรก'},
+  renderPracticeSetPicker(r.list);
+  show('scrPracticeSetPicker');
+}
+function renderPracticeSetPicker(list){
+  $('practiceSetList').innerHTML = list.map((e,i)=>{
+    const badge = e.pending>0 ? '<span class="pill warn">รอตรวจข้อเขียน</span>'
+      : e.passed ? '<span class="pill ok">ผ่านแล้ว</span>' : '<span class="pill bad">ยังไม่ผ่าน</span>';
+    return '<button class="practice-pick-row" data-pick="'+i+'"><span><b>'+esc(e.setTitle)+'</b><span class="hint">'+e.score+'/'+e.total+' คะแนน</span></span>'+badge+'</button>';
+  }).join('');
+}
+async function selectPracticeExam(entry){
+  if(entry.pending > 0){
+    modal('มีข้อเขียนรอตรวจ','ข้อสอบชุดนี้ยังมีข้อเขียนที่ครูยังไม่ได้ตรวจให้เสร็จ กรุณารอครูตรวจให้เสร็จก่อนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
+    return;
+  }
+  S.practiceKey = entry.key;
+  S.practiceSetId = entry.setId;
+  useSet(entry.setId);
+  const hasMultiple = S.practiceChoices && S.practiceChoices.length > 1;
+  if(entry.score >= entry.passScore){
+    modal('ผ่านเกณฑ์อยู่แล้ว 🎉','คุณผ่านเกณฑ์ข้อสอบชุดนี้แล้ว ('+entry.score+'/'+entry.total+') ไม่จำเป็นต้องฝึกเพิ่มก็ได้ครับ\nถ้าอยากฝึกฝนเพิ่มเติมก็ทำได้เลย',[
+      {label: hasMultiple ? 'เลือกชุดอื่น' : 'กลับหน้าแรก', fn: hasMultiple ? (()=>show('scrPracticeSetPicker')) : undefined},
       {label:'ฝึกฝนต่อเลย', cls:'btn-gold', fn: enterPracticeHome}
     ]);
-    return false;
+    return;
   }
-  return true;
+  enterPracticeHome();
 }
 async function confirmIdentityForPractice(){
   const btn = $('btnConfirmId');
   btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ...';
   try{
-    const proceed = await practiceEligibilityGate(S.classLevel, S.student.no, S.student.name);
-    if(proceed) enterPracticeHome();
+    await practiceEligibilityGate(S.classLevel, S.student.no, S.student.name);
   }catch(err){
     toast('เชื่อมต่อไม่สำเร็จ ลองอีกครั้ง');
   }finally{
@@ -1957,8 +2012,7 @@ async function confirmIdentityForPractice(){
 async function enterPracticeFromResult(){
   S.entryMode = 'practice';
   try{
-    const proceed = await practiceEligibilityGate(S.classLevel, S.student.no, S.student.name);
-    if(proceed) enterPracticeHome();
+    await practiceEligibilityGate(S.classLevel, S.student.no, S.student.name);
   }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
 }
 async function enterPracticeHome(){
@@ -1979,6 +2033,7 @@ async function refreshPracticeSummary(){
 function renderPracticeHome(){
   const r = S.practiceSummary;
   if(!r) return;
+  $('pgFormula').textContent = 'เกณฑ์ผ่าน '+r.passScore+' คะแนน − คุณได้ '+r.origScore+' คะแนน = ต้องฝึกให้ครบ '+r.minRounds+' รอบ';
   $('pgRoundsDone').textContent = r.roundsDone;
   $('pgRoundsGoal').textContent = r.minRounds;
   $('pgAvgPct').textContent = r.avgScore + (r.total ? ' / '+r.total : '');
@@ -1992,6 +2047,7 @@ function renderPracticeHome(){
 }
 function startPracticeRound(){
   S.phase = 'practice';
+  S.practiceSubmitting = false;
   const N = QUESTIONS.length;
   const rng = mulberry32(Math.floor(Math.random()*1000000000));
   S.qOrder = seededShuffle(range(N), rng);
@@ -2022,10 +2078,13 @@ function confirmPracticeSubmit(){
   ]);
 }
 async function doPracticeSubmit(){
+  if(S.practiceSubmitting) return;
+  S.practiceSubmitting = true;
   const cs = computeScore();
   const score = cs.auto;
   const total = QUESTIONS.length - cs.manualIdx.length; // ไม่นับข้อที่ต้องให้ครูตรวจเอง (ไม่มีเฉลย) เป็นตัวหาร กันคะแนน% ถูกกดต่ำเกินจริง
   if(total <= 0){
+    S.practiceSubmitting = false;
     modal('ชุดนี้ยังฝึกอัตโนมัติไม่ได้','ชุดข้อสอบนี้เป็นข้อเขียนที่ต้องให้ครูตรวจเองทั้งหมด ระบบฝึกอัตโนมัติใช้ไม่ได้กับชุดนี้ กรุณาแจ้งครูผู้คุมสอบนะครับ',[{label:'กลับหน้าฝึกฝน', cls:'btn-gold', fn:enterPracticeHome}]);
     return;
   }
@@ -2034,8 +2093,10 @@ async function doPracticeSubmit(){
       setId:S.practiceSetId, score:score, total:total});
     if(!r.ok) throw new Error();
     S.practiceSummary = r;
+    S.practiceSubmitting = false;
     showPracticeRoundResult(score, total);
   }catch(e){
+    S.practiceSubmitting = false;
     modal('ส่งไม่สำเร็จ','การเชื่อมต่อขัดข้อง คำตอบรอบนี้ยังอยู่ครบ\nตรวจสอบอินเทอร์เน็ตแล้วลองส่งอีกครั้งนะครับ',[{label:'ลองอีกครั้ง', cls:'btn-gold', fn:doPracticeSubmit}]);
   }
 }
@@ -2639,10 +2700,12 @@ function showResult(score, auto, pending){
   if(S.violations > 0) sub += '<br><span style="color:#ff9d9d;">⚠ มีบันทึกพฤติกรรมผิดกติกา '+S.violations+' ครั้ง (แจ้งครูแล้ว)</span>';
   sub += '<br>ปิดหน้านี้ได้เลย';
   $('resSub').innerHTML = sub;
-  // ปุ่มฝึกกู้คะแนน — เด่นชัดถ้ารู้แน่ว่าไม่ผ่าน, ไม่งั้นแสดงเป็นลิงก์เล็กๆ ไว้เผื่อ (กรณีซ่อนคะแนน/รอตรวจข้อเขียน)
-  const knownFail = (S.config.showScore === 'true' && pending === 0 && pct < passPct);
+  // ปุ่มฝึกกู้คะแนน — ถ้าปิดใช้งานอยู่ ซ่อนทั้งคู่ไปเลย (ไม่ให้รู้ด้วยซ้ำว่ามีโหมดนี้)
+  // ถ้าเปิดอยู่: เด่นชัดถ้ารู้แน่ว่าไม่ผ่าน, ไม่งั้นแสดงเป็นลิงก์เล็กๆ ไว้เผื่อ (กรณีซ่อนคะแนน/รอตรวจข้อเขียน)
+  const practiceOn = anyPracticeEnabled();
+  const knownFail = (practiceOn && S.config.showScore === 'true' && pending === 0 && pct < passPct);
   $('btnResPractice').classList.toggle('hidden', !knownFail);
-  $('linkResPractice').classList.toggle('hidden', knownFail);
+  $('linkResPractice').classList.toggle('hidden', !practiceOn || knownFail);
   show('scrResult');
 }
 
@@ -3041,17 +3104,17 @@ function renderPracticeList(){
     return '<tr><td>'+esc(g.classLevel)+'/'+esc(g.room)+'</td><td>'+esc(g.no)+'</td><td class="name">'+esc(g.name)+'</td>'+
       '<td>'+esc(setLabel(g.setId))+'</td><td>'+g.roundsDone+'</td><td>'+g.avgScore+(g.total?'/'+g.total:'')+'</td>'+
       '<td class="hint" style="white-space:nowrap;">'+g.minRounds+' รอบ / '+g.minScore+' คะแนน</td><td>'+status+'</td>'+
-      '<td style="white-space:normal;"><button class="btn btn-sm btn-gold" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'" data-pname="'+esc(g.name)+'" style="margin-right:4px;">ปรับให้ผ่าน</button>'+
+      '<td style="white-space:normal;"><button class="btn btn-sm btn-gold" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'|'+esc(g.setId)+'" data-pname="'+esc(g.name)+'" style="margin-right:4px;">ปรับให้ผ่าน</button>'+
       '<button class="btn btn-sm btn-danger" data-pclr="'+esc(g.key)+'" data-pname="'+esc(g.name)+'">ล้างประวัติ</button></td></tr>';
   }).join('');
 }
-function askAdjustScore(clsNo, name){
-  const parts = clsNo.split('|');
-  const cls = parts[0], no = parts[1];
+function askAdjustScore(clsNoSet, name){
+  const parts = clsNoSet.split('|');
+  const cls = parts[0], no = parts[1], setId = parts[2] || '';
   const box = $('modalBox');
   box.className = 'modal';
   box.innerHTML = '<h3>✅ ปรับคะแนนให้ '+esc(name)+'</h3>'
-    + '<p class="hint" style="text-align:left;margin-bottom:10px;">ตรวจสอบหลักฐานที่นักเรียนแคปมาก่อน แล้วพิมพ์คะแนนใหม่ที่จะบันทึกแทนคะแนนสอบจริงเดิม</p>'
+    + '<p class="hint" style="text-align:left;margin-bottom:10px;">ชุด: <b style="color:var(--gold);">'+esc(setLabel(setId))+'</b><br>ตรวจสอบหลักฐานที่นักเรียนแคปมาก่อน แล้วพิมพ์คะแนนใหม่ที่จะบันทึกแทนคะแนนสอบจริงเดิม</p>'
     + '<div class="set-field full" style="margin-bottom:14px;text-align:left;"><label>คะแนนใหม่</label><input type="number" id="adjScoreInput" min="0" style="font-family:var(--font);font-size:16px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;width:100%;"></div>'
     + '<div class="row"><button class="btn" id="adjCancel">ยกเลิก</button><button class="btn btn-gold" id="adjSave">บันทึกคะแนนใหม่</button></div>';
   $('modalWrap').classList.add('show');
@@ -3060,7 +3123,7 @@ function askAdjustScore(clsNo, name){
     const v = Number($('adjScoreInput').value);
     if(isNaN(v) || v < 0){ toast('พิมพ์คะแนนให้ถูกต้องก่อน'); return; }
     try{
-      const r = await api({action:'adminPracticeSetScore', pin:S.adminPin, classLevel:cls, no:no, name:name, score:v});
+      const r = await api({action:'adminPracticeSetScore', pin:S.adminPin, classLevel:cls, no:no, name:name, setId:setId, score:v});
       if(r.ok){ closeModal(); toast('ปรับคะแนน '+name+' จาก '+r.oldScore+' เป็น '+r.newScore+' แล้ว ✓'); adminPollOnce(); }
       else toast('ปรับคะแนนไม่สำเร็จ: '+(r.error||''));
     }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
@@ -3272,9 +3335,9 @@ function bLoadSet(id){
   $('bTitle').value = BLD.title;
   $('bRelax').checked = BLD.relax;
   $('bPassScore').value = (s.passScore !== undefined) ? s.passScore : Math.round(BLD.questions.length*0.5);
-  $('bPracRounds').value = s.practiceMinRounds || 15;
   $('bPracScore').value = (s.practiceMinScore !== undefined) ? s.practiceMinScore
     : Math.round(BLD.questions.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length*0.9);
+  $('bPracEnabled').checked = !!s.practiceEnabled;
   $('bDelSet').classList.toggle('hidden', !s.fromSheet);
   $('bEditor').classList.add('hidden');
   bRenderList();
@@ -3288,8 +3351,8 @@ function bNewSet(){
   $('bTitle').value = BLD.title;
   $('bRelax').checked = false;
   $('bPassScore').value = '';
-  $('bPracRounds').value = 15;
   $('bPracScore').value = '';
+  $('bPracEnabled').checked = false;
   $('bDelSet').classList.add('hidden');
   $('bEditor').classList.add('hidden');
   bRenderList();
@@ -3337,7 +3400,16 @@ function bSaveQuestion(){
     const keys = $('eKeys').value.split('|').map(s=>s.trim()).filter(Boolean);
     item = { type:'written', q:qt, keys:keys, image:$('eImg').value.trim() };
   }else{
-    const choices = ['eC0','eC1','eC2','eC3'].map(id=>$(id).value.trim()).filter(Boolean);
+    const raw = ['eC0','eC1','eC2','eC3'].map(id=>$(id).value.trim());
+    // ต้องกรอกเรียงจาก A ห้ามเว้นช่องกลาง (เช่น กรอก A,C,D แต่เว้น B ว่าง) ไม่งั้นตำแหน่งเฉลยจะเลื่อนผิดข้อ
+    const choices = [];
+    for(let i=0;i<4;i++){
+      if(raw[i] === ''){
+        for(let j=i+1;j<4;j++){ if(raw[j] !== ''){ toast('กรอกตัวเลือกให้เรียงจาก A ห้ามเว้นช่องกลาง'); return; } }
+        break;
+      }
+      choices.push(raw[i]);
+    }
     if(choices.length < 2){ toast('ต้องมีตัวเลือกอย่างน้อย 2 ข้อ'); return; }
     const ansEl = document.querySelector('input[name=eAns]:checked');
     const answer = ansEl ? Number(ansEl.value) : 0;
@@ -3357,7 +3429,7 @@ async function bSaveSet(){
   try{
     const r = await api({action:'adminSaveSet', pin:S.adminPin, setId:setId,
       title:$('bTitle').value.trim() || setId, relax:$('bRelax').checked,
-      passScore:$('bPassScore').value, practiceMinRounds:$('bPracRounds').value, practiceMinScore:$('bPracScore').value,
+      passScore:$('bPassScore').value, practiceMinScore:$('bPracScore').value, practiceEnabled:$('bPracEnabled').checked,
       questions:BLD.questions});
     if(r.ok){
       mergeSheetSets(r.sets);
@@ -3448,6 +3520,7 @@ $('linkResPractice').addEventListener('click', enterPracticeFromResult);
 $('btnStartPracticeRound').addEventListener('click', startPracticeRound);
 $('btnPracticeProof').addEventListener('click', showPracticeProof);
 $('btnPracticeBack').addEventListener('click', exitPracticeMode);
+$('btnPracticePickerBack').addEventListener('click', exitPracticeMode);
 $('btnPracticeAgain').addEventListener('click', startPracticeRound);
 $('btnPracticeProof2').addEventListener('click', showPracticeProof);
 $('btnPracticeProofBack').addEventListener('click', enterPracticeHome);
@@ -3542,6 +3615,8 @@ document.addEventListener('click', e=>{
   if(padj){ askAdjustScore(padj.getAttribute('data-padj'), padj.getAttribute('data-pname')); return; }
   const pclr = e.target.closest('[data-pclr]');
   if(pclr){ askClearPractice(pclr.getAttribute('data-pclr'), pclr.getAttribute('data-pname')); return; }
+  const pick = e.target.closest('[data-pick]');
+  if(pick && S.practiceChoices){ selectPracticeExam(S.practiceChoices[Number(pick.getAttribute('data-pick'))]); return; }
   const g = e.target.closest('[data-grade]');
   if(g) openGrading(g.getAttribute('data-grade'));
 });
