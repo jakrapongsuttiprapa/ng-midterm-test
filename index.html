@@ -5,14 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
-<title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
+<title>ENGLISH TEST @ high school by T.OAT</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
 :root{
   --cardw: 760px;
   --ink:#0e1330;
-  --paper:rgba(255,255,255,.92);
   --glass:rgba(var(--glass-rgb),.68);
   --glass-line:rgba(255,255,255,.18);
   --navy1:#0b1026; --navy2:#1b2350; --navy3:#2b2f77;
@@ -150,7 +149,6 @@ body{
 .practice-pick-row:last-child{margin-bottom:0;}
 .practice-pick-row b{display:block;font-size:15px;margin-bottom:3px;}
 .practice-pick-row .hint{margin:0;}
-.theme-paper .practice-pick-row{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
 
 #selSummary{
   display:none;margin-top:14px;border-radius:14px;padding:14px 16px;
@@ -711,138 +709,31 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   animation:holoShift 5s linear infinite;
 }
 
-/* ---------- ธีมกระดาษข้อสอบ (Light Mode) — พลิกเป็นพื้นสว่าง ---------- */
-.theme-paper body{ color:#2b2b2b !important; }
-.theme-paper #bgLayer{
+/* ---------- ธีมแกรไฟต์-ทองแดง — หินชนวนเข้ม ขอบโลหะสนิมเขียว-ทองแดงเก่า ---------- */
+.theme-slate #bgLayer{
   background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(var(--blue-rgb),.08), transparent 60%),
-    radial-gradient(900px 700px at -10% 110%, rgba(var(--cyan-rgb),.06), transparent 55%),
-    linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%) !important;
+    radial-gradient(1000px 700px at 88% -8%, rgba(var(--gold-rgb),.16), transparent 58%),
+    radial-gradient(850px 680px at -8% 105%, rgba(var(--cyan-rgb),.15), transparent 55%),
+    linear-gradient(160deg,var(--navy1) 0%,var(--navy2) 55%,var(--navy3) 100%);
 }
-.theme-paper .card, .theme-paper .modal, .theme-paper .viol-card, .theme-paper .bc-card,
-.theme-paper .stat, .theme-paper .info-chip,
-.theme-paper #examHead, .theme-paper .chip, .theme-paper .choice, .theme-paper .stu-row,
-.theme-paper #studentList, .theme-paper #palette{
-  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
-  background:#fffdf6 !important;
-  border:1px solid #d8cba8 !important;
-  box-shadow:0 2px 6px rgba(0,0,0,.08) !important;
-  color:#2b2b2b !important;
+.theme-slate #bgLayer::before{
+  background-image:repeating-linear-gradient(115deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 4px);
+  opacity:1; mix-blend-mode:normal;
 }
-.theme-paper .hint{ color:#6b6152 !important; }
-.theme-paper .sw i{ background:#e5dcc3 !important; border:1px solid #c9b98f; }
-.theme-paper .btn{
-  backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
-  background:#efe6d3 !important; border:1px solid #c9b98f !important;
-  color:#2b2b2b !important; box-shadow:0 2px 4px rgba(0,0,0,.08) !important;
+.theme-slate .card, .theme-slate .modal{ position:relative; }
+.theme-slate .card::before, .theme-slate .modal::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg, rgba(var(--gold-rgb),.55), rgba(var(--cyan-rgb),.4) 50%, rgba(var(--gold-rgb),.55));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none;
 }
-.theme-paper .btn-gold{ background:linear-gradient(135deg,var(--gold),var(--gold-deep)) !important; color:#fff !important; box-shadow:0 4px 10px rgba(var(--gold-rgb),.35) !important; }
-.theme-paper .btn-danger{ color:#fff !important; }
-.theme-paper .chip{ color:#2b2b2b !important; }
-.theme-paper .chip.sel{ background:linear-gradient(135deg,var(--gold),var(--gold-deep)) !important; color:#fff !important; }
-.theme-paper .stu-row{ color:#2b2b2b !important; }
-.theme-paper .stu-row.sel{ background:rgba(var(--gold-rgb),.15) !important; }
-.theme-paper .stu-row .no-badge{ background:rgba(var(--cyan-rgb),.12) !important; border:1px solid rgba(var(--cyan-rgb),.5) !important; color:var(--cyan) !important; }
-.theme-paper .hero-eyebrow{ color:var(--gold) !important; border-color:rgba(var(--gold-rgb),.5) !important; }
-.theme-paper .hero-title{ color:#1a1a1a !important; }
-.theme-paper .hero-sub{ color:#4a4a4a !important; }
-.theme-paper .hero-school{ color:var(--cyan) !important; }
-.theme-paper #heroDefault{ background:linear-gradient(135deg,#fffdf6,#f2ead9) !important; border:1px solid #d8cba8 !important; box-shadow:0 2px 8px rgba(0,0,0,.08) !important; }
-.theme-paper #heroDefault::after{ display:none !important; }
-.theme-paper .choice{ background:#fffdf6 !important; border:1.5px solid #d8cba8 !important; color:#2b2b2b !important; }
-.theme-paper .choice .abc{ background:rgba(0,0,0,.06) !important; color:#2b2b2b !important; }
-.theme-paper .choice.sel{ background:rgba(var(--gold-rgb),.15) !important; border-color:var(--gold) !important; }
-.theme-paper .choice.sel .abc{ background:var(--gold) !important; color:#fff !important; }
-.theme-paper .ans-ta{ background:#fffdf6 !important; border:1.5px solid #d8cba8 !important; color:#2b2b2b !important; }
-.theme-paper #stuChip b{ color:#1a1a1a !important; }
-.theme-paper #stuChip span, .theme-paper #timerBox span, .theme-paper #hudProg span{ color:#6b6152 !important; }
-.theme-paper .score-ring{ background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.6), transparent 55%), linear-gradient(150deg,#fffdf6,#f2ead9) !important; border-color:var(--gold) !important; box-shadow:0 4px 14px rgba(0,0,0,.1) !important; }
-.theme-paper .score-ring span{ color:#6b6152 !important; }
-.theme-paper .result-msg{ color:#1a1a1a !important; }
-.theme-paper .result-sub{ color:#4a4a4a !important; }
-.theme-paper .modal h3{ color:#1a1a1a !important; }
-.theme-paper .modal p{ color:#4a4a4a !important; }
-.theme-paper .rules li{ color:#2b2b2b !important; }
-.theme-paper .info-chip b{ color:var(--gold) !important; }
-.theme-paper .info-chip span{ color:#6b6152 !important; }
-.theme-paper .scan-frame{ background:#1a1a1a !important; border:1px solid #d8cba8 !important; }
-.theme-paper .ai-warn{ background:#fdeceb !important; border:1px solid #e6b8b3 !important; color:#7a1f1f !important; }
-.theme-paper #foot{ color:#4a4a4a !important; text-shadow:none !important; }
-.theme-paper #adminLink{ background:#efe6d3 !important; border:1px solid #c9b98f !important; color:#2b2b2b !important; }
-.theme-paper .toast{ background:#2b2b2b !important; color:#fffdf6 !important; }
-.theme-paper .ad-head h1{ color:#1a1a1a !important; }
-.theme-paper .stat b{ color:var(--cyan) !important; }
-.theme-paper .stat.gold b{ color:var(--gold) !important; }
-.theme-paper .stat span{ color:#6b6152 !important; }
-.theme-paper .tbl-wrap{ border:1px solid #d8cba8 !important; }
-.theme-paper table{ color:#2b2b2b !important; }
-.theme-paper th{ background:rgba(0,0,0,.04) !important; color:#4a4a4a !important; }
-.theme-paper td{ border-top:1px solid #e5dcc4 !important; }
-.theme-paper .tab-btn{ background:#efe6d3 !important; color:#4a4a4a !important; }
-.theme-paper .tab-btn.on{ background:linear-gradient(135deg,var(--gold),var(--gold-deep)) !important; color:#fff !important; border-color:transparent !important; }
-.theme-paper .filters select, .theme-paper .set-field input, .theme-paper .set-field textarea, .theme-paper .map-row select, .theme-paper #bSetSel{
-  background:#fffdf6 !important; color:#2b2b2b !important; border:1px solid #d8cba8 !important;
+.theme-slate .btn-gold{
+  box-shadow:0 3px 10px rgba(var(--gold-rgb),.32), inset 0 1px 0 rgba(255,255,255,.16) !important;
 }
-.theme-paper .pill.ok{ background:rgba(22,163,74,.15) !important; color:#15803d !important; border-color:rgba(22,163,74,.4) !important; }
-.theme-paper .pill.warn{ background:rgba(217,119,6,.15) !important; color:#b45309 !important; border-color:rgba(217,119,6,.4) !important; }
-.theme-paper .pill.bad{ background:rgba(220,38,38,.15) !important; color:#b91c1c !important; border-color:rgba(220,38,38,.4) !important; }
-/* จอฉายหน้าห้อง (War Room) ไม่เข้าโหมดสว่าง — บังคับพื้นเข้มทั้งจอ ไม่งั้นตัวหนังสือสีอ่อนจะจมหาย */
-.theme-paper #warRoom{
-  background:radial-gradient(1000px 500px at 80% -10%,rgba(96,165,250,.18),transparent 60%),
-             linear-gradient(160deg,#070a1e,#141a3f) !important;
-  color:#fff !important;
+.theme-slate .hero-title, .theme-slate .result-msg{
+  text-shadow:0 1px 0 rgba(255,255,255,.06), 0 2px 3px rgba(0,0,0,.6);
 }
-.theme-paper .war-head h1{ color:#fff !important; text-shadow:none !important; }
-.theme-paper .war-vio-tg{ color:#aab4e8 !important; }
-.theme-paper .war-head select{ background:#141a3f !important; color:#fff !important; border:1px solid rgba(255,255,255,.18) !important; }
-.theme-paper #warBc{ background:rgba(56,44,6,.85) !important; color:#ffe9a8 !important; }
-.theme-paper .war-panel, .theme-paper .war-stat, .theme-paper .war-chip{
-  background:rgba(13,17,45,.75) !important; border:1px solid rgba(255,255,255,.18) !important; color:#fff !important;
-}
-.theme-paper .war-panel h2{ color:#cdd6ff !important; }
-.theme-paper .war-stat b{ color:#5eead4 !important; }
-.theme-paper .war-stat.gold b{ color:#f7c948 !important; }
-.theme-paper .war-stat span{ color:#aab4e8 !important; }
-.theme-paper .war-chip .nm{ color:#fff !important; }
-.theme-paper .war-chip .meta{ color:#9aa6e6 !important; }
-.theme-paper .war-bar b{ color:#fff !important; }
-.theme-paper .war-bar span{ color:#aab4e8 !important; }
-.theme-paper .feed-item{ background:rgba(255,255,255,.06) !important; color:#fff !important; }
-.theme-paper .feed-item.vio{ background:rgba(58,8,10,.72) !important; }
-/* พื้นสว่างแล้ว ตัวหนังสือต้องเข้มตาม */
-.theme-paper .pal{ color:#2b2b2b !important; border-color:#d8cba8 !important; }
-.theme-paper .pal.done{ background:rgba(var(--cyan-rgb),.18) !important; border-color:var(--cyan) !important; }
-.theme-paper .switch-row{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
-.theme-paper .bq{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
-.theme-paper .bq button{ background:#efe6d3 !important; border:1px solid #c9b98f !important; color:#2b2b2b !important; }
-.theme-paper .gr-item{ background:#fffdf6 !important; border:1px solid #d8cba8 !important; color:#2b2b2b !important; }
-.theme-paper .gr-item .ga{ background:rgba(0,0,0,.04) !important; color:#2b2b2b !important; }
-.theme-paper .gr-btns button{ background:#efe6d3 !important; border:1.5px solid #c9b98f !important; color:#2b2b2b !important; }
-.theme-paper .modal{ background:#fffdf6 !important; }
-.theme-paper .toast{ background:#2b2b2b !important; color:#fffdf6 !important; }
-.theme-paper .bc-card{ background:#fffdf6 !important; color:#2b2b2b !important; }
-.theme-paper .bc-card p{ color:#2b2b2b !important; }
-.theme-paper .war-head select, .theme-paper .map-row select{ background:#fffdf6 !important; color:#2b2b2b !important; }
-.theme-paper #annBar{ background:#fdf3d9 !important; color:#7a5c00 !important; border-color:rgba(var(--gold-rgb),.6) !important; }
-.theme-paper #closedBar{ background:#fdeceb !important; color:#7a1f1f !important; border-color:rgba(220,38,38,.5) !important; }
-.theme-paper .viol-card h3{ color:#b91c1c !important; }
-.theme-paper .viol-card p{ color:#7a1f1f !important; }
-.theme-paper .scan-steps li{ color:#6b6152 !important; }
-.theme-paper .scan-steps li.done{ color:#0a6e6e !important; }
-.theme-paper #camFail p{ color:#b91c1c !important; }
-.theme-paper #resSub span{ color:#b91c1c !important; }
-.theme-paper .stamp.t-ok{ color:#15803d !important; border-color:#15803d !important; }
-.theme-paper .stamp.t-red{ color:#b91c1c !important; border-color:#b91c1c !important; }
-.theme-paper .wr-badge{ color:#5b21b6 !important; background:rgba(124,58,237,.12) !important; border-color:rgba(124,58,237,.4) !important; }
-.theme-paper .list-note{ color:#6b6152 !important; }
-.theme-paper .set-field label{ color:#6b6152 !important; }
-.theme-paper #vioBadge{ color:#b91c1c !important; background:rgba(220,38,38,.15) !important; border-color:rgba(220,38,38,.4) !important; }
-.theme-paper #selSummary{ background:#fffdf6 !important; border:1px solid rgba(var(--cyan-rgb),.5) !important; color:#2b2b2b !important; }
-.theme-paper #selSummary b{ color:var(--cyan) !important; }
-.theme-paper #paletteLegend{ color:#6b6152 !important; }
-.theme-paper #paletteLegend i{ background:#fffdf6 !important; border-color:#d8cba8 !important; }
-.theme-paper #paletteLegend i.lg-done{ background:rgba(var(--cyan-rgb),.18) !important; border-color:var(--cyan) !important; }
-.theme-paper #paletteLegend i.lg-cur{ background:#fffdf6 !important; border-color:var(--gold) !important; }
 
 /* ══════════ ขัดเงา: hover / focus / scrollbar / การเลือกข้อความ ══════════ */
 
@@ -888,7 +779,6 @@ textarea:focus-visible{
 
 /* สีตอนลากเลือกข้อความ (ในช่องข้อเขียน/ฝั่งครู) */
 ::selection{ background:rgba(var(--gold-rgb),.35); color:#fff; }
-.theme-paper ::selection{ background:rgba(var(--gold-rgb),.28); color:#1a1a1a; }
 
 /* ══════════ ลูกเล่น: อนิเมชันตกแต่ง ══════════ */
 
@@ -989,7 +879,6 @@ textarea:focus-visible{
   background:radial-gradient(circle, rgba(var(--gold-rgb),.5), transparent 70%);
   animation:orbFloat linear infinite; opacity:.4; }
 @keyframes orbFloat{ from{ transform:translateY(12vh) translateX(0); } to{ transform:translateY(-112vh) translateX(28px); } }
-.theme-paper #orbLayer i{ opacity:.22; }
 .theme-neobu #orbLayer, .theme-arcade #orbLayer, .theme-terminal #orbLayer{ display:none; }
 
 /* ตอบครบทุกข้อแล้ว → ปุ่มส่งเต้นเบา ๆ บอกว่าพร้อมส่งได้ */
@@ -1048,10 +937,6 @@ textarea:focus-visible{
   opacity:.05;
   mix-blend-mode:overlay;
 }
-.theme-paper #bgLayer::before{
-  background-image:radial-gradient(rgba(0,0,0,.055) 1px, transparent 1px);
-  background-size:24px 24px; opacity:1; mix-blend-mode:normal;
-}
 .theme-terminal #bgLayer::before, .theme-arcade #bgLayer::before{ content:none; }
 
 /* เลขลำดับขั้นตอนมีวงแหวนเรืองรอบ */
@@ -1074,7 +959,6 @@ textarea:focus-visible{
   text-align:center !important; color:#8e98cf; font-size:14px; padding:26px 10px !important;
   letter-spacing:.02em;
 }
-.theme-paper .empty-cell{ color:#6b6152 !important; }
 
 /* การ์ดตัวเลขสรุปฝั่งครู — มีแถบสีเน้นด้านบน */
 .stat{ position:relative; overflow:hidden; }
@@ -1107,9 +991,9 @@ textarea:focus-visible{
     <div id="heroWrap">
       <img id="heroImg" alt="banner">
       <div id="heroDefault">
-        <div class="hero-eyebrow">✦ MIDTERM EXAMINATION</div>
-        <div class="hero-title" id="heroTitle">ENGLISH MIDTERM TEST</div>
-        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
+        <div class="hero-eyebrow">✦QUIZ EXAMINATION</div>
+        <div class="hero-title" id="heroTitle">ENGLISH TEST</div>
+        <div class="hero-sub" id="heroSub">วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1134,7 +1018,7 @@ textarea:focus-visible{
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
+    <div id="foot">ENGLISH SYSTEM · <button id="adminLink">T.OAT 🇬🇧 </button> · <button id="practiceLink">🍁 ฝึกฝนกู้คะแนน</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1468,7 +1352,7 @@ textarea:focus-visible{
             <option value="arcade">Retro Arcade (พิกเซล 8-bit)</option>
             <option value="terminal">Terminal แฮกเกอร์</option>
             <option value="holo">Holographic Y2K</option>
-            <option value="paper">กระดาษข้อสอบ (Light Mode)</option>
+            <option value="slate">แกรไฟต์-ทองแดง</option>
           </select></div>
           <div class="set-field"><label>เวลาสอบ (นาที)</label><input type="number" id="cfgDur" min="1" max="240"></div>
           <div class="set-field full"><label>ประกาศถึงนักเรียน (แสดงหน้าแรก, เว้นว่าง = ไม่แสดง)</label><textarea id="cfgAnn"></textarea></div>
@@ -1750,7 +1634,7 @@ const THEMES = {
   arcade:   { navy1:'#0a0a0a', navy2:'#0a0a0a', navy3:'#140a1e', gold:'#ffcc00', goldDeep:'#ff6600', cyan:'#00ffff', blue:'#0066ff', panelRgb:'18,18,26', glassRgb:'20,20,30', font:DEFAULT_FONT },
   terminal: { navy1:'#000000', navy2:'#000000', navy3:'#001a00', gold:'#33ff33', goldDeep:'#00cc00', cyan:'#00ff88', blue:'#00cc66', panelRgb:'0,22,0', glassRgb:'0,26,0', font:"'JetBrains Mono','Kanit','Noto Sans Thai',monospace" },
   holo:     { navy1:'#0d0221', navy2:'#1a0b3d', navy3:'#2d1b5e', gold:'#ff6ec7', goldDeep:'#7b2ff7', cyan:'#5ffbf1', blue:'#77a6f7', panelRgb:'26,14,58', glassRgb:'30,16,64', font:DEFAULT_FONT },
-  paper:    { navy1:'#f2ead9', navy2:'#efe6d3', navy3:'#eadfc8', gold:'#c1121f', goldDeep:'#780000', cyan:'#0a6e6e', blue:'#1d4e89', panelRgb:'255,253,246', glassRgb:'255,253,246', font:DEFAULT_FONT }
+  slate:    { navy1:'#14171b', navy2:'#1f242a', navy3:'#2c333b', gold:'#5fae94', goldDeep:'#3d8a70', cyan:'#c9915a', blue:'#7c8a99', panelRgb:'22,26,30', glassRgb:'19,23,27', font:DEFAULT_FONT }
 };
 function hexToRgbStr(hex){
   const h = String(hex||'').replace('#','');
@@ -1779,7 +1663,7 @@ function applyTheme(name){
   document.body.classList.toggle('theme-arcade', name === 'arcade');
   document.body.classList.toggle('theme-terminal', name === 'terminal');
   document.body.classList.toggle('theme-holo', name === 'holo');
-  document.body.classList.toggle('theme-paper', name === 'paper');
+  document.body.classList.toggle('theme-slate', name === 'slate');
 }
 function themeColor(varName, fallback){
   try{
@@ -2331,7 +2215,7 @@ function fireCdBurst(){
 function buildWatermark(){
   const raw = S.student.name+'   '+S.classLevel+'/'+S.room+' เลขที่ '+S.student.no;
   const safe = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const wmFill = document.body.classList.contains('theme-paper') ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.065)';
+  const wmFill = 'rgba(255,255,255,0.065)';
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="380" height="230">'
     + '<text x="12" y="125" transform="rotate(-24 190 115)" font-size="17" font-family="sans-serif" font-weight="600" fill="'+wmFill+'">'+safe+'</text>'
     + '</svg>';
@@ -2728,13 +2612,12 @@ async function downloadResultCard(){
   ctx.fillStyle = goldColor;
   ctx.font = 'bold 32px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.config.examTitle || 'ENGLISH MIDTERM TEST', 450, 95);
-  const isLight = document.body.classList.contains('theme-paper');
-  const txtSchool = isLight ? '#4a4a4a' : '#cdd6ff';
-  const txtMuted  = isLight ? '#6b6152' : '#aab4e8';
-  const txtName   = isLight ? '#1a1a1a' : '#ffffff';
-  const txtMeta   = isLight ? '#6b6152' : '#9aa6e6';
-  const txtDate   = isLight ? '#8a7f6b' : '#8e98cf';
-  const txtDone   = isLight ? '#15803d' : '#8df0b2';
+  const txtSchool = '#cdd6ff';
+  const txtMuted  = '#aab4e8';
+  const txtName   = '#ffffff';
+  const txtMeta   = '#9aa6e6';
+  const txtDate   = '#8e98cf';
+  const txtDone   = '#8df0b2';
   ctx.fillStyle = txtSchool;
   ctx.font = '17px "Kanit","Noto Sans Thai",sans-serif';
   ctx.fillText(S.config.schoolName || '', 450, 128);
@@ -3269,7 +3152,7 @@ function fillSettingsForm(cfg){
   const bd = parseInt(cfg.bgDim,10); $('cfgBgDim').value = isNaN(bd) ? 50 : bd;
   $('cfgHero').value = cfg.heroBanner;
   $('cfgCardW').value = parseInt(cfg.cardWidth,10)||760;
-  $('cfgTheme').value = cfg.colorTheme || 'gold';
+  $('cfgTheme').value = THEMES[cfg.colorTheme] ? cfg.colorTheme : 'gold';
   $('cfgDur').value = parseInt(cfg.durationMinutes,10)||60;
   $('cfgAnn').value = cfg.announcement;
   $('cfgOpen').checked = cfg.examOpen === 'true';
