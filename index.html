@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
-<title>ENGLISH MIDTERM TEST @ high school by T.OAT</title>
+<title>🇬🇧 ENGLISH TEST @ high school by T.OAT🇬🇧 </title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 /* ================= DESIGN TOKENS ================= */
@@ -991,9 +991,9 @@ textarea:focus-visible{
     <div id="heroWrap">
       <img id="heroImg" alt="banner">
       <div id="heroDefault">
-        <div class="hero-eyebrow">✦ MIDTERM EXAMINATION</div>
-        <div class="hero-title" id="heroTitle">ENGLISH MIDTERM TEST</div>
-        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
+        <div class="hero-eyebrow">✦ QUIZ EXAMINATION</div>
+        <div class="hero-title" id="heroTitle">ENGLISH 🇬🇧 TEST 🇹🇭 </div>
+        <div class="hero-sub" id="heroSub">วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1017,8 +1017,8 @@ textarea:focus-visible{
       <div id="selSummary"></div>
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
-
-    <div id="foot">ENGLISH MIDTERM SYSTEM · <button id="adminLink">สำหรับครูผู้คุมสอบ</button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
+ 
+    <div id="foot"> ENGLISH 😊 SYSTEM · <button id="adminLink"> 🇬🇧 T.OAT 🍁 </button> · <button id="practiceLink"> 🇹🇭 ฝึกฝนกู้คะแนน</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1133,7 +1133,7 @@ textarea:focus-visible{
   <section class="screen" id="scrPracticeSetPicker">
     <div class="card" style="text-align:center;">
       <h2 style="justify-content:center;">🎯 เลือกชุดที่จะฝึกฝน</h2>
-      <p class="hint" style="margin-bottom:16px;">คุณมีผลสอบมากกว่า 1 ชุด เลือกชุดที่ต้องการฝึกฝนกู้คะแนน</p>
+      <p class="hint" style="margin-bottom:16px;">มีมากกว่า 1 ชุด เลือกชุดที่ต้องการฝึกฝนกู้คะแนน</p>
       <div id="practiceSetList"></div>
       <button id="btnPracticePickerBack" style="margin-top:16px;background:none;border:none;color:#aab4e8;text-decoration:underline;cursor:pointer;font-family:var(--font);font-size:12.5px;">← กลับหน้าแรก</button>
     </div>
@@ -1452,7 +1452,7 @@ textarea:focus-visible{
    ⚙️ ตั้งค่าหลัก — ครู OAT แก้ตรงนี้
    1) วาง URL ของ Web App (Google Apps Script) ที่ลงท้ายด้วย /exec
 ══════════════════════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
+const API_URL = 'วาง_URL_/exec_ตรงนี้';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
 const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
@@ -1555,7 +1555,7 @@ const S = {
   stream:null, timerInt:null, hbInt:null, adminInt:null,
   warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false, stopSeen:0,
   paused:false, resumeSeen:0, baseDurMs:0, extendMs:0, pausedRemainingSec:0,
-  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null, practiceChoices:null
+  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null, practiceChoices:null, practiceNotTaken:false
 };
 
 const $ = id => document.getElementById(id);
@@ -1846,7 +1846,7 @@ async function practiceEligibilityGate(cls, no, name){
   const r = await api({action:'practiceCheckEligibility', classLevel:cls, no:no, name:name});
   if(!r.ok) throw new Error();
   if(!r.list.length){
-    modal('ยังไม่พบผลสอบ','ยังไม่พบว่าคุณเคยทำข้อสอบมาก่อน กรุณาทำข้อสอบจริงให้เสร็จก่อน แล้วค่อยกลับมาฝึกเพื่อแก้คะแนนนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
+    modal('ยังไม่เปิดให้ฝึกตอนนี้','ตอนนี้ยังไม่มีชุดข้อสอบที่เปิดให้ฝึกฝนกู้คะแนน กรุณาลองใหม่ภายหลังนะครับ',[{label:'รับทราบ',cls:'btn-gold'}]);
     return;
   }
   S.practiceChoices = r.list;
@@ -1859,9 +1859,11 @@ async function practiceEligibilityGate(cls, no, name){
 }
 function renderPracticeSetPicker(list){
   $('practiceSetList').innerHTML = list.map((e,i)=>{
-    const badge = e.pending>0 ? '<span class="pill warn">รอตรวจข้อเขียน</span>'
+    const badge = e.notTaken ? '<span class="pill warn">ยังไม่เคยสอบ</span>'
+      : e.pending>0 ? '<span class="pill warn">รอตรวจข้อเขียน</span>'
       : e.passed ? '<span class="pill ok">ผ่านแล้ว</span>' : '<span class="pill bad">ยังไม่ผ่าน</span>';
-    return '<button class="practice-pick-row" data-pick="'+i+'"><span><b>'+esc(e.setTitle)+'</b><span class="hint">'+e.score+'/'+e.total+' คะแนน</span></span>'+badge+'</button>';
+    const scoreLine = e.notTaken ? 'ยังไม่เคยทำข้อสอบชุดนี้' : (e.score+'/'+e.total+' คะแนน');
+    return '<button class="practice-pick-row" data-pick="'+i+'"><span><b>'+esc(e.setTitle)+'</b><span class="hint">'+scoreLine+'</span></span>'+badge+'</button>';
   }).join('');
 }
 async function selectPracticeExam(entry){
@@ -1871,9 +1873,10 @@ async function selectPracticeExam(entry){
   }
   S.practiceKey = entry.key;
   S.practiceSetId = entry.setId;
+  S.practiceNotTaken = !!entry.notTaken;
   useSet(entry.setId);
   const hasMultiple = S.practiceChoices && S.practiceChoices.length > 1;
-  if(entry.score >= entry.passScore){
+  if(!entry.notTaken && entry.score >= entry.passScore){
     modal('ผ่านเกณฑ์อยู่แล้ว 🎉','คุณผ่านเกณฑ์ข้อสอบชุดนี้แล้ว ('+entry.score+'/'+entry.total+') ไม่จำเป็นต้องฝึกเพิ่มก็ได้ครับ\nถ้าอยากฝึกฝนเพิ่มเติมก็ทำได้เลย',[
       {label: hasMultiple ? 'เลือกชุดอื่น' : 'กลับหน้าแรก', fn: hasMultiple ? (()=>show('scrPracticeSetPicker')) : undefined},
       {label:'ฝึกฝนต่อเลย', cls:'btn-gold', fn: enterPracticeHome}
@@ -1917,7 +1920,9 @@ async function refreshPracticeSummary(){
 function renderPracticeHome(){
   const r = S.practiceSummary;
   if(!r) return;
-  $('pgFormula').textContent = 'เกณฑ์ผ่าน '+r.passScore+' คะแนน − คุณได้ '+r.origScore+' คะแนน = ต้องฝึกให้ครบ '+r.minRounds+' รอบ';
+  $('pgFormula').textContent = S.practiceNotTaken
+    ? 'ยังไม่เคยทำข้อสอบชุดนี้ — ต้องฝึกให้ครบ '+r.minRounds+' รอบ (เท่ากับเกณฑ์ผ่าน '+r.passScore+' คะแนน)'
+    : 'เกณฑ์ผ่าน '+r.passScore+' คะแนน − คุณได้ '+r.origScore+' คะแนน = ต้องฝึกให้ครบ '+r.minRounds+' รอบ';
   $('pgRoundsDone').textContent = r.roundsDone;
   $('pgRoundsGoal').textContent = r.minRounds;
   $('pgAvgPct').textContent = r.avgScore + (r.total ? ' / '+r.total : '');
@@ -2987,27 +2992,27 @@ function renderPracticeList(){
     return '<tr><td>'+esc(g.classLevel)+'/'+esc(g.room)+'</td><td>'+esc(g.no)+'</td><td class="name">'+esc(g.name)+'</td>'+
       '<td>'+esc(setLabel(g.setId))+'</td><td>'+g.roundsDone+'</td><td>'+g.avgScore+(g.total?'/'+g.total:'')+'</td>'+
       '<td class="hint" style="white-space:nowrap;">'+g.minRounds+' รอบ / '+g.minScore+' คะแนน</td><td>'+status+'</td>'+
-      '<td style="white-space:normal;"><button class="btn btn-sm btn-gold" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'|'+esc(g.setId)+'" data-pname="'+esc(g.name)+'" style="margin-right:4px;">ปรับให้ผ่าน</button>'+
+      '<td style="white-space:normal;"><button class="btn btn-sm btn-gold" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'|'+esc(g.setId)+'|'+esc(g.room)+'" data-pname="'+esc(g.name)+'" style="margin-right:4px;">ปรับให้ผ่าน</button>'+
       '<button class="btn btn-sm btn-danger" data-pclr="'+esc(g.key)+'" data-pname="'+esc(g.name)+'">ล้างประวัติ</button></td></tr>';
   }).join('');
 }
 function askAdjustScore(clsNoSet, name){
   const parts = clsNoSet.split('|');
-  const cls = parts[0], no = parts[1], setId = parts[2] || '';
+  const cls = parts[0], no = parts[1], setId = parts[2] || '', room = parts[3] || '';
   const box = $('modalBox');
   box.className = 'modal';
   box.innerHTML = '<h3>✅ ปรับคะแนนให้ '+esc(name)+'</h3>'
-    + '<p class="hint" style="text-align:left;margin-bottom:10px;">ชุด: <b style="color:var(--gold);">'+esc(setLabel(setId))+'</b><br>ตรวจสอบหลักฐานที่นักเรียนแคปมาก่อน แล้วพิมพ์คะแนนใหม่ที่จะบันทึกแทนคะแนนสอบจริงเดิม</p>'
-    + '<div class="set-field full" style="margin-bottom:14px;text-align:left;"><label>คะแนนใหม่</label><input type="number" id="adjScoreInput" min="0" style="font-family:var(--font);font-size:16px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;width:100%;"></div>'
-    + '<div class="row"><button class="btn" id="adjCancel">ยกเลิก</button><button class="btn btn-gold" id="adjSave">บันทึกคะแนนใหม่</button></div>';
+    + '<p class="hint" style="text-align:left;margin-bottom:10px;">ชุด: <b style="color:var(--gold);">'+esc(setLabel(setId))+'</b><br>ตรวจสอบหลักฐานที่นักเรียนแคปมาก่อน แล้วพิมพ์คะแนนที่จะบันทึกเป็นผลของชุดนี้</p>'
+    + '<div class="set-field full" style="margin-bottom:14px;text-align:left;"><label>คะแนน</label><input type="number" id="adjScoreInput" min="0" style="font-family:var(--font);font-size:16px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;width:100%;"></div>'
+    + '<div class="row"><button class="btn" id="adjCancel">ยกเลิก</button><button class="btn btn-gold" id="adjSave">บันทึกคะแนน</button></div>';
   $('modalWrap').classList.add('show');
   box.querySelector('#adjCancel').addEventListener('click', closeModal);
   box.querySelector('#adjSave').addEventListener('click', async ()=>{
     const v = Number($('adjScoreInput').value);
     if(isNaN(v) || v < 0){ toast('พิมพ์คะแนนให้ถูกต้องก่อน'); return; }
     try{
-      const r = await api({action:'adminPracticeSetScore', pin:S.adminPin, classLevel:cls, no:no, name:name, setId:setId, score:v});
-      if(r.ok){ closeModal(); toast('ปรับคะแนน '+name+' จาก '+r.oldScore+' เป็น '+r.newScore+' แล้ว ✓'); adminPollOnce(); }
+      const r = await api({action:'adminPracticeSetScore', pin:S.adminPin, classLevel:cls, no:no, name:name, setId:setId, room:room, score:v});
+      if(r.ok){ closeModal(); toast('บันทึกคะแนน '+name+' เป็น '+r.newScore+' แล้ว ✓'); adminPollOnce(); }
       else toast('ปรับคะแนนไม่สำเร็จ: '+(r.error||''));
     }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
   });
