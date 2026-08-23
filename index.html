@@ -368,6 +368,86 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 #adminLink{color:#e3e8ff;text-decoration:underline;cursor:pointer;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;margin-left:4px;}
 #practiceLink{color:var(--gold);text-decoration:underline;cursor:pointer;background:rgba(var(--gold-rgb),.12);border:1px solid rgba(var(--gold-rgb),.4);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;}
 
+/* ---------- แชทครู ⇄ นักเรียน ---------- */
+#chatFab{
+  position:fixed;left:12px;bottom:12px;z-index:62;display:none;
+  width:54px;height:54px;border-radius:50%;cursor:pointer;font-size:23px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;
+  border:none;box-shadow:0 8px 24px rgba(0,0,0,.45);touch-action:manipulation;
+}
+#chatFab.show{display:block;}
+#chatFab .dot{
+  position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:99px;
+  background:var(--bad);color:#fff;font-size:11px;font-weight:800;line-height:20px;
+  padding:0 5px;box-shadow:0 0 0 2px rgba(0,0,0,.35);display:none;
+}
+#chatFab.unread .dot{display:block;animation:pulse 1.2s infinite;}
+#chatPanel{
+  position:fixed;left:12px;bottom:12px;z-index:63;width:min(340px,calc(100vw - 24px));
+  display:none;flex-direction:column;border-radius:18px;overflow:hidden;
+  background:var(--navy2);border:1px solid rgba(var(--gold-rgb),.45);box-shadow:0 22px 60px rgba(0,0,0,.6);
+}
+#chatPanel.show{display:flex;animation:fadeUp .25s ease both;}
+#chatHead{
+  display:flex;align-items:center;gap:8px;padding:12px 14px;
+  background:rgba(var(--gold-rgb),.14);border-bottom:1px solid rgba(255,255,255,.1);
+}
+#chatHead b{font-size:14px;flex:1;}
+#chatClose{background:none;border:none;color:#aab4e8;font-size:19px;cursor:pointer;padding:0 4px;line-height:1;}
+#chatBody{
+  padding:12px 14px;display:flex;flex-direction:column;gap:9px;
+  height:min(300px,42vh);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:rgba(var(--gold-rgb),.5) transparent;
+}
+.chat-empty{font-size:13px;color:#8e98cf;text-align:center;padding:28px 8px;line-height:1.7;}
+.chat-b{
+  max-width:82%;border-radius:14px;padding:9px 12px;font-size:14px;line-height:1.6;
+  word-break:break-word;white-space:pre-wrap;animation:fadeUp .25s ease both;
+}
+.chat-b.t{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);border-bottom-left-radius:4px;}
+.chat-b.s{align-self:flex-end;background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;font-weight:500;border-bottom-right-radius:4px;}
+.chat-b .who{display:block;font-size:10.5px;opacity:.72;margin-bottom:3px;font-weight:600;}
+#chatFoot{display:flex;gap:8px;padding:11px 12px;border-top:1px solid rgba(255,255,255,.1);}
+#chatInput{
+  flex:1;min-width:0;font-family:var(--font);font-size:14px;padding:10px 12px;border-radius:11px;
+  background:rgba(255,255,255,.09);border:1px solid var(--glass-line);color:#fff;resize:none;
+}
+#chatInput:focus{outline:none;border-color:var(--gold);}
+#chatSend{
+  flex:none;border:none;cursor:pointer;border-radius:11px;padding:0 15px;font-size:17px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#241c05;touch-action:manipulation;
+}
+#chatSend:disabled{opacity:.45;cursor:not-allowed;}
+/* ฝั่งครู: บทสนทนาในกล่องข้อความ */
+#dmThread{
+  display:flex;flex-direction:column;gap:9px;max-height:38vh;overflow-y:auto;
+  margin-bottom:12px;padding:11px;border-radius:12px;
+  background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);
+  scrollbar-width:thin;scrollbar-color:rgba(var(--gold-rgb),.5) transparent;
+}
+
+/* ปุ่มจัดการในตาราง — ไอคอนสี่เหลี่ยมเล็กๆ เรียงชิดกัน ไม่กินความกว้างตารางเหมือนปุ่มข้อความยาวๆ */
+.act-cell{white-space:nowrap!important;}
+.act-row{display:inline-flex;gap:5px;align-items:center;}
+.icon-btn{
+  width:34px;height:34px;flex:none;padding:0;border-radius:9px;cursor:pointer;
+  font-family:var(--font);font-size:15px;line-height:1;position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(var(--panel-rgb),.75);border:1px solid var(--glass-line);color:#fff;
+  transition:transform .12s,filter .12s;touch-action:manipulation;
+}
+.icon-btn:active{transform:scale(.92);}
+.icon-btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold-deep));border-color:transparent;color:#241c05;}
+.icon-btn.danger{background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.5);color:#ff9d9d;}
+.icon-btn.wide{width:auto;padding:0 11px;font-size:13px;font-weight:700;gap:5px;}
+.icon-btn .ping{
+  position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;
+  background:var(--bad);box-shadow:0 0 0 2px var(--navy2);animation:pulse 1.2s infinite;
+}
+@media (hover:hover) and (pointer:fine){ .icon-btn:hover{filter:brightness(1.25);} }
+.act-legend{font-size:12px;color:#8e98cf;margin-bottom:10px;display:flex;gap:14px;flex-wrap:wrap;}
+.act-legend span{display:inline-flex;align-items:center;gap:5px;}
+
 /* ---------- admin ---------- */
 .ad-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
 .ad-head h1{font-size:20px;font-weight:800;}
@@ -599,6 +679,11 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   box-shadow:1px 1px 0 #000 !important;
   transform:translate(3px,3px) !important;
 }
+.theme-neobu .icon-btn{
+  border-radius:6px !important; border:2.5px solid #000 !important;
+  box-shadow:3px 3px 0 #000 !important; transition:transform .08s, box-shadow .08s !important;
+}
+.theme-neobu .icon-btn:active{ box-shadow:1px 1px 0 #000 !important; transform:translate(2px,2px) !important; }
 .theme-neobu .choice.sel{ border-color:var(--gold) !important; }
 .theme-neobu .score-ring{ border:5px solid #000 !important; box-shadow:6px 6px 0 #000 !important; }
 .theme-neobu .score-ring::before{ display:none; }
@@ -636,6 +721,11 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   transition:transform .08s, box-shadow .08s !important;
 }
 .theme-arcade .btn:active{ box-shadow:1px 1px 0 rgba(0,0,0,.8) !important; transform:translate(3px,3px) !important; }
+.theme-arcade .icon-btn{
+  border-radius:3px !important; border:2.5px solid #000 !important;
+  box-shadow:3px 3px 0 rgba(0,0,0,.8) !important; transition:transform .08s, box-shadow .08s !important;
+}
+.theme-arcade .icon-btn:active{ box-shadow:1px 1px 0 rgba(0,0,0,.8) !important; transform:translate(2px,2px) !important; }
 .theme-arcade .pal{ border-radius:2px !important; border:2px solid var(--gold) !important; }
 .theme-arcade .score-ring{ border:4px solid var(--gold) !important; border-radius:50% !important; box-shadow:6px 6px 0 rgba(0,0,0,.8) !important; }
 .theme-arcade .score-ring::before{ display:none; }
@@ -783,6 +873,7 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 
 /* วงแหวนโฟกัสสำหรับคนที่กด Tab เลื่อน (คีย์บอร์ด) — ไม่ขึ้นตอนคลิกเมาส์ */
 .btn:focus-visible,
+.icon-btn:focus-visible,
 .chip:focus-visible,
 .choice:focus-visible,
 .stu-row:focus-visible,
@@ -1023,7 +1114,7 @@ textarea:focus-visible{
       <div id="heroDefault">
         <div class="hero-eyebrow">✦ ENGLISH 🇬🇧 EXAMINATION</div>
         <div class="hero-title" id="heroTitle">ENGLISH 🇬🇧 TEST</div>
-        <div class="hero-sub" id="heroSub">วิชาภาษาอังกฤษพื้นฐาน</div>
+        <div class="hero-sub" id="heroSub">การสอบกลางภาค วิชาภาษาอังกฤษพื้นฐาน</div>
         <div class="hero-school" id="heroSchool">@ high school by T.OAT</div>
       </div>
     </div>
@@ -1048,14 +1139,14 @@ textarea:focus-visible{
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH 🍁 SYSTEM · <button id="adminLink">🇹🇭 T.OAT 🇬🇧 </button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
+    <div id="foot">ENGLISH 🍁 SYSTEM · <button id="adminLink">🇹🇭 T.OAT 🇬🇧 </button> · <button id="practiceLink">🎯 ฝึกฝนกู้เอกราช</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
   <section class="screen" id="scrScan">
     <div class="card" style="text-align:center;">
       <h2 style="justify-content:center;">🛡️ ยืนยันใบหน้าก่อนเข้าสอบ 😳 </h2>
-      <p class="hint" style="margin-bottom:25px;">จัดใบหน้าให้อยู่กลางกรอบ และอยู่ในที่ที่มีแสงเพียงพอ</p>
+      <p class="hint" style="margin-bottom:16px;">จัดใบหน้าให้อยู่กลางกรอบ และอยู่ในที่ที่มีแสงเพียงพอ</p>
 
       <div class="scan-frame" id="scanFrame">
         <video id="camVideo" autoplay muted playsinline></video>
@@ -1153,7 +1244,7 @@ textarea:focus-visible{
       <div id="stampWrap"><span class="stamp" id="stampEl"></span></div>
       <div class="result-sub" id="resSub" style="margin-top:12px;"></div>
       <button class="btn btn-gold btn-block" id="btnDownloadCard" style="margin-top:18px;">📸 บันทึกภาพผลสอบเอาไว้ส่งครูโอ๊ต </button>
-      <button class="btn btn-block hidden" id="btnResPractice" style="margin-top:10px;border:1.5px solid rgba(var(--gold-rgb),.5);">🎯 ยังไม่ผ่านนะ — ต้องฝึกฝนเพื่อแก้คะแนน</button>
+      <button class="btn btn-block hidden" id="btnResPractice" style="margin-top:10px;border:1.5px solid rgba(var(--gold-rgb),.5);">🎯 ยังไม่ผ่านเกณฑ์ — ฝึกฝนเพื่อแก้คะแนน</button>
       <button id="linkResPractice" class="hidden" style="margin-top:12px;background:none;border:none;color:var(--gold);text-decoration:underline;cursor:pointer;font-family:var(--font);font-size:12.5px;">🎯 ฝึกฝนกู้คะแนน (ถ้ายังไม่ผ่านเกณฑ์)</button>
     </div>
   </section>
@@ -1208,8 +1299,8 @@ textarea:focus-visible{
   <section class="screen" id="scrPracticeProof">
     <div class="card" id="proofCard" style="text-align:center;">
       <div style="font-size:44px;">🏅</div>
-      <h2 style="justify-content:center;">ผ่านเกณฑ์ฝึกฝนกู้คะแนนแล้ว! 🥳 </h2>
-      <p class="hint" style="margin-bottom:16px;">แคปหน้าจอนี้ทั้งหมด แล้วนำไปส่งครูโอ๊ตเพื่อแก้คะแนนสอบจริง</p>
+      <h2 style="justify-content:center;">ผ่านเกณฑ์ฝึกฝนกู้คะแนนแล้ว!</h2>
+      <p class="hint" style="margin-bottom:16px;">แคปหน้าจอนี้ทั้งหมด แล้วนำไปส่งครูเพื่อแก้คะแนนสอบจริง</p>
       <div class="info-chips">
         <div class="info-chip"><b id="pfRounds">0</b><span>รอบที่ฝึกทั้งหมด</span></div>
         <div class="info-chip"><b id="pfAvg">0</b><span>คะแนนเฉลี่ย</span></div>
@@ -1289,6 +1380,9 @@ textarea:focus-visible{
 
       <div class="card">
         <h2>🟢 กำลังสอบอยู่ตอนนี้ <span class="hint">(อัปเดตทุก 2 วินาที)</span></h2>
+        <div class="act-legend">
+          <span>⏸️ พัก</span><span>▶️ ทำต่อ</span><span>💬 คุยกับนักเรียน</span><span>🛑 สั่งหยุด</span><span>🔓 ปลดล็อก</span>
+        </div>
         <div class="tbl-wrap"><table>
           <thead><tr><th>ชั้น/ห้อง</th><th>เลขที่</th><th>ชื่อ</th><th>ชุด</th><th>ทำถึงข้อ</th><th>ตอบแล้ว</th><th>เหลือเวลา</th><th>ทุจริต</th><th>สัญญาณ</th><th></th></tr></thead>
           <tbody id="activeBody"><tr><td colspan="10" class="empty-cell">🕒 ยังไม่มีนักเรียนกำลังสอบ</td></tr></tbody>
@@ -1430,7 +1524,7 @@ textarea:focus-visible{
   </div>
 </div>
 
-<div id="bcOverlay"><div class="bc-card"><div class="big">📣</div><h3>ประกาศจากครูผู้คุมสอบ</h3><p id="bcMsg"></p><button class="btn btn-gold btn-block" id="btnBcOk">รับทราบ</button></div></div>
+<div id="bcOverlay"><div class="bc-card"><div class="big">📣</div><h3>ประกาศจากครูโอ๊ต</h3><p id="bcMsg"></p><div class="row" style="display:flex;gap:10px;"><button class="btn hidden" id="btnBcReply" style="flex:1;">💬 พิมพ์ตอบครู</button><button class="btn btn-gold" id="btnBcOk" style="flex:1;">รับทราบ</button></div></div></div>
 <div id="cdOverlay"><div id="cdWrap">
   <svg id="cdRingSvg" viewBox="0 0 120 120"><circle id="cdRingC" cx="60" cy="60" r="54"/></svg>
   <div id="cdNum">3</div>
@@ -1475,6 +1569,16 @@ textarea:focus-visible{
   </div>
 </div>
 
+<button id="chatFab" title="คุยกับครู">💬<span class="dot" id="chatDot">1</span></button>
+<div id="chatPanel">
+  <div id="chatHead"><b>💬 คุยกับครูโอ๊ต</b><button id="chatClose" title="ปิด">✕</button></div>
+  <div id="chatBody"></div>
+  <div id="chatFoot">
+    <textarea id="chatInput" rows="1" maxlength="500" placeholder="พิมพ์ข้อความถึงครู..."></textarea>
+    <button id="chatSend" title="ส่ง">➤</button>
+  </div>
+</div>
+
 <div id="modalWrap"><div class="modal" id="modalBox"></div></div>
 <div id="toastWrap"></div>
 
@@ -1486,7 +1590,7 @@ textarea:focus-visible{
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 5 วินาที
+const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -1503,7 +1607,7 @@ const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชท
      "ชุดข้อสอบรายห้อง" เพื่อกำหนดว่าห้องไหน (ม.4/ม.5/ม.6) ใช้ชุดไหน
 ══════════════════════════════════════════════════════════════ */
 const EXAM_SETS = {
-  SET_01: { title:"ชุดตัวอย่าง", questions:[
+  SET_01: { title:"ชุดตัวอย่าง (แก้ไข/แทนที่ได้จากแดชบอร์ดครู แท็บ 'สร้างข้อสอบ')", questions:[
     { q:"(ตัวอย่าง) She ______ to school every day.", choices:["go","goes","going","gone"], answer:1, image:"" },
     { q:"(ตัวอย่าง) They ______ football when it started to rain.", choices:["play","played","were playing","are playing"], answer:2, image:"" },
     { type:"written", q:"(ตัวอย่างข้อเขียน) Write the past tense of \"go\".", keys:["went"], image:"" }
@@ -1586,7 +1690,8 @@ const S = {
   stream:null, timerInt:null, hbInt:null, adminInt:null,
   warned5:false, warned1:false, adminData:null, adminVioMs:-1, adminVioInit:false, stopSeen:0,
   paused:false, resumeSeen:0, baseDurMs:0, extendMs:0, pausedRemainingSec:0,
-  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null, practiceChoices:null, practiceNotTaken:false
+  entryMode:'exam', practiceKey:'', practiceSetId:'', practiceSummary:null, practiceChoices:null, practiceNotTaken:false,
+  chatMsgs:[], chatSince:0, chatUnread:0, chatOpen:false, chatSending:false, dmInt:null
 };
 
 const $ = id => document.getElementById(id);
@@ -2287,6 +2392,8 @@ function enterExamUI(){
   updateHud();
   buildWatermark();
   show('scrExam');
+  $('chatFab').classList.add('show');
+  updateChatBadge();
   if(S.stream){
     const mv = $('monVideo');
     try{ mv.srcObject = S.stream; }catch(e){}
@@ -2447,6 +2554,74 @@ function renderQuestion(){
   $('btnNext').disabled = pos === QUESTIONS.length-1;
   updateHud();
 }
+/* ══════════════════ แชทครู ⇄ นักเรียน (ฝั่งนักเรียน) ══════════════════ */
+function renderChat(){
+  const box = $('chatBody');
+  if(!S.chatMsgs.length){
+    box.innerHTML = '<div class="chat-empty">ยังไม่มีข้อความ<br>พิมพ์ถามครูได้เลยถ้ามีอะไรสงสัยระหว่างสอบ</div>';
+    return;
+  }
+  box.innerHTML = S.chatMsgs.map(m=>{
+    const mine = m.from === 'student';
+    const t = new Date(Number(m.ms)).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+    return '<div class="chat-b '+(mine?'s':'t')+'"><span class="who">'+(mine?'คุณ':'ครู')+' · '+esc(t)+'</span>'+esc(m.msg)+'</div>';
+  }).join('');
+  box.scrollTop = box.scrollHeight;
+}
+/** รับข้อความใหม่จาก heartbeat — คืนค่า true ถ้ามีข้อความใหม่จากครู */
+function mergeChat(list){
+  if(!Array.isArray(list) || !list.length) return false;
+  let gotTeacher = false;
+  list.forEach(m=>{
+    if(S.chatMsgs.some(x => x.ms === m.ms && x.msg === m.msg)) return; // กันซ้ำ
+    S.chatMsgs.push(m);
+    if(Number(m.ms) > S.chatSince) S.chatSince = Number(m.ms);
+    if(m.from === 'teacher') gotTeacher = true;
+  });
+  S.chatMsgs.sort((a,b)=>a.ms-b.ms);
+  if(gotTeacher && !S.chatOpen){ S.chatUnread++; updateChatBadge(); }
+  if(S.chatOpen) renderChat();
+  return gotTeacher;
+}
+function updateChatBadge(){
+  const fab = $('chatFab');
+  fab.classList.toggle('unread', S.chatUnread > 0);
+  $('chatDot').textContent = S.chatUnread > 9 ? '9+' : String(S.chatUnread);
+}
+function openChat(){
+  S.chatOpen = true; S.chatUnread = 0;
+  updateChatBadge();
+  $('chatPanel').classList.add('show');
+  $('chatFab').classList.remove('show');
+  renderChat();
+  setTimeout(()=>{ try{ $('chatInput').focus(); }catch(e){} }, 80);
+}
+function closeChat(){
+  S.chatOpen = false;
+  $('chatPanel').classList.remove('show');
+  if(S.phase === 'exam' && !S.submitted) $('chatFab').classList.add('show');
+}
+async function sendChatMsg(){
+  const el = $('chatInput');
+  const msg = el.value.trim();
+  if(!msg || S.chatSending) return;
+  S.chatSending = true;
+  $('chatSend').disabled = true;
+  try{
+    const r = await api({action:'studentSendMessage', key:S.key, classLevel:S.classLevel, room:S.room,
+      no:S.student.no, name:S.student.name, msg:msg});
+    if(!r.ok) throw new Error();
+    el.value = '';
+    mergeChat([r.item]);
+    renderChat();
+  }catch(e){
+    toast('ส่งข้อความไม่สำเร็จ ลองอีกครั้ง');
+  }finally{
+    S.chatSending = false;
+    $('chatSend').disabled = false;
+  }
+}
+
 async function sendHeartbeat(){
   if(S.phase !== 'exam' || S.submitted) return;
   try{
@@ -2454,12 +2629,23 @@ async function sendHeartbeat(){
     const r = await api({action:'heartbeat', key:S.key, name:S.student.name, classLevel:S.classLevel, room:S.room, no:S.student.no,
       current:S.cur+1, answered:answeredCount(), total:QUESTIONS.length,
       violations:S.violations, remaining:remainingSec,
+      chatSince:S.chatSince,
       answers:S.answers});
+    let bcShownMs = 0;
     if(r && r.bc && r.bc.msg && Number(r.bc.ms) > S.bcSeen && S.phase === 'exam' && !S.submitted){
       S.bcSeen = Number(r.bc.ms);
+      bcShownMs = Number(r.bc.ms);
       $('bcMsg').textContent = r.bc.msg;
+      // ข้อความที่ส่งถึงคนเดียว = คุยกันได้ ให้มีปุ่มตอบกลับ / ประกาศรวมไม่ต้องมี
+      $('btnBcReply').classList.toggle('hidden', !r.bc.key);
       $('bcOverlay').classList.add('show');
       sfxBc();
+    }
+    if(r && r.chat && r.chat.length){
+      const gotNew = mergeChat(r.chat);
+      // ถ้าข้อความใหม่คืออันเดียวกับที่เพิ่งเด้งเต็มจอไปแล้ว ไม่ต้องเตือนซ้ำอีก
+      const onlyBc = r.chat.every(m => Number(m.ms) === bcShownMs || m.from === 'student');
+      if(gotNew && !S.chatOpen && !onlyBc){ toast('💬 ครูส่งข้อความถึงคุณ'); sfxBc(); }
     }
     if(r && r.stop && Number(r.stop.ms) > S.stopSeen && S.phase === 'exam' && !S.submitted){
       S.stopSeen = Number(r.stop.ms);
@@ -2528,6 +2714,9 @@ async function doSubmit(auto){
   if(S.hbInt){ clearInterval(S.hbInt); S.hbInt = null; }
   stopCamera();
   $('monitorBox').classList.remove('show');
+  $('chatFab').classList.remove('show');
+  $('chatPanel').classList.remove('show');
+  S.chatOpen = false;
   $('wmLayer').classList.remove('show');
   $('dangerEdge').classList.remove('show');
   $('bcOverlay').classList.remove('show');
@@ -2993,13 +3182,19 @@ function renderAdmin(){
       const sig = a.paused ? '<span class="pill warn">⏸ พักอยู่</span>' : (fresh ? '<span class="pill ok">● ออนไลน์</span>' : '<span class="pill warn">○ ขาดสัญญาณ</span>');
       const vio = a.violations > 0 ? '<span class="pill bad">'+a.violations+'</span>' : '<span class="pill ok">0</span>';
       const pauseBtn = a.paused
-        ? '<button class="btn btn-sm btn-gold" data-resume="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">▶ ต่อ</button>'
-        : '<button class="btn btn-sm" data-pause="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">⏸ พัก</button>';
-      return '<tr><td>'+esc(a.classLevel)+'/'+esc(a.room)+'</td><td>'+esc(a.no)+'</td><td class="name">'+esc(a.name)+'</td>'+
+        ? '<button class="icon-btn gold" data-resume="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="ให้ทำต่อ (ต่อเวลาชดเชยให้อัตโนมัติ)">▶️</button>'
+        : '<button class="icon-btn" data-pause="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="พักการสอบชั่วคราว">⏸️</button>';
+      const msgBtn = a.unreadMsg
+        ? '<button class="icon-btn gold" data-msg="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="นักเรียนตอบกลับมาแล้ว — กดเพื่ออ่าน/ตอบ">💬<span class="ping"></span></button>'
+        : '<button class="icon-btn" data-msg="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="คุยกับนักเรียนคนนี้">💬</button>';
+      return '<tr><td>'+esc(a.classLevel)+'/'+esc(a.room)+'</td><td>'+esc(a.no)+'</td><td class="name">'+esc(a.name)+(a.unreadMsg?' 💬':'')+'</td>'+
         '<td>'+esc(setLabel(a.setId))+'</td>'+
         '<td>'+(a.current||'–')+'</td><td>'+a.answered+'/'+(a.total||'–')+'</td><td>'+fmtSec(a.remaining)+'</td>'+
         '<td>'+vio+'</td><td>'+sig+'</td>'+
-        '<td style="white-space:normal;">'+pauseBtn+'<button class="btn btn-sm" data-msg="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">💬</button><button class="btn btn-sm btn-danger" data-stop="'+esc(a.key)+'" data-name="'+esc(a.name)+'" style="margin-right:4px;">หยุด</button><button class="btn btn-sm btn-danger" data-reset="'+esc(a.key)+'" data-name="'+esc(a.name)+'">ปลดล็อก</button></td></tr>';
+        '<td class="act-cell"><span class="act-row">'+pauseBtn+msgBtn+
+        '<button class="icon-btn danger" data-stop="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="สั่งหยุด — ส่งคำตอบทันทีด้วยคำตอบล่าสุด">🛑</button>'+
+        '<button class="icon-btn danger" data-reset="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="ปลดล็อกให้เข้าสอบใหม่ (ลบผลเดิม)">🔓</button>'+
+        '</span></td></tr>';
     }).join('');
   }
 
@@ -3012,11 +3207,13 @@ function renderAdmin(){
       const t = (r.submitText||'').split(' ')[1] || r.submitText || '–';
       const vio = r.violations > 0 ? '<span class="pill bad">'+r.violations+'</span>' : '<span class="pill ok">0</span>';
       const pend = r.pending > 0 ? ' <span class="pill warn">📝 รอตรวจ '+r.pending+'</span>' : '';
-      const gradeBtn = r.pending > 0 ? '<button class="btn btn-sm btn-gold" data-grade="'+esc(r.key)+'" style="margin-right:6px;">ตรวจ</button>' : '';
+      const gradeBtn = r.pending > 0 ? '<button class="icon-btn gold wide" data-grade="'+esc(r.key)+'" title="ตรวจข้อเขียนที่รอตรวจ">📝 ตรวจ</button>' : '';
       return '<tr><td>'+esc(t)+'</td><td>'+esc(r.classLevel)+'/'+esc(r.room)+'</td><td>'+esc(r.no)+'</td><td class="name">'+esc(r.name)+'</td>'+
         '<td>'+esc(setLabel(r.setId))+'</td>'+
         '<td class="score-cell">'+r.score+'/'+r.total+pend+'</td><td>'+fmtSec(r.timeUsedSec)+'</td><td>'+vio+'</td>'+
-        '<td>'+gradeBtn+'<button class="btn btn-sm btn-danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'">สอบใหม่</button></td></tr>';
+        '<td class="act-cell"><span class="act-row">'+gradeBtn+
+        '<button class="icon-btn danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'" title="ให้สอบใหม่ (ลบผลเดิม)">🔓</button>'+
+        '</span></td></tr>';
     }).join('');
   }
 }
@@ -3127,24 +3324,63 @@ async function resumeStudent(key, name){
     else toast('สั่งต่อไม่สำเร็จ');
   }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
 }
+function renderDmThread(thread){
+  const box = $('dmThread');
+  if(!box) return;
+  if(!thread || !thread.length){
+    box.innerHTML = '<div class="chat-empty">ยังไม่เคยคุยกับนักเรียนคนนี้</div>';
+    return;
+  }
+  box.innerHTML = thread.map(m=>{
+    const isT = m.from === 'teacher';
+    const t = new Date(Number(m.ms)).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+    // ฝั่งครูเป็นคนอ่าน: ข้อความครูชิดขวา (ของเรา) ข้อความนักเรียนชิดซ้าย
+    return '<div class="chat-b '+(isT?'s':'t')+'"><span class="who">'+(isT?'ครู':'นักเรียน')+' · '+esc(t)+'</span>'+esc(m.msg)+'</div>';
+  }).join('');
+  box.scrollTop = box.scrollHeight;
+}
+async function loadDmThread(key){
+  try{
+    const r = await api({action:'adminGetThread', pin:S.adminPin, key:key, markRead:true});
+    if(r.ok) renderDmThread(r.thread);
+  }catch(e){ /* รอบหน้าลองใหม่ */ }
+}
 function askMessageStudent(key, name){
   const box = $('modalBox');
   box.className = 'modal';
-  box.innerHTML = '<h3>💬 ส่งข้อความถึง '+esc(name)+'</h3>'
+  box.innerHTML = '<h3>💬 คุยกับ '+esc(name)+'</h3>'
+    + '<p class="hint" style="text-align:left;margin-bottom:10px;">นักเรียนพิมพ์ตอบกลับได้ ข้อความจะขึ้นที่นี่ (รีเฟรชอัตโนมัติทุก 3 วิ)</p>'
+    + '<div id="dmThread"></div>'
     + '<div class="set-field full" style="margin-bottom:14px;text-align:left;">'
-    + '<textarea id="dmText" rows="3" placeholder="เช่น อย่าคลิกขวานะ / ครูเห็นว่ากำลังทำอะไรแปลกๆ อยู่นะ" style="width:100%;font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;resize:vertical;"></textarea>'
+    + '<textarea id="dmText" rows="2" placeholder="พิมพ์ข้อความถึงนักเรียน..." style="width:100%;font-family:var(--font);font-size:14.5px;padding:11px 13px;border-radius:11px;background:rgba(255,255,255,.08);border:1px solid var(--glass-line);color:#fff;resize:vertical;"></textarea>'
     + '</div>'
-    + '<div class="row"><button class="btn" id="dmCancel">ยกเลิก</button><button class="btn btn-gold" id="dmSend">ส่งข้อความ</button></div>';
+    + '<div class="row"><button class="btn" id="dmCancel">ปิด</button><button class="btn btn-gold" id="dmSend">ส่งข้อความ</button></div>';
   $('modalWrap').classList.add('show');
-  box.querySelector('#dmCancel').addEventListener('click', closeModal);
-  box.querySelector('#dmSend').addEventListener('click', async ()=>{
+  renderDmThread([]);
+  loadDmThread(key);
+  // รีเฟรชบทสนทนาระหว่างที่กล่องเปิดอยู่ จะได้เห็นคำตอบนักเรียนทันทีโดยไม่ต้องปิด-เปิดใหม่
+  if(S.dmInt) clearInterval(S.dmInt);
+  S.dmInt = setInterval(()=>{
+    if(!$('modalWrap').classList.contains('show') || !$('dmThread')){ clearInterval(S.dmInt); S.dmInt = null; return; }
+    loadDmThread(key);
+  }, 3000);
+  const stopPoll = ()=>{ if(S.dmInt){ clearInterval(S.dmInt); S.dmInt = null; } };
+  box.querySelector('#dmCancel').addEventListener('click', ()=>{ stopPoll(); closeModal(); });
+  const doSend = async ()=>{
     const msg = $('dmText').value.trim();
     if(!msg){ toast('พิมพ์ข้อความก่อนส่ง'); return; }
+    const btn = $('dmSend');
+    btn.disabled = true;
     try{
       const r = await api({action:'adminBroadcast', pin:S.adminPin, msg:msg, key:key});
-      if(r.ok){ closeModal(); toast('ส่งข้อความถึง '+name+' แล้ว 📣'); }
+      if(r.ok){ $('dmText').value = ''; toast('ส่งถึง '+name+' แล้ว 📣'); loadDmThread(key); }
       else toast('ส่งไม่สำเร็จ');
     }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
+    finally{ btn.disabled = false; }
+  };
+  box.querySelector('#dmSend').addEventListener('click', doSend);
+  box.querySelector('#dmText').addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); doSend(); }
   });
 }
 function buildSetMapUI(){
@@ -3560,6 +3796,13 @@ $('btnStopAll').addEventListener('click', askStopAll);
 $('fClass').addEventListener('change', renderAdmin);
 $('fRoom').addEventListener('change', renderAdmin);
 $('btnBcOk').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); });
+$('btnBcReply').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); openChat(); });
+$('chatFab').addEventListener('click', openChat);
+$('chatClose').addEventListener('click', closeChat);
+$('chatSend').addEventListener('click', sendChatMsg);
+$('chatInput').addEventListener('keydown', e=>{
+  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendChatMsg(); }
+});
 $('btnBcSend').addEventListener('click', ()=>{
   const m = $('bcInput').value.trim();
   if(!m){ toast('พิมพ์ข้อความก่อนส่ง'); return; }
@@ -3582,7 +3825,7 @@ rippleLayer.id = 'rippleLayer';
 document.body.appendChild(rippleLayer);
 document.addEventListener('pointerdown', e=>{
   if(REDUCED_MOTION) return;
-  const t = e.target.closest && e.target.closest('.btn, .chip, .choice, .stu-row, .pal, .tab-btn');
+  const t = e.target.closest && e.target.closest('.btn, .icon-btn, .chip, .choice, .stu-row, .pal, .tab-btn');
   if(!t || t.disabled) return;
   const r = t.getBoundingClientRect();
   if(r.width < 4 || r.height < 4) return;
