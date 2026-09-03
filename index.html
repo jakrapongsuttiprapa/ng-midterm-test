@@ -1265,6 +1265,81 @@ body:not(.theme-holo):not(.theme-terminal):not(.theme-arcade):not(.theme-neobu) 
 }
 .stepnum{ animation:stepPulse 3s ease-in-out infinite; }
 
+/* ---------- 🌌 ธีมจักรวาล — ห้วงอวกาศลึก ดาวระยิบระยับ และดาวตกพาดผ่าน ---------- */
+.theme-cosmic #bgLayer{
+  background:
+    radial-gradient(1100px 800px at 78% 8%, rgba(var(--blue-rgb),.28), transparent 60%),
+    radial-gradient(900px 700px at 14% 82%, rgba(var(--cyan-rgb),.16), transparent 58%),
+    radial-gradient(1400px 1000px at 50% 45%, var(--navy3), transparent 72%),
+    linear-gradient(170deg, var(--navy2) 0%, var(--navy1) 70%);
+}
+/* ดวงดาว 2 ระดับความลึก — ดวงเล็กถี่ + ดวงใหญ่ห่าง กะพริบไม่พร้อมกัน ให้ดูมีมิติเหมือนอวกาศจริง */
+.theme-cosmic #bgLayer::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 22px 34px, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.4px 1.4px at 148px 92px, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.2px 1.2px at 76px 176px, rgba(var(--cyan-rgb),.9), transparent),
+    radial-gradient(1.8px 1.8px at 210px 142px, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.3px 1.3px at 264px 44px, rgba(var(--gold-rgb),.9), transparent),
+    radial-gradient(1.1px 1.1px at 122px 244px, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.5px 1.5px at 296px 214px, rgba(255,255,255,.8), transparent);
+  background-size:320px 280px;
+  animation:starTwinkle 4.5s ease-in-out infinite;
+}
+@keyframes starTwinkle{ 0%,100%{opacity:.55;} 50%{opacity:1;} }
+/* ชั้นดาวที่อยู่ไกลกว่า เคลื่อนช้ากว่า ให้เกิดความรู้สึกลึก */
+.theme-cosmic #todTint{
+  mix-blend-mode:screen !important; opacity:.5 !important;
+  background-image:
+    radial-gradient(1px 1px at 40px 60px, rgba(255,255,255,.6), transparent),
+    radial-gradient(1px 1px at 180px 20px, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 100px 130px, rgba(255,255,255,.55), transparent),
+    radial-gradient(1px 1px at 230px 180px, rgba(255,255,255,.45), transparent) !important;
+  background-size:260px 220px !important;
+  animation:starDrift 90s linear infinite;
+}
+@keyframes starDrift{ from{background-position:0 0;} to{background-position:260px 220px;} }
+
+/* ดาวตก — ใช้เลเยอร์ลำแสงเดิมที่มีอยู่แล้ว ไม่ต้องเพิ่ม element ใหม่
+   เอียงทั้งเลเยอร์เพื่อให้หางดาวชี้ไปทางเดียวกับทิศที่พุ่ง ไม่งั้นจะดูเป็นแท่งทื่อๆ */
+.theme-cosmic #rayLayer{
+  background:linear-gradient(90deg,
+    transparent 0%, rgba(255,255,255,.05) 26%, rgba(255,255,255,.55) 42%,
+    rgba(255,255,255,1) 52%, rgba(var(--cyan-rgb),.55) 58%, transparent 72%) !important;
+  background-size:420px 3px !important;
+  background-repeat:no-repeat !important;
+  mask-image:none !important; -webkit-mask-image:none !important;
+  transform:rotate(15deg);
+  opacity:0;
+  filter:drop-shadow(0 0 7px rgba(255,255,255,.95)) drop-shadow(0 0 16px rgba(var(--cyan-rgb),.7));
+  animation:shootingStar 9s ease-in infinite !important;
+}
+@keyframes shootingStar{
+  0%{ background-position:-280px 6%; opacity:0; }
+  3%{ opacity:1; }
+  15%{ background-position:115% 88%; opacity:0; }
+  100%{ background-position:115% 88%; opacity:0; }
+}
+/* ตอนนักเรียนทำข้อสอบ ปิดดาวตกไว้ ไม่ให้มีอะไรวิ่งผ่านสายตาระหว่างตั้งใจทำข้อสอบ */
+.theme-cosmic.in-exam #rayLayer{ animation:none !important; opacity:0 !important; }
+
+/* การ์ดลอยอยู่ในอวกาศ — ขอบเรืองม่วงคราม + เงาฟุ้ง */
+.theme-cosmic .card, .theme-cosmic .modal{
+  border-color:rgba(var(--blue-rgb),.4) !important;
+  box-shadow:var(--shadow), inset 0 0 0 1px rgba(var(--blue-rgb),.18), 0 0 40px rgba(var(--blue-rgb),.16) !important;
+}
+.theme-cosmic .btn-gold{
+  box-shadow:0 6px 22px rgba(var(--gold-rgb),.4), 0 0 40px rgba(var(--gold-rgb),.18), inset 0 1px 0 rgba(255,255,255,.3) !important;
+}
+.theme-cosmic .hero-title{ text-shadow:0 0 22px rgba(var(--blue-rgb),.6), 0 2px 10px rgba(0,0,0,.6); }
+.theme-cosmic .score-ring{
+  box-shadow:0 0 0 8px rgba(var(--blue-rgb),.16), 0 0 50px rgba(var(--blue-rgb),.4), var(--shadow);
+}
+.theme-cosmic .chip.sel, .theme-cosmic .choice.sel{
+  box-shadow:0 0 20px rgba(var(--gold-rgb),.45);
+}
+
 /* ══════════════════════════════════════════════════════════════
    🌅 ชั้นลูกเล่นสร้างสรรค์ — พื้นหลังที่ "รู้จักเวลา" และ "รู้ความคืบหน้า"
 ══════════════════════════════════════════════════════════════ */
@@ -1370,7 +1445,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH 🍁 SYSTEM · <button id="adminLink">🇹🇭 T.OAT 🇬🇧 </button> · <button id="practiceLink">🎯 ฝึกฝนกู้เอกราช</button></div>
+    <div id="foot">ENGLISH 🍁 SYSTEM · <button id="adminLink">🇹🇭 T.OAT 🇬🇧 </button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1709,6 +1784,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
             <option value="holo">Holographic Y2K</option>
             <option value="slate">แกรไฟต์-ทองแดง</option>
             <option value="burgundy">เบอร์กันดี-ทองคำ</option>
+            <option value="cosmic">🌌 จักรวาล (ดาวระยิบระยับ)</option>
           </select></div>
           <div class="set-field"><label>เวลาสอบ (นาที)</label><input type="number" id="cfgDur" min="1" max="240"></div>
           <div class="set-field full"><label>ประกาศถึงนักเรียน (แสดงหน้าแรก, เว้นว่าง = ไม่แสดง)</label><textarea id="cfgAnn"></textarea></div>
@@ -2004,7 +2080,8 @@ const THEMES = {
   terminal: { navy1:'#000000', navy2:'#000000', navy3:'#001a00', gold:'#33ff33', goldDeep:'#00cc00', cyan:'#00ff88', blue:'#00cc66', panelRgb:'0,22,0', glassRgb:'0,26,0', font:"'JetBrains Mono','Kanit','Noto Sans Thai',monospace" },
   holo:     { navy1:'#0d0221', navy2:'#1a0b3d', navy3:'#2d1b5e', gold:'#ff6ec7', goldDeep:'#7b2ff7', cyan:'#5ffbf1', blue:'#77a6f7', panelRgb:'26,14,58', glassRgb:'30,16,64', font:DEFAULT_FONT },
   slate:    { navy1:'#14171b', navy2:'#1f242a', navy3:'#2c333b', gold:'#5fae94', goldDeep:'#3d8a70', cyan:'#c9915a', blue:'#7c8a99', panelRgb:'22,26,30', glassRgb:'19,23,27', font:DEFAULT_FONT },
-  burgundy: { navy1:'#170a0d', navy2:'#2c1119', navy3:'#451625', gold:'#d4af37', goldDeep:'#9c7a1f', cyan:'#e0a8ac', blue:'#8a5468', panelRgb:'26,14,18', glassRgb:'22,12,15', font:DEFAULT_FONT }
+  burgundy: { navy1:'#170a0d', navy2:'#2c1119', navy3:'#451625', gold:'#d4af37', goldDeep:'#9c7a1f', cyan:'#e0a8ac', blue:'#8a5468', panelRgb:'26,14,18', glassRgb:'22,12,15', font:DEFAULT_FONT },
+  cosmic:   { navy1:'#04030e', navy2:'#100a2c', navy3:'#1e1150', gold:'#ffd76e', goldDeep:'#f0a93b', cyan:'#7ee8fa', blue:'#a78bfa', panelRgb:'17,10,42', glassRgb:'13,8,34', font:DEFAULT_FONT }
 };
 function hexToRgbStr(hex){
   const h = String(hex||'').replace('#','');
@@ -2035,6 +2112,7 @@ function applyTheme(name){
   document.body.classList.toggle('theme-holo', name === 'holo');
   document.body.classList.toggle('theme-slate', name === 'slate');
   document.body.classList.toggle('theme-burgundy', name === 'burgundy');
+  document.body.classList.toggle('theme-cosmic', name === 'cosmic');
 }
 function themeColor(varName, fallback){
   try{
@@ -3447,6 +3525,7 @@ function renderAdmin(){
         '<td>'+esc(setLabel(r.setId))+'</td>'+
         '<td class="score-cell">'+r.score+'/'+r.total+pend+'</td><td>'+fmtSec(r.timeUsedSec)+'</td><td>'+vio+'</td>'+
         '<td class="act-cell"><span class="act-row">'+gradeBtn+
+        '<button class="icon-btn" data-msg="'+esc(r.key)+'" data-name="'+esc(r.name)+'" title="ดูบทสนทนาที่คุยกันไว้ (ย้อนอ่านได้แม้ส่งคำตอบไปแล้ว)">💬</button>'+
         '<button class="icon-btn danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'" title="ให้สอบใหม่ (ลบผลเดิม)">🔓</button>'+
         '</span></td></tr>';
     }).join('');
