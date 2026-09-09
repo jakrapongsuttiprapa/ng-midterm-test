@@ -1708,6 +1708,15 @@ body.in-exam #spotlight{ opacity:0 !important; }
       <div class="card">
         <h2>🎯 ความคืบหน้าฝึกฝนกู้คะแนน <span class="hint">(รีเฟรชเมื่อเข้าแท็บนี้)</span></h2>
         <p class="hint" style="margin-bottom:10px;">แต่ละชุดมีเกณฑ์ของตัวเอง (ตั้งได้ที่แท็บ "สร้างข้อสอบ") — คอลัมน์ "เกณฑ์" ด้านล่างคือของชุดนั้นๆ โดยเฉพาะ</p>
+        <div class="filters">
+          <select id="pClass"><option value="">ทุกชั้น</option></select>
+          <select id="pRoom"><option value="">ทุกห้อง</option></select>
+          <select id="pSet"><option value="">ทุกชุดข้อสอบ</option></select>
+        </div>
+        <label class="agree" style="margin:0 0 12px;font-size:13.5px;">
+          <input type="checkbox" id="pHideDone" checked> ซ่อนคนที่ปรับคะแนนให้แล้ว (เหลือเฉพาะที่ยังไม่ได้ปรับ)
+        </label>
+        <p class="hint" id="pCount" style="margin-bottom:10px;"></p>
         <div class="tbl-wrap"><table>
           <thead><tr><th>ชั้น/ห้อง</th><th>เลขที่</th><th>ชื่อ</th><th>ชุด</th><th>รอบที่ทำ</th><th>คะแนนเฉลี่ย</th><th>เกณฑ์</th><th>สถานะ</th><th></th></tr></thead>
           <tbody id="pracBody"><tr><td colspan="9" class="empty-cell">🎯 ยังไม่มีใครเริ่มฝึกฝนกู้คะแนน</td></tr></tbody>
@@ -1897,7 +1906,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
 const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -3539,20 +3548,64 @@ async function loadPracticeList(){
     renderPracticeList();
   }catch(e){ toast('โหลดข้อมูลไม่สำเร็จ'); }
 }
-function renderPracticeList(){
+/** เติมตัวเลือกชั้น/ห้อง/ชุด ในแถบกรองของแท็บกู้คะแนน — ดึงจากข้อมูลจริงที่มีคนฝึกเท่านั้น
+ *  (คงค่าที่ครูเลือกไว้เดิม ไม่ให้เด้งกลับตอนรีเฟรช) */
+function refreshPracticeFilters(){
   const list = S.pracList || [];
+  const fill = (sel, values, label) => {
+    const el = $(sel); if(!el) return;
+    const keep = el.value;
+    const sig = values.join('|');
+    if(el.dataset.sig === sig) return;
+    el.innerHTML = '<option value="">'+label+'</option>' +
+      values.map(v=>'<option value="'+esc(v)+'">'+esc(sel==='pSet' ? setLabel(v) : (sel==='pRoom' ? 'ห้อง '+v : v))+'</option>').join('');
+    if(keep && values.indexOf(keep) >= 0) el.value = keep;
+    el.dataset.sig = sig;
+  };
+  fill('pClass', [...new Set(list.map(g=>String(g.classLevel)))].sort(), 'ทุกชั้น');
+  fill('pRoom',  [...new Set(list.map(g=>String(g.room)))].sort(), 'ทุกห้อง');
+  fill('pSet',   [...new Set(list.map(g=>String(g.setId)))].sort(), 'ทุกชุดข้อสอบ');
+}
+function renderPracticeList(){
+  const all = S.pracList || [];
+  refreshPracticeFilters();
+  const fc = $('pClass') ? $('pClass').value : '';
+  const fr = $('pRoom') ? $('pRoom').value : '';
+  const fs = $('pSet') ? $('pSet').value : '';
+  const hideDone = $('pHideDone') ? $('pHideDone').checked : true;
+  const list = all.filter(g=>{
+    if(fc && String(g.classLevel) !== fc) return false;
+    if(fr && String(g.room) !== fr) return false;
+    if(fs && String(g.setId) !== fs) return false;
+    if(hideDone && g.adjusted) return false;
+    return true;
+  });
+  const doneCount = all.filter(g=>g.adjusted).length;
+  if($('pCount')){
+    $('pCount').textContent = 'แสดง '+list.length+' รายการ จากทั้งหมด '+all.length
+      + (doneCount ? ' · ปรับคะแนนให้แล้ว '+doneCount+' คน' : '');
+  }
   const body = $('pracBody');
   if(!list.length){
-    body.innerHTML = '<tr><td colspan="9" class="empty-cell">🎯 ยังไม่มีใครเริ่มฝึกฝนกู้คะแนน</td></tr>';
+    const msg = all.length
+      ? '✅ ไม่มีรายการตามเงื่อนไขที่เลือก (ปรับคะแนนครบแล้ว หรือกรองจนไม่เหลือ)'
+      : '🎯 ยังไม่มีใครเริ่มฝึกฝนกู้คะแนน';
+    body.innerHTML = '<tr><td colspan="9" class="empty-cell">'+msg+'</td></tr>';
     return;
   }
   body.innerHTML = list.map(g=>{
-    const status = g.meetsGoal ? '<span class="pill ok">✅ ครบเกณฑ์</span>' : '<span class="pill warn">⏳ กำลังฝึก</span>';
-    return '<tr><td>'+esc(g.classLevel)+'/'+esc(g.room)+'</td><td>'+esc(g.no)+'</td><td class="name">'+esc(g.name)+'</td>'+
+    const status = g.adjusted ? '<span class="pill ok">✅ ปรับคะแนนแล้ว</span>'
+      : g.meetsGoal ? '<span class="pill warn">🎁 รอครูปรับคะแนน</span>'
+      : '<span class="pill bad">⏳ กำลังฝึก</span>';
+    const adjBtn = g.adjusted
+      ? '<button class="icon-btn" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'|'+esc(g.setId)+'|'+esc(g.room)+'" data-pname="'+esc(g.name)+'" title="ปรับคะแนนซ้ำอีกครั้ง (ปรับให้แล้วก่อนหน้านี้)">✏️</button>'
+      : '<button class="icon-btn gold wide" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'|'+esc(g.setId)+'|'+esc(g.room)+'" data-pname="'+esc(g.name)+'" title="ปรับคะแนนให้ผ่าน">✅ ปรับคะแนน</button>';
+    return '<tr'+(g.adjusted?' style="opacity:.62;"':'')+'><td>'+esc(g.classLevel)+'/'+esc(g.room)+'</td><td>'+esc(g.no)+'</td><td class="name">'+esc(g.name)+'</td>'+
       '<td>'+esc(setLabel(g.setId))+'</td><td>'+g.roundsDone+'</td><td>'+g.avgScore+(g.total?'/'+g.total:'')+'</td>'+
       '<td class="hint" style="white-space:nowrap;">'+g.minRounds+' รอบ / '+g.minScore+' คะแนน</td><td>'+status+'</td>'+
-      '<td style="white-space:normal;"><button class="btn btn-sm btn-gold" data-padj="'+esc(g.classLevel)+'|'+esc(g.no)+'|'+esc(g.setId)+'|'+esc(g.room)+'" data-pname="'+esc(g.name)+'" style="margin-right:4px;">ปรับให้ผ่าน</button>'+
-      '<button class="btn btn-sm btn-danger" data-pclr="'+esc(g.key)+'" data-pname="'+esc(g.name)+'">ล้างประวัติ</button></td></tr>';
+      '<td class="act-cell"><span class="act-row">'+adjBtn+
+      '<button class="icon-btn danger" data-pclr="'+esc(g.key)+'" data-pname="'+esc(g.name)+'" title="ล้างประวัติการฝึกของคนนี้">🗑</button>'+
+      '</span></td></tr>';
   }).join('');
 }
 function askAdjustScore(clsNoSet, name){
@@ -3571,7 +3624,7 @@ function askAdjustScore(clsNoSet, name){
     if(isNaN(v) || v < 0){ toast('พิมพ์คะแนนให้ถูกต้องก่อน'); return; }
     try{
       const r = await api({action:'adminPracticeSetScore', pin:S.adminPin, classLevel:cls, no:no, name:name, setId:setId, room:room, score:v});
-      if(r.ok){ closeModal(); toast('บันทึกคะแนน '+name+' เป็น '+r.newScore+' แล้ว ✓'); adminPollOnce(); }
+      if(r.ok){ closeModal(); toast('บันทึกคะแนน '+name+' เป็น '+r.newScore+' แล้ว ✓'); loadPracticeList(); }
       else toast('ปรับคะแนนไม่สำเร็จ: '+(r.error||''));
     }catch(e){ toast('เชื่อมต่อไม่สำเร็จ'); }
   });
@@ -4109,6 +4162,10 @@ document.addEventListener('click', e=>{
 $('btnStopAll').addEventListener('click', askStopAll);
 $('fClass').addEventListener('change', renderAdmin);
 $('fRoom').addEventListener('change', renderAdmin);
+['pClass','pRoom','pSet','pHideDone'].forEach(id=>{
+  const el = $(id);
+  if(el) el.addEventListener('change', renderPracticeList);
+});
 $('btnBcOk').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); });
 $('btnBcReply').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); openChat(); });
 $('chatFab').addEventListener('click', openChat);
