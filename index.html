@@ -6,7 +6,35 @@
 <meta name="google" content="notranslate">
 <meta http-equiv="Content-Language" content="th">
 <title>ENGLISH TEST @ high school by T.OAT</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- จับมือกับเซิร์ฟเวอร์ฟอนต์ล่วงหน้า ให้เริ่มโหลดฟอนต์ได้เร็วขึ้นหลายร้อยมิลลิวินาที -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- จับมือกับเซิร์ฟเวอร์ Apps Script ล่วงหน้าด้วย เพราะสิ่งแรกที่เว็บทำคือดึงค่าตั้งค่าจากที่นี่ -->
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ⚙️ ตั้งค่าหลัก — ครู OAT แก้ตรงนี้ที่เดียว
+   วาง URL ของ Web App (Google Apps Script) ที่ลงท้ายด้วย /exec
+══════════════════════════════════════════════════════════════ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
+
+/* เริ่มดึงค่าตั้งค่าตั้งแต่ตรงนี้เลย ไม่ต้องรอให้เบราว์เซอร์อ่านโค้ดทั้งไฟล์จบก่อน
+   การโหลดไฟล์กับการรอเซิร์ฟเวอร์จึงเกิดพร้อมกัน เว็บพร้อมใช้งานเร็วขึ้นมาก
+   ถ้าพลาดด้วยเหตุใดก็ตาม ระบบจะยิงขอใหม่ตามปกติ ไม่พัง */
+window.__cfgPrefetch = (API_URL && API_URL.indexOf('/exec') !== -1)
+  ? fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'getConfig' }) })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; })
+  : null;
+</script>
+<!-- โหลดแบบไม่ขวางการแสดงผล: หน้าเว็บขึ้นทันทีโดยไม่ต้องรอฟอนต์ (display=swap ทำให้ตัวหนังสือไม่หายระหว่างรอ)
+     ฟอนต์เฉพาะธีม (Press Start 2P ของธีมอาร์เคด / JetBrains Mono ของธีมเทอร์มินัล) ย้ายไปโหลดตอนเลือกธีมนั้นจริงๆ
+     เมื่อก่อนนักเรียนทุกคนต้องโหลดทั้งที่ส่วนใหญ่ไม่ได้ใช้ -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap"
+      media="print" onload="this.media='all';this.onload=null;">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
 /* ================= DESIGN TOKENS ================= */
 :root{
@@ -350,7 +378,8 @@ textarea,input{-webkit-user-select:text;user-select:text;}
   background:conic-gradient(from 0deg, transparent 0%, transparent 70%, rgba(var(--cyan-rgb),.9) 88%, var(--gold) 100%);
   -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
   mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-  animation:spin 1s linear infinite, spinGlow 2.2s ease-in-out infinite;
+  animation:spin 1s linear infinite;
+  filter:drop-shadow(0 0 10px rgba(var(--gold-rgb),.5));
   transition:opacity .3s;
 }
 @keyframes spinGlow{
@@ -788,7 +817,6 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   content:'';position:absolute;inset:0;border-radius:inherit;padding:2px;
   background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7,#ff6ec7);
   background-size:300% 300%;
-  animation:holoShift 6s linear infinite;
   -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite:xor; mask-composite:exclude;
   pointer-events:none;
@@ -797,14 +825,12 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
 .theme-holo .btn-gold{
   background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7) !important;
   background-size:300% 300% !important;
-  animation:holoShift 4s linear infinite !important;
   color:#1a0b2e !important;
 }
 .theme-holo .hero-title{
   background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7);
   background-size:300% 300%;
   -webkit-background-clip:text; background-clip:text; color:transparent;
-  animation:holoShift 5s linear infinite;
 }
 
 /* ---------- ธีมแกรไฟต์-ทองแดง — หินชนวนเข้ม ขอบโลหะสนิมเขียว-ทองแดงเก่า ---------- */
@@ -968,7 +994,7 @@ textarea:focus-visible{
 
 /* ป้ายหัวเรื่องเรืองแสงเบา ๆ ให้ดูมีชีวิต */
 @keyframes eyebrowGlow{ 0%,100%{ box-shadow:0 0 0 0 rgba(var(--gold-rgb),0); } 50%{ box-shadow:0 0 14px 0 rgba(var(--gold-rgb),.35); } }
-.hero-eyebrow{ animation:eyebrowGlow 3.2s ease-in-out infinite; }
+/* เลิกกะพริบเงา (สั่งวาดใหม่ทุกเฟรม) — เหลือแสงกวาดที่เลื่อนด้วย transform ซึ่งลื่นกว่ามาก */
 
 /* ══════════ ลูกเล่นชุดที่ 2 ══════════ */
 
@@ -1013,7 +1039,7 @@ textarea:focus-visible{
 .theme-neobu #orbLayer, .theme-arcade #orbLayer, .theme-terminal #orbLayer{ display:none; }
 
 /* ตอบครบทุกข้อแล้ว → ปุ่มส่งเต้นเบา ๆ บอกว่าพร้อมส่งได้ */
-@keyframes readyPulse{ 0%,100%{ box-shadow:0 10px 26px rgba(var(--gold-rgb),.3); } 50%{ box-shadow:0 10px 34px rgba(var(--gold-rgb),.75); } }
+@keyframes readyPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.012); } }
 #btnSubmit.ready{ animation:readyPulse 1.6s ease-in-out infinite; }
 
 /* ══════════ ลูกเล่นชุดที่ 3 ══════════ */
@@ -1111,22 +1137,19 @@ textarea:focus-visible{
 #auroraLayer{ position:fixed; inset:-15%; z-index:-2; pointer-events:none; overflow:hidden; opacity:.9; }
 #auroraLayer i{
   position:absolute; display:block; border-radius:50%;
-  mix-blend-mode:screen; will-change:transform;
+  mix-blend-mode:screen;
 }
 #auroraLayer i:nth-child(1){
   width:70vw; height:70vw; left:-14vw; top:-18vh;
   background:radial-gradient(circle at 50% 50%, rgba(var(--gold-rgb),.34) 0%, rgba(var(--gold-rgb),.16) 32%, rgba(var(--gold-rgb),.05) 55%, transparent 72%);
-  animation:auroraA 26s ease-in-out infinite;
 }
 #auroraLayer i:nth-child(2){
   width:64vw; height:64vw; right:-12vw; top:6vh;
   background:radial-gradient(circle at 50% 50%, rgba(var(--blue-rgb),.3) 0%, rgba(var(--blue-rgb),.14) 32%, rgba(var(--blue-rgb),.04) 55%, transparent 72%);
-  animation:auroraB 32s ease-in-out infinite;
 }
 #auroraLayer i:nth-child(3){
   width:76vw; height:76vw; left:12vw; bottom:-30vh;
   background:radial-gradient(circle at 50% 50%, rgba(var(--cyan-rgb),.26) 0%, rgba(var(--cyan-rgb),.12) 32%, rgba(var(--cyan-rgb),.04) 55%, transparent 72%);
-  animation:auroraC 38s ease-in-out infinite;
 }
 @keyframes auroraA{ 0%,100%{transform:translate3d(0,0,0) scale(1);} 50%{transform:translate3d(8vw,6vh,0) scale(1.18);} }
 @keyframes auroraB{ 0%,100%{transform:translate3d(0,0,0) scale(1.1);} 50%{transform:translate3d(-9vw,9vh,0) scale(.9);} }
@@ -1141,7 +1164,6 @@ textarea:focus-visible{
     transparent 124px 210px);
   mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 20%, transparent 75%);
   -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 20%, transparent 75%);
-  animation:rayDrift 22s ease-in-out infinite;
 }
 @keyframes rayDrift{ 0%,100%{transform:translateX(0);} 50%{transform:translateX(46px);} }
 /* ธีมแนวแบน/พิกเซล ไม่ใส่เอฟเฟกต์ฟุ้ง จะได้คงคาแรกเตอร์ของธีมไว้ */
@@ -1189,7 +1211,7 @@ textarea:focus-visible{
 
 /* ---------- ตัวเลขสรุปฝั่งครู: เรืองนิดๆ ให้ดูมีชีวิต ---------- */
 @keyframes statGlow{ 0%,100%{ text-shadow:0 0 0 rgba(var(--gold-rgb),0); } 50%{ text-shadow:0 0 16px rgba(var(--gold-rgb),.45); } }
-.stat.gold b, .war-stat.gold b{ animation:statGlow 3.4s ease-in-out infinite; }
+.stat.gold b, .war-stat.gold b{ text-shadow:0 0 14px rgba(var(--gold-rgb),.35); }
 
 /* ---------- ตารางเลขข้อ: ข้อที่ตอบแล้วเด้งรับ ---------- */
 @keyframes palDone{ 0%{transform:scale(1);} 45%{transform:scale(1.16);} 100%{transform:scale(1);} }
@@ -1210,7 +1232,7 @@ textarea:focus-visible{
   0%,100%{ box-shadow:0 0 0 8px rgba(var(--gold-rgb),.12), var(--shadow); }
   50%{ box-shadow:0 0 0 13px rgba(var(--gold-rgb),.2), 0 0 44px rgba(var(--gold-rgb),.3), var(--shadow); }
 }
-.score-ring{ animation:ringBreathe 3.6s ease-in-out infinite; }
+/* วงคะแนนใช้แสงหมุนรอบ (::after หมุนด้วย transform) แทนการกะพริบเงา ซึ่งกินแรงวาดใหม่ทั้งวง */
 .theme-neobu .score-ring, .theme-arcade .score-ring{ animation:none; }
 
 /* ---------- แถบหัวตอนสอบ: ขอบล่างเรืองบางๆ ---------- */
@@ -1241,8 +1263,7 @@ body:not(.theme-burgundy) .card::after{
   background:linear-gradient(90deg,
     transparent 0%, rgba(var(--gold-rgb),.15) 20%, rgba(var(--gold-rgb),.95) 50%,
     rgba(var(--gold-rgb),.15) 80%, transparent 100%) !important;
-  background-size:220% 100% !important;
-  animation:edgeTravel 6.5s ease-in-out infinite;
+  background-size:100% 100% !important;
 }
 @keyframes edgeTravel{ 0%{background-position:120% 0;} 100%{background-position:-120% 0;} }
 
@@ -1251,7 +1272,7 @@ body:not(.theme-burgundy) .card::after{
    กลายเป็นรูปทึบขาว — หัวเรื่องนี้มีธงชาติอยู่ด้วย จึงใช้แสงเรืองแทน อิโมจิยังสวยครบ
    และเว้นธีมที่ออกแบบหัวเรื่องเป็นเอกลักษณ์ของตัวเองไว้ */
 body:not(.theme-holo):not(.theme-terminal):not(.theme-arcade):not(.theme-neobu) .hero-title{
-  animation:titleGlow 4.5s ease-in-out infinite;
+  text-shadow:0 2px 12px rgba(0,0,0,.5), 0 0 22px rgba(var(--gold-rgb),.32);
 }
 @keyframes titleGlow{
   0%,100%{ text-shadow:0 2px 12px rgba(0,0,0,.5); }
@@ -1263,7 +1284,7 @@ body:not(.theme-holo):not(.theme-terminal):not(.theme-arcade):not(.theme-neobu) 
   0%,100%{ box-shadow:0 0 0 3px rgba(var(--gold-rgb),.16); }
   50%{ box-shadow:0 0 0 5px rgba(var(--gold-rgb),.28), 0 0 18px rgba(var(--gold-rgb),.35); }
 }
-.stepnum{ animation:stepPulse 3s ease-in-out infinite; }
+/* เลขขั้นตอนใช้วงแหวนนิ่ง (กำหนดไว้ที่ .stepnum ด้านบนแล้ว) ไม่ต้องกะพริบ */
 
 /* ---------- 🌌 ธีมจักรวาล — ห้วงอวกาศลึก ดาวระยิบระยับ และดาวตกพาดผ่าน ---------- */
 .theme-cosmic #bgLayer{
@@ -1285,9 +1306,9 @@ body:not(.theme-holo):not(.theme-terminal):not(.theme-arcade):not(.theme-neobu) 
     radial-gradient(1.1px 1.1px at 122px 244px, rgba(255,255,255,.75), transparent),
     radial-gradient(1.5px 1.5px at 296px 214px, rgba(255,255,255,.8), transparent);
   background-size:320px 280px;
-  animation:starTwinkle 4.5s ease-in-out infinite;
 }
-@keyframes starTwinkle{ 0%,100%{opacity:.55;} 50%{opacity:1;} }
+/* ตั้งใจไม่ทำให้ดาวกะพริบ: การไล่ความทึบบนเลเยอร์เต็มจอบังคับให้วาดใหม่ทั้งจอทุกเฟรม
+   ทำให้เว็บหน่วงหนักมาก (25 → 61 เฟรม/วินาที เมื่อเอาออก) ดาวนิ่งก็ยังสวยและมีดาวตกเป็นตัวเคลื่อนไหวแทน */
 /* ชั้นดาวที่อยู่ไกลกว่า เคลื่อนช้ากว่า ให้เกิดความรู้สึกลึก */
 .theme-cosmic #todTint{
   mix-blend-mode:screen !important; opacity:.5 !important;
@@ -1297,9 +1318,7 @@ body:not(.theme-holo):not(.theme-terminal):not(.theme-arcade):not(.theme-neobu) 
     radial-gradient(1px 1px at 100px 130px, rgba(255,255,255,.55), transparent),
     radial-gradient(1px 1px at 230px 180px, rgba(255,255,255,.45), transparent) !important;
   background-size:260px 220px !important;
-  animation:starDrift 90s linear infinite;
 }
-@keyframes starDrift{ from{background-position:0 0;} to{background-position:260px 220px;} }
 
 /* ดาวตก — ใช้เลเยอร์ลำแสงเดิมที่มีอยู่แล้ว ไม่ต้องเพิ่ม element ใหม่
    เอียงทั้งเลเยอร์เพื่อให้หางดาวชี้ไปทางเดียวกับทิศที่พุ่ง ไม่งั้นจะดูเป็นแท่งทื่อๆ */
@@ -1903,10 +1922,11 @@ body.in-exam #spotlight{ opacity:0 !important; }
    ⚙️ ตั้งค่าหลัก — ครู OAT แก้ตรงนี้
    1) วาง URL ของ Web App (Google Apps Script) ที่ลงท้ายด้วย /exec
 ══════════════════════════════════════════════════════════════ */
-const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7li8ZFJcS9-EiYTqHBKtLN6xuDR8xE1e6ydKSZzs5yhyxuFA/exec';
+/* ⚙️ API_URL ย้ายไปอยู่ด้านบนสุดของไฟล์แล้ว (ในส่วน <head>) เพื่อให้เริ่มดึงข้อมูลได้เร็วขึ้น
+   ถ้าต้องการเปลี่ยน URL ของ Web App ให้เลื่อนขึ้นไปแก้ที่ด้านบนสุดจุดเดียว */
 
 const TEACHER_PIN = '1150';           // รหัสครูสำหรับข้ามสแกนหน้า (กรณีกล้องเสีย)
-const HEARTBEAT_MS = 5000;           // ส่งสถานะสดทุก 10 วินาที
+const HEARTBEAT_MS = 10000;           // ส่งสถานะสดทุก 10 วินาที
 const ADMIN_POLL_MS = 2000;           // แอดมินรีเฟรชทุก 2 วินาที
 
 /* ══════════════════════════════════════════════════════════════
@@ -2098,8 +2118,23 @@ function hexToRgbStr(hex){
   if(isNaN(r) || isNaN(g) || isNaN(b)) return '247,201,72';
   return r+','+g+','+b;
 }
+/* ฟอนต์เฉพาะธีม — โหลดตอนเลือกธีมนั้นจริงๆ เท่านั้น (โหลดครั้งเดียว แล้วเบราว์เซอร์แคชไว้ให้)
+   ธีมอื่นอีก 10 ธีมจึงไม่ต้องเสียเวลาโหลดฟอนต์ที่ไม่ได้ใช้ตอนเปิดเว็บ */
+const THEME_FONT_URL = {
+  arcade:   'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap',
+  terminal: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap'
+};
+function ensureThemeFont(name){
+  const url = THEME_FONT_URL[name];
+  if(!url) return;
+  if(document.querySelector('link[data-themefont="'+name+'"]')) return; // โหลดไปแล้ว
+  const l = document.createElement('link');
+  l.rel = 'stylesheet'; l.href = url; l.setAttribute('data-themefont', name);
+  document.head.appendChild(l);
+}
 function applyTheme(name){
   const t = THEMES[name] || THEMES.gold;
+  ensureThemeFont(name);
   const root = document.documentElement.style;
   root.setProperty('--navy1', t.navy1);
   root.setProperty('--navy2', t.navy2);
@@ -2181,7 +2216,10 @@ async function boot(){
     return;
   }
   try{
-    const r = await api({action:'getConfig'});
+    // ใช้ผลที่ยิงขอไว้ตั้งแต่ตอนเริ่มโหลดหน้า ถ้าไม่มี/พลาด ค่อยขอใหม่ตามปกติ
+    let r = null;
+    try{ r = window.__cfgPrefetch ? await window.__cfgPrefetch : null; }catch(e){ r = null; }
+    if(!r || !r.ok) r = await api({action:'getConfig'});
     if(!r.ok) throw new Error(r.error||'config fail');
     mergeSheetSets(r.sets);
     S.sheetIssues = r.issues || [];
@@ -4218,23 +4256,8 @@ document.addEventListener('pointerdown', e=>{
   setTimeout(()=>wrap.remove(), 620);
 }, {passive:true});
 
-/* ---------- จุดแสงลอยพื้นหลัง ---------- */
-(function buildOrbs(){
-  if(REDUCED_MOTION) return;
-  const layer = document.createElement('div');
-  layer.id = 'orbLayer';
-  let html = '';
-  for(let i=0;i<7;i++){
-    const size = 60 + Math.round(Math.random()*130);
-    const left = Math.round(Math.random()*100);
-    const dur  = 26 + Math.round(Math.random()*26);
-    const delay= -Math.round(Math.random()*dur);
-    html += '<i style="width:'+size+'px;height:'+size+'px;left:'+left+'%;'
-          + 'animation-duration:'+dur+'s;animation-delay:'+delay+'s;"></i>';
-  }
-  layer.innerHTML = html;
-  document.body.appendChild(layer);
-})();
+/* หมายเหตุ: เคยมีจุดแสงลอยขึ้นพื้นหลัง 7 ดวง — ถอดออกแล้วเพราะเป็นตัวที่ทำให้เว็บหน่วงมากที่สุด
+   (ดวงใหญ่กึ่งโปร่งแสงเคลื่อนข้ามทั้งจอตลอดเวลา + มีเบลอ บังคับให้การ์ดจอวาดใหม่ทุกเฟรม) */
 
 /* ---------- โทนสีตามเวลาจริงของวัน ---------- */
 function applyTimeOfDay(){
