@@ -22,6 +22,13 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyOvC2K7BXR0XYlCoJ2DY7l
 /* เริ่มดึงค่าตั้งค่าตั้งแต่ตรงนี้เลย ไม่ต้องรอให้เบราว์เซอร์อ่านโค้ดทั้งไฟล์จบก่อน
    การโหลดไฟล์กับการรอเซิร์ฟเวอร์จึงเกิดพร้อมกัน เว็บพร้อมใช้งานเร็วขึ้นมาก
    ถ้าพลาดด้วยเหตุใดก็ตาม ระบบจะยิงขอใหม่ตามปกติ ไม่พัง */
+/* ใช้โหมดเอฟเฟกต์ที่เครื่องนี้เคยเลือก/เคยวัดไว้ ตั้งแต่ก่อนหน้าเว็บจะวาดครั้งแรก — ไม่มีจังหวะกระตุกตอนเปิด */
+try{
+  var __fm = localStorage.getItem('fxMode') || 'auto';
+  if(__fm === 'lite' || (__fm === 'auto' && localStorage.getItem('fxAuto') === 'lite'))
+    document.documentElement.classList.add('fx-lite');
+}catch(e){}
+
 window.__cfgPrefetch = (API_URL && API_URL.indexOf('/exec') !== -1)
   ? fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({ action:'getConfig' }) })
@@ -477,6 +484,35 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .act-legend{font-size:12px;color:#8e98cf;margin-bottom:10px;display:flex;gap:14px;flex-wrap:wrap;}
 .act-legend span{display:inline-flex;align-items:center;gap:5px;}
 
+/* ══════════════════════════════════════════════════════════════
+   ⚡ โหมดลื่น (fx-lite) — ปรับเอฟเฟกต์ให้เหมาะกับเครื่อง
+   เปิดอัตโนมัติเมื่อวัดแล้วเครื่องวาดภาพไม่ทัน หรือกดเลือกเองที่ปุ่ม ⚡ ด้านล่างหน้าแรก
+   ตัดเฉพาะของที่กินการ์ดจอหนักๆ (เบลอกระจก, เลเยอร์ผสมสีเต็มจอ, ลูกเล่นที่วนไม่หยุด)
+   สีและหน้าตาของแต่ละธีมยังอยู่ครบ
+══════════════════════════════════════════════════════════════ */
+/* การ์ดทึบขึ้นแทนการเบลอพื้นหลัง — เบลอกระจกบนจอ Retina คือตัวที่หนักที่สุด */
+.fx-lite{ --glass: rgba(var(--glass-rgb), .94); }
+.fx-lite *{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+/* เลเยอร์ตกแต่งเต็มจอ (ผสมสีกับทุกอย่างข้างหลัง ต้องคำนวณใหม่ทั้งจอ) */
+.fx-lite #auroraLayer, .fx-lite #rayLayer, .fx-lite #todTint, .fx-lite #spotlight{ display:none !important; }
+.fx-lite #bgLayer::before{ display:none !important; }
+/* ลูกเล่นที่วนไม่หยุด */
+.fx-lite .btn-gold::after, .fx-lite #answerProgressFill::after,
+.fx-lite .score-ring::after, .fx-lite .hero-eyebrow::before,
+.fx-lite #answerProgress::before{ animation:none !important; display:none !important; }
+.fx-lite #btnSubmit.ready{ animation:none !important; box-shadow:0 0 0 3px rgba(var(--gold-rgb),.55) !important; }
+/* เงาฟุ้งใหญ่ๆ ลดลงเหลือเงาเบาๆ */
+.fx-lite .card, .fx-lite .modal, .fx-lite .stat, .fx-lite .info-chip{ box-shadow:0 4px 14px rgba(0,0,0,.35) !important; }
+.fx-lite .btn-gold{ box-shadow:0 4px 12px rgba(var(--gold-rgb),.25) !important; }
+/* อนิเมชันเปลี่ยนหน้าให้สั้นลง ไม่รอต่อคิวทีละการ์ด */
+.fx-lite .screen{ animation-duration:.18s !important; }
+.fx-lite .screen.active .card{ animation-duration:.2s !important; animation-delay:0s !important; }
+.fx-lite .screen{ filter:none !important; }
+@keyframes fadeUpLite{ from{opacity:0;} to{opacity:1;} }
+.fx-lite .screen{ animation-name:fadeUpLite !important; }
+
+#fxToggle{color:#e3e8ff;text-decoration:none;cursor:pointer;background:rgba(var(--panel-rgb),.55);border:1px solid var(--glass-line);border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:12.5px;text-shadow:none;margin-left:4px;}
+
 /* ---------- admin ---------- */
 .ad-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
 .ad-head h1{font-size:20px;font-weight:800;}
@@ -828,9 +864,10 @@ td.name{max-width:170px;overflow:hidden;text-overflow:ellipsis;}
   color:#1a0b2e !important;
 }
 .theme-holo .hero-title{
-  background:linear-gradient(120deg,#ff6ec7,#7b2ff7,#5ffbf1,#77a6f7);
-  background-size:300% 300%;
-  -webkit-background-clip:text; background-clip:text; color:transparent;
+  /* ไม่ใช้เทคนิคไล่สีทับตัวอักษร (background-clip:text) เพราะทำให้อิโมจิในหัวเรื่อง เช่น 🇬🇧 กลายเป็นก้อนสีทึบ
+     ใช้แสงเรืองสีรุ้งแทน ได้อารมณ์โฮโลแกรมเหมือนเดิมและอิโมจิยังสวยครบ */
+  color:#fff;
+  text-shadow:-2px 0 12px rgba(255,110,199,.75), 2px 0 12px rgba(95,251,241,.7), 0 0 26px rgba(123,47,247,.55);
 }
 
 /* ---------- ธีมแกรไฟต์-ทองแดง — หินชนวนเข้ม ขอบโลหะสนิมเขียว-ทองแดงเก่า ---------- */
@@ -1464,7 +1501,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
       <button class="btn btn-gold btn-block" id="btnConfirmId" style="margin-top:14px;" disabled>ยืนยันตัวตน ➜</button>
     </div>
 
-    <div id="foot">ENGLISH 🍁 SYSTEM · <button id="adminLink">🇹🇭 T.OAT 🇬🇧 </button> · <button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button></div>
+    <div id="foot">ENGLISH 🍁 SYSTEM · <button id="adminLink">🇹🇭 T.OAT 🇬🇧 </button><span id="practiceSep"> · </span><button id="practiceLink">🎯 ฝึกฝนกู้คะแนน</button> · <button id="fxToggle" title="ปรับเอฟเฟกต์ให้เหมาะกับเครื่อง">⚡ อัตโนมัติ</button></div>
   </section>
 
   <!-- ================= FACE SCAN ================= -->
@@ -1748,7 +1785,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
         <div class="set-grid">
           <div class="set-field"><label>เลือกชุดที่จะแก้ไข</label><select id="bSetSel" style="font-family:var(--font);font-size:14px;padding:11px 12px;border-radius:11px;background:var(--navy2);color:#fff;border:1px solid var(--glass-line);"></select></div>
           <div class="set-field"><label>&nbsp;</label><button class="btn" id="bNewSet" style="width:100%;">➕ สร้างชุดใหม่</button></div>
-          <div class="set-field"><label>รหัสชุด (A-Z 0-9 _ เท่านั้น)</label><input type="text" id="bSetId"></div>
+          <div class="set-field"><label>รหัสชุด (a-z A-Z 0-9 _ ไม่มีเว้นวรรค — ตัวพิมพ์เล็ก/ใหญ่ถือเป็นชุดเดียวกัน)</label><input type="text" id="bSetId"></div>
           <div class="set-field"><label>ชื่อชุด</label><input type="text" id="bTitle"></div>
           <div class="set-field"><label>ต้องได้กี่คะแนนถึงผ่าน (จาก <span id="bQCount">0</span> ข้อ)</label><input type="number" id="bPassScore" min="0"></div>
           <div class="set-field"><label>ฝึกกู้คะแนน: เฉลี่ยต้องได้อย่างน้อย (จาก <span id="bAutoCount">0</span> ข้อตรวจอัตโนมัติ)</label><input type="number" id="bPracScore" min="0"></div>
@@ -1976,7 +2013,15 @@ function resolveSet(cls, room){
   if(!id || !EXAM_SETS[id]) id = FALLBACK_SET;
   return id;
 }
+/** หารหัสชุดที่มีอยู่จริง แบบไม่สนตัวพิมพ์เล็ก-ใหญ่ (กันกรณีผลสอบบันทึกเป็นตัวเล็ก แต่ชุดข้อสอบเป็นตัวใหญ่) */
+function resolveSetId(id){
+  if(!id) return id;
+  if(EXAM_SETS[id]) return id;
+  const k = String(id).trim().toUpperCase();
+  return Object.keys(EXAM_SETS).find(x => x.toUpperCase() === k) || id;
+}
 function useSet(id){
+  id = resolveSetId(id);
   if(!EXAM_SETS[id]) id = FALLBACK_SET;
   if(!EXAM_SETS[id]) id = Object.keys(EXAM_SETS)[0];
   if(!EXAM_SETS[id]){ CUR_SET = ''; QUESTIONS = []; return; }
@@ -1997,7 +2042,9 @@ function applySetCriteria(cfg){
   try{ if(cfg && cfg.setCriteria && String(cfg.setCriteria).trim()) map = JSON.parse(cfg.setCriteria); }catch(e){}
   const num = (v, def) => (v!==undefined && v!==null && v!=='') ? Number(v) : def;
   Object.keys(EXAM_SETS).forEach(id=>{
-    const c = map[id] || {};
+    let c = map[id];
+    if(!c){ const k = id.toUpperCase(); const hit = Object.keys(map).find(x => x.toUpperCase() === k); c = hit ? map[hit] : null; }
+    c = c || {};
     const qs = EXAM_SETS[id].questions || [];
     const total = qs.length;
     const autoTotal = qs.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length;
@@ -2008,7 +2055,7 @@ function applySetCriteria(cfg){
     EXAM_SETS[id].practiceEnabled = (c.practiceEnabled === true);
   });
 }
-function setLabel(id){ return EXAM_SETS[id] ? EXAM_SETS[id].title : (id || '–'); }
+function setLabel(id){ const r = resolveSetId(id); return EXAM_SETS[r] ? EXAM_SETS[r].title : (id || '–'); }
 function anyPracticeEnabled(){ return Object.keys(EXAM_SETS).some(id => EXAM_SETS[id].practiceEnabled); }
 
 /* ══════════════════ ระบบ (ไม่ต้องแก้ด้านล่างนี้) ══════════════════ */
@@ -2227,7 +2274,7 @@ async function boot(){
     applySetCriteria(r.config);
     S.offset = r.serverNow - Date.now();
     if(S.isAdmin){ show('scrAdminLogin'); }
-    else{ buildRegister(); show('scrRegister'); }
+    else{ buildRegister(); show('scrRegister'); setTimeout(probeFxAuto, 1400); }
   }catch(err){
     $('loadSpinner').classList.add('err');
     $('loadMsg').innerHTML = '❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้<br><span class="hint">ตรวจสอบอินเทอร์เน็ต แล้วรีเฟรชหน้านี้</span>';
@@ -2238,6 +2285,7 @@ async function boot(){
 function buildRegister(){
   S.phase = 'register';
   $('practiceLink').classList.toggle('hidden', !anyPracticeEnabled());
+  $('practiceSep').classList.toggle('hidden', !anyPracticeEnabled());
   const cc = $('classChips'); cc.innerHTML = '';
   CLASSES.forEach(c=>{
     const b = document.createElement('button');
@@ -3602,7 +3650,8 @@ function refreshPracticeFilters(){
   };
   fill('pClass', [...new Set(list.map(g=>String(g.classLevel)))].sort(), 'ทุกชั้น');
   fill('pRoom',  [...new Set(list.map(g=>String(g.room)))].sort(), 'ทุกห้อง');
-  fill('pSet',   [...new Set(list.map(g=>String(g.setId)))].sort(), 'ทุกชุดข้อสอบ');
+  // ชุดเดียวกันที่ต่างแค่ตัวพิมพ์ ให้โชว์เป็นตัวเลือกเดียว
+  fill('pSet',   [...new Map(list.map(g=>[String(g.setId).toUpperCase(), String(g.setId)])).values()].sort(), 'ทุกชุดข้อสอบ');
 }
 function renderPracticeList(){
   const all = S.pracList || [];
@@ -3614,7 +3663,7 @@ function renderPracticeList(){
   const list = all.filter(g=>{
     if(fc && String(g.classLevel) !== fc) return false;
     if(fr && String(g.room) !== fr) return false;
-    if(fs && String(g.setId) !== fs) return false;
+    if(fs && String(g.setId).toUpperCase() !== fs.toUpperCase()) return false;
     if(hideDone && g.adjusted) return false;
     return true;
   });
@@ -3999,8 +4048,9 @@ function bSaveQuestion(){
   bRenderList();
 }
 async function bSaveSet(){
-  const setId = $('bSetId').value.trim().toUpperCase();
-  if(!/^[A-Z0-9_\-]+$/.test(setId)){ toast('รหัสชุดใช้ A-Z 0-9 _ เท่านั้น'); return; }
+  // เก็บรหัสตามที่ครูพิมพ์จริง ไม่แปลงเป็นตัวพิมพ์ใหญ่ (เคยแปลงเอง ทำให้ผลสอบเดิมของนักเรียนจับคู่ไม่เจอ)
+  const setId = $('bSetId').value.trim();
+  if(!/^[A-Za-z0-9_\-]+$/.test(setId)){ toast('รหัสชุดใช้ a-z A-Z 0-9 _ - เท่านั้น (ห้ามเว้นวรรค/ภาษาไทย)'); return; }
   if(!BLD.questions.length){ toast('เพิ่มข้อสอบอย่างน้อย 1 ข้อก่อน'); return; }
   const btn = $('bSaveSet'); btn.disabled = true; btn.textContent = 'กำลังบันทึก...';
   try{
@@ -4206,6 +4256,8 @@ $('fRoom').addEventListener('change', renderAdmin);
 });
 $('btnBcOk').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); });
 $('btnBcReply').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); openChat(); });
+$('fxToggle').addEventListener('click', cycleFxMode);
+applyFxMode();
 $('chatFab').addEventListener('click', openChat);
 $('chatClose').addEventListener('click', closeChat);
 $('chatSend').addEventListener('click', sendChatMsg);
@@ -4258,6 +4310,55 @@ document.addEventListener('pointerdown', e=>{
 
 /* หมายเหตุ: เคยมีจุดแสงลอยขึ้นพื้นหลัง 7 ดวง — ถอดออกแล้วเพราะเป็นตัวที่ทำให้เว็บหน่วงมากที่สุด
    (ดวงใหญ่กึ่งโปร่งแสงเคลื่อนข้ามทั้งจอตลอดเวลา + มีเบลอ บังคับให้การ์ดจอวาดใหม่ทุกเฟรม) */
+
+/* ---------- ⚡ ปรับเอฟเฟกต์ให้เหมาะกับเครื่อง ----------
+   อัตโนมัติ: วัดความลื่นของเครื่องจริงตอนเปิดหน้าแรก ถ้าวาดภาพไม่ทัน (ต่ำกว่า 45 เฟรม/วินาที) จะสลับเป็นโหมดลื่นให้เอง
+   และจำไว้ในเครื่องนั้น ครั้งหน้าเปิดมาก็ลื่นเลยตั้งแต่แรก
+   ตั้งใจให้ "ลดได้อย่างเดียว" ในโหมดอัตโนมัติ (ไม่เด้งกลับไปเต็มเอง) กันการสลับไปมา — อยากได้เต็มให้กดเลือกเอง */
+function fxGet(k, d){ try{ return localStorage.getItem(k) || d; }catch(e){ return d; } }
+function fxSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+function fxIsLite(){
+  const m = fxGet('fxMode', 'auto');
+  return m === 'lite' || (m === 'auto' && fxGet('fxAuto', '') === 'lite');
+}
+function applyFxMode(){
+  const lite = fxIsLite();
+  document.documentElement.classList.toggle('fx-lite', lite);
+  const m = fxGet('fxMode', 'auto');
+  const b = document.getElementById('fxToggle');
+  if(b){
+    b.textContent = m === 'lite' ? '⚡ โหมดลื่น'
+                  : m === 'full' ? '✨ เต็มรูปแบบ'
+                  : (lite ? '⚡ อัตโนมัติ (ลื่น)' : '⚡ อัตโนมัติ');
+  }
+}
+function cycleFxMode(){
+  const order = ['auto','lite','full'];
+  const cur = fxGet('fxMode', 'auto');
+  const next = order[(order.indexOf(cur) + 1) % order.length];
+  fxSet('fxMode', next);
+  applyFxMode();
+  toast(next === 'lite' ? '⚡ โหมดลื่น: ลดเอฟเฟกต์ เหมาะกับเครื่องที่กระตุก'
+      : next === 'full' ? '✨ เต็มรูปแบบ: เปิดเอฟเฟกต์ครบทุกอย่าง'
+      : '⚡ อัตโนมัติ: ให้ระบบวัดความลื่นของเครื่องแล้วเลือกเอง');
+  if(next === 'auto') setTimeout(probeFxAuto, 600);
+}
+function probeFxAuto(){
+  if(fxGet('fxMode', 'auto') !== 'auto') return;          // ครูเลือกเองแล้ว ไม่ยุ่ง
+  if(fxIsLite()) return;                                   // ลดไปแล้ว ไม่วัดซ้ำ (กันสลับไปมา)
+  if(REDUCED_MOTION) return;
+  if(document.visibilityState !== 'visible') return;       // แท็บไม่ได้เปิดอยู่ เฟรมจะถูกหน่วงจนวัดผิด
+  let frames = 0; const t0 = performance.now();
+  (function tick(){
+    frames++;
+    const dt = performance.now() - t0;
+    if(dt < 1500){ requestAnimationFrame(tick); return; }
+    if(document.visibilityState !== 'visible') return;
+    const fps = frames / (dt / 1000);
+    if(fps < 45){ fxSet('fxAuto', 'lite'); applyFxMode(); toast('⚡ ปรับเป็นโหมดลื่นให้อัตโนมัติ (เครื่องนี้วาดภาพไม่ทัน)'); }
+    else fxSet('fxAuto', 'full');
+  })();
+}
 
 /* ---------- โทนสีตามเวลาจริงของวัน ---------- */
 function applyTimeOfDay(){
