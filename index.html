@@ -500,6 +500,11 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .fx-lite .btn-gold::after, .fx-lite #answerProgressFill::after,
 .fx-lite .score-ring::after, .fx-lite .hero-eyebrow::before,
 .fx-lite #answerProgress::before{ animation:none !important; display:none !important; }
+/* จุดกะพริบ/สัญญาณที่วนตลอด — จุดเขียว "สด" บนแดชบอร์ดอยู่บนจอตลอดเวลา สั่งวาดใหม่ทุกเฟรม */
+.fx-lite .live-dot, .fx-lite .icon-btn .ping, .fx-lite #chatFab.unread .dot, .fx-lite #timerBox.low b,
+.fx-lite .scan-line, .fx-lite #monitorBox .rec, .fx-lite .scan-steps li.doing .dot,
+.fx-lite #dangerEdge, .fx-lite .hero-title::after, .fx-lite .theme-cosmic #rayLayer{ animation:none !important; }
+.fx-lite #dangerEdge.show{ opacity:.85; }
 .fx-lite #btnSubmit.ready{ animation:none !important; box-shadow:0 0 0 3px rgba(var(--gold-rgb),.55) !important; }
 /* เงาฟุ้งใหญ่ๆ ลดลงเหลือเงาเบาๆ */
 .fx-lite .card, .fx-lite .modal, .fx-lite .stat, .fx-lite .info-chip{ box-shadow:0 4px 14px rgba(0,0,0,.35) !important; }
@@ -1546,7 +1551,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
       <h2>📋 กติกาการสอบ อ่าน!!!! </h2>
       <div class="info-chips">
         <div class="info-chip"><b id="ruleSet" style="font-size:17px;line-height:1.9;">–</b><span>ชุดข้อสอบ</span></div>
-        <div class="info-chip"><b id="ruleQty">–</b><span>จำนวนข้อ</span></div>
+        <div class="info-chip"><b id="ruleQty">–</b><span id="ruleQtySub">จำนวนข้อ</span></div>
         <div class="info-chip"><b id="ruleTime">–</b><span>นาที</span></div>
         <div class="info-chip"><b>1</b><span>สิทธิ์สอบ (ครั้ง)</span></div>
       </div>
@@ -1649,7 +1654,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
   <!-- ================= PRACTICE ROUND RESULT ================= -->
   <section class="screen" id="scrPracticeRoundResult">
     <div class="card result-card">
-      <div class="score-ring"><b id="prScore">0</b><span id="prTotal">จาก 0 ข้อ</span></div>
+      <div class="score-ring"><b id="prScore">0</b><span id="prTotal">จาก 0 คะแนน</span></div>
       <div class="result-msg" id="prMsg">รอบนี้ทำได้เท่านี้!</div>
       <div class="result-sub" id="prSub" style="margin-top:12px;"></div>
       <button class="btn btn-gold btn-block" id="btnPracticeAgain" style="margin-top:18px;">🔁 ฝึกรอบถัดไป</button>
@@ -1787,8 +1792,8 @@ body.in-exam #spotlight{ opacity:0 !important; }
           <div class="set-field"><label>&nbsp;</label><button class="btn" id="bNewSet" style="width:100%;">➕ สร้างชุดใหม่</button></div>
           <div class="set-field"><label>รหัสชุด (a-z A-Z 0-9 _ ไม่มีเว้นวรรค — ตัวพิมพ์เล็ก/ใหญ่ถือเป็นชุดเดียวกัน)</label><input type="text" id="bSetId"></div>
           <div class="set-field"><label>ชื่อชุด</label><input type="text" id="bTitle"></div>
-          <div class="set-field"><label>ต้องได้กี่คะแนนถึงผ่าน (จาก <span id="bQCount">0</span> ข้อ)</label><input type="number" id="bPassScore" min="0"></div>
-          <div class="set-field"><label>ฝึกกู้คะแนน: เฉลี่ยต้องได้อย่างน้อย (จาก <span id="bAutoCount">0</span> ข้อตรวจอัตโนมัติ)</label><input type="number" id="bPracScore" min="0"></div>
+          <div class="set-field"><label>ต้องได้กี่คะแนนถึงผ่าน (คะแนนเต็ม <span id="bQCount">0</span> คะแนน)</label><input type="number" id="bPassScore" min="0" step="0.5"></div>
+          <div class="set-field"><label>ฝึกกู้คะแนน: เฉลี่ยต้องได้อย่างน้อย (จาก <span id="bAutoCount">0</span> คะแนนที่ตรวจอัตโนมัติ)</label><input type="number" id="bPracScore" min="0" step="0.5"></div>
           <div class="switch-row full"><span>🎯 เปิดให้ฝึกกู้คะแนนสำหรับชุดนี้ (ปิดไว้ = นักเรียนมองไม่เห็นเลยว่ามีโหมดนี้)</span><label class="sw"><input type="checkbox" id="bPracEnabled"><i></i></label></div>
           <p class="hint full" style="margin:-4px 0 0;">💡 จำนวนรอบที่ต้องฝึกคำนวณอัตโนมัติจาก "เกณฑ์ผ่าน − คะแนนที่นักเรียนได้" เช่น ผ่าน 40 นักเรียนได้ 35 → ต้องฝึก 5 รอบ (ใครพลาดเยอะกว่าก็ฝึกเยอะกว่า)</p>
           <div class="switch-row full"><span>📱 โหมดผ่อนปรน: ไม่จับสลับหน้าจอ (แนะนำสำหรับชุดข้อเขียนบน iPad)</span><label class="sw"><input type="checkbox" id="bRelax"><i></i></label></div>
@@ -1815,7 +1820,10 @@ body.in-exam #spotlight{ opacity:0 !important; }
         <div id="eWrFields" class="hidden" style="margin-bottom:12px;">
           <div class="set-field full"><label>เฉลย — ตอบสั้นให้ระบบตรวจเอง คั่นหลายแบบด้วย | เช่น went|goed &nbsp;·&nbsp; เว้นว่าง = ครูตรวจให้คะแนนเอง</label><input type="text" id="eKeys"></div>
         </div>
-        <div class="set-field full" style="margin-bottom:14px;"><label>รูปภาพ URL (ไม่มีเว้นว่าง)</label><input type="text" id="eImg"></div>
+        <div class="set-grid" style="margin-bottom:14px;">
+          <div class="set-field"><label>คะแนนข้อนี้ (เว้นว่าง = 1 คะแนน)</label><input type="number" id="ePoints" min="0.5" step="0.5" placeholder="1"></div>
+          <div class="set-field"><label>รูปภาพ URL (ไม่มีเว้นว่าง)</label><input type="text" id="eImg"></div>
+        </div>
         <div style="display:flex;gap:10px;">
           <button class="btn btn-gold" id="eSave" style="flex:1;">✔ บันทึกข้อนี้</button>
           <button class="btn" id="eCancel">ยกเลิก</button>
@@ -2046,8 +2054,8 @@ function applySetCriteria(cfg){
     if(!c){ const k = id.toUpperCase(); const hit = Object.keys(map).find(x => x.toUpperCase() === k); c = hit ? map[hit] : null; }
     c = c || {};
     const qs = EXAM_SETS[id].questions || [];
-    const total = qs.length;
-    const autoTotal = qs.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length;
+    const total = sumPoints(qs, false);        // เกณฑ์ผ่านคิดเป็น "คะแนน" ไม่ใช่จำนวนข้อ
+    const autoTotal = sumPoints(qs, true);
     const defPass = total ? Math.max(1, Math.round(total*0.5)) : 1;
     const defPracScore = autoTotal ? Math.max(1, Math.round(autoTotal*0.9)) : 1;
     EXAM_SETS[id].passScore = num(c.passScore, defPass);
@@ -2519,7 +2527,7 @@ async function doPracticeSubmit(){
   S.practiceSubmitting = true;
   const cs = computeScore();
   const score = cs.auto;
-  const total = QUESTIONS.length - cs.manualIdx.length; // ไม่นับข้อที่ต้องให้ครูตรวจเอง (ไม่มีเฉลย) เป็นตัวหาร กันคะแนน% ถูกกดต่ำเกินจริง
+  const total = sumPoints(QUESTIONS, true); // นับเฉพาะข้อที่ตรวจอัตโนมัติได้ (ข้อเขียนที่ครูตรวจเองไม่นับ) กันคะแนน% ถูกกดต่ำเกินจริง
   if(total <= 0){
     S.practiceSubmitting = false;
     modal('ชุดนี้ยังฝึกอัตโนมัติไม่ได้','ชุดข้อสอบนี้เป็นข้อเขียนที่ต้องให้ครูตรวจเองทั้งหมด ระบบฝึกอัตโนมัติใช้ไม่ได้กับชุดนี้ กรุณาแจ้งครูผู้คุมสอบนะครับ',[{label:'กลับหน้าฝึกฝน', cls:'btn-gold', fn:enterPracticeHome}]);
@@ -2553,7 +2561,7 @@ function showPracticeRoundResult(score, total){
   const pct = total ? score/total : 0;
   const pctInt = Math.round(pct*100);
   $('prScore').textContent = score;
-  $('prTotal').textContent = 'จาก '+total+' ข้อ';
+  $('prTotal').textContent = 'จาก '+total+' คะแนน';
   $('prMsg').textContent = pctInt>=90 ? '🌟 เยี่ยมมาก!' : pctInt>=70 ? '👍 ดีขึ้นเรื่อยๆ!' : '💪 ฝึกต่ออีกนิดนะ';
   $('prSub').innerHTML = 'ทำไปแล้ว <b style="color:var(--gold);">'+r.roundsDone+'</b>/'+r.minRounds+' รอบ · เฉลี่ยรวม <b style="color:var(--gold);">'+r.avgScore+'</b> คะแนน (ต้องได้ '+r.minScore+')';
   $('btnPracticeProof2').classList.toggle('hidden', !r.meetsGoal);
@@ -2591,7 +2599,9 @@ async function startScan(){
   $('scanLine').style.display = '';
   try{
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('no cam api');
-    S.stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:640}, height:{ideal:480} }, audio:false });
+    const liteCam = document.documentElement.classList.contains('fx-lite');
+    S.stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user',
+      width:{ideal: liteCam ? 320 : 640}, height:{ideal: liteCam ? 240 : 480}, frameRate:{ideal: liteCam ? 15 : 30} }, audio:false });
     const v = $('camVideo');
     try{ v.srcObject = S.stream; }catch(e){}
     try{ const p = v.play(); if(p && p.catch) p.catch(()=>{}); }catch(e){}
@@ -2654,6 +2664,9 @@ function countUpTo(el, target, dur){
 function gotoRules(){
   S.phase = 'rules';
   countUpTo($('ruleQty'), QUESTIONS.length);
+  // ถ้าแต่ละข้อคะแนนไม่เท่ากัน (คะแนนเต็ม ≠ จำนวนข้อ) บอกคะแนนเต็มให้นักเรียนรู้ด้วย
+  const fullPts = sumPoints(QUESTIONS, false);
+  $('ruleQtySub').textContent = (fullPts === QUESTIONS.length) ? 'จำนวนข้อ' : 'ข้อ (เต็ม '+fullPts+' คะแนน)';
   countUpTo($('ruleTime'), parseInt(S.config.durationMinutes,10)||60);
   $('ruleSet').textContent = setLabel(CUR_SET);
   const relax = !!(EXAM_SETS[CUR_SET] && EXAM_SETS[CUR_SET].relax);
@@ -2844,15 +2857,27 @@ function matchKeys(ans, keys){
   const a = normTxt(ans);
   return keys.some(k => normTxt(k) === a);
 }
+/** คะแนนของข้อหนึ่งข้อ — ไม่ได้ตั้งไว้ = 1 คะแนน */
+function qPoints(q){ const n = Number(q && q.points); return (isFinite(n) && n > 0) ? n : 1; }
+/** คะแนนเต็ม: autoOnly = นับเฉพาะข้อที่ตรวจอัตโนมัติได้ (ใช้ในโหมดฝึก) */
+function sumPoints(questions, autoOnly){
+  let t = 0;
+  (questions||[]).forEach(q=>{
+    const isAuto = (q.type !== 'written') || (q.keys && q.keys.length);
+    if(autoOnly && !isAuto) return;
+    t += qPoints(q);
+  });
+  return Math.round(t*100)/100;
+}
 function computeScore(){
   let auto = 0; const manualIdx = [];
   QUESTIONS.forEach((q,i)=>{
     if(q.type === 'written'){
-      if(q.keys && q.keys.length){ if(matchKeys(S.answers[i], q.keys)) auto++; }
+      if(q.keys && q.keys.length){ if(matchKeys(S.answers[i], q.keys)) auto += qPoints(q); }
       else manualIdx.push(i);
-    }else if(S.answers[i] === q.answer) auto++;
+    }else if(S.answers[i] === q.answer) auto += qPoints(q);
   });
-  return { auto: auto, manualIdx: manualIdx };
+  return { auto: Math.round(auto*100)/100, manualIdx: manualIdx };
 }
 function updateHud(){
   $('hudAnswered').textContent = answeredCount()+'/'+QUESTIONS.length;
@@ -3104,7 +3129,7 @@ async function doSubmit(auto){
     (parseInt(S.config.durationMinutes,10)||60)*60
   );
   const payload = {action:'submitExam', classLevel:S.classLevel, room:S.room, no:S.student.no, name:S.student.name,
-    setId:CUR_SET, score:score, total:QUESTIONS.length, timeUsedSec:timeUsedSec, violations:S.violations,
+    setId:CUR_SET, score:score, total:sumPoints(QUESTIONS,false), timeUsedSec:timeUsedSec, violations:S.violations,
     pending:pending, gradeMeta:{auto:score, manualTotal:pending, manual:{}}, answers:S.answers};
   let ok = false;
   for(let i=0;i<3 && !ok;i++){
@@ -3206,7 +3231,7 @@ function fireConfetti(pct){
   }catch(e){}
 }
 function showResult(score, auto, pending){
-  const total = QUESTIONS.length;
+  const total = sumPoints(QUESTIONS, false);
   const pct = total ? score/total : 0;
   const passScore = (EXAM_SETS[CUR_SET] && EXAM_SETS[CUR_SET].passScore !== undefined) ? EXAM_SETS[CUR_SET].passScore : Math.ceil(total*0.5);
   const passPct = total ? passScore/total : 0.5;
@@ -3467,14 +3492,15 @@ function renderWar(){
 
   if(!S.warChipProg) S.warChipProg = {};
   const prevProg = S.warChipProg, curProg = {};
-  $('warActive').innerHTML = act.map(a=>{
+  // สร้างเฉพาะช่องนักเรียนที่เปลี่ยน (ตอบข้อเพิ่ม/ทุจริต) ช่องอื่นใช้ของเดิม — จอฉายไม่กระตุกทุก 2 วินาที
+  patchRows($('warActive'), act.map(a=>{
     const p = a.total ? Math.round(a.answered/a.total*100) : 0;
     curProg[a.key] = a.answered;
     const bumped = prevProg[a.key] !== undefined && prevProg[a.key] !== a.answered;
-    return '<div class="war-chip'+(a.violations>0?' vio':'')+(bumped?' bump':'')+'"><div class="nm">'+esc(a.name)+(a.violations>0?' 🚨':'')+'</div>'
+    return { key: a.key, html: '<div class="war-chip'+(a.violations>0?' vio':'')+(bumped?' bump':'')+'"><div class="nm">'+esc(a.name)+(a.violations>0?' 🚨':'')+'</div>'
       +'<div class="meta">'+esc(a.classLevel)+'/'+esc(a.room)+' เลขที่ '+esc(a.no)+' · ตอบแล้ว '+a.answered+'/'+(a.total||'–')+'</div>'
-      +'<div class="pgw"><span class="pg" style="width:'+p+'%"></span></div></div>';
-  }).join('') || '<div class="feed-item">ยังไม่มีนักเรียนกำลังสอบ</div>';
+      +'<div class="pgw"><span class="pg" style="width:'+p+'%"></span></div></div>' };
+  }), '<div class="feed-item">ยังไม่มีนักเรียนกำลังสอบ</div>');
   S.warChipProg = curProg;
 
   if(d.bc && d.bc.msg){ $('warBc').textContent = '📣 ถึง '+bcTargetLabel(d.bc)+': '+d.bc.msg; $('warBc').classList.add('show'); }
@@ -3531,6 +3557,7 @@ function startAdminPoll(){
 }
 async function adminPollOnce(){
   if(S.phase !== 'admin') return;
+  if(document.hidden) return; // สลับไปแท็บอื่นอยู่ — ไม่ต้องดึงข้อมูล (ประหยัดเครื่องและโควตา Apps Script) กลับมาเมื่อไหร่ดึงทันที
   try{
     const r = await api({action:'adminLive', pin:S.adminPin});
     if(!r.ok) return;
@@ -3567,6 +3594,38 @@ function passFilter(item){
   if(fr && String(item.room) !== fr) return false;
   return true;
 }
+/** อัปเดตตาราง "เฉพาะแถวที่เปลี่ยน" — แถวที่เนื้อหาเหมือนเดิมใช้ของเดิม ไม่สร้างใหม่
+ *  เดิมแดชบอร์ดสร้างทุกแถวใหม่หมดทุก 2 วินาที (480 แถว ≈ 5,000 ชิ้น) ทำให้จอค้างเป็นจังหวะ ~0.7 วินาที
+ *  แม้ข้อมูลจะไม่เปลี่ยนเลยก็ตาม — นี่คือต้นเหตุหลักที่เว็บกระตุกตอนเปิดแดชบอร์ดไว้ */
+function patchRows(tbody, rows, emptyHtml){
+  if(!tbody._rowCache){ tbody._rowCache = new Map(); tbody.innerHTML = ''; tbody._emptyHtml = null; } // ล้างแถวตัวอย่างที่ติดมากับหน้าเว็บ
+  const cache = tbody._rowCache;
+  if(!rows.length){
+    if(tbody._emptyHtml !== emptyHtml){ tbody.innerHTML = emptyHtml; tbody._emptyHtml = emptyHtml; cache.clear(); }
+    return;
+  }
+  if(tbody._emptyHtml){ tbody.innerHTML = ''; tbody._emptyHtml = null; cache.clear(); }
+  const keep = new Set();
+  let prev = null;
+  for(const row of rows){
+    keep.add(row.key);
+    let ent = cache.get(row.key);
+    if(!ent || ent.html !== row.html){
+      const tmp = document.createElement(tbody.tagName === 'TBODY' ? 'tbody' : 'div');
+      tmp.innerHTML = row.html;
+      const tr = tmp.firstElementChild;
+      if(ent && ent.tr.parentNode === tbody) tbody.replaceChild(tr, ent.tr);
+      ent = { tr: tr, html: row.html };
+      cache.set(row.key, ent);
+    }
+    const want = prev ? prev.nextSibling : tbody.firstChild;
+    if(ent.tr !== want) tbody.insertBefore(ent.tr, want);
+    prev = ent.tr;
+  }
+  for(const [k, ent] of cache){
+    if(!keep.has(k)){ if(ent.tr.parentNode === tbody) tbody.removeChild(ent.tr); cache.delete(k); }
+  }
+}
 function renderAdmin(){
   const d = S.adminData; if(!d) return;
   $('stActive').textContent = d.stats.activeCount;
@@ -3582,10 +3641,7 @@ function renderAdmin(){
 
   const ab = $('activeBody');
   const act = d.active.filter(passFilter);
-  if(!act.length){
-    ab.innerHTML = '<tr><td colspan="10" class="empty-cell">🕒 ยังไม่มีนักเรียนกำลังสอบ</td></tr>';
-  }else{
-    ab.innerHTML = act.map(a=>{
+  patchRows(ab, act.map(a=>{
       const fresh = a.lastSeen && (d.serverNow - a.lastSeen < 25000);
       const sig = a.paused ? '<span class="pill warn">⏸ พักอยู่</span>' : (fresh ? '<span class="pill ok">● ออนไลน์</span>' : '<span class="pill warn">○ ขาดสัญญาณ</span>');
       const vio = a.violations > 0 ? '<span class="pill bad">'+a.violations+'</span>' : '<span class="pill ok">0</span>';
@@ -3595,36 +3651,39 @@ function renderAdmin(){
       const msgBtn = a.unreadMsg
         ? '<button class="icon-btn gold" data-msg="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="นักเรียนตอบกลับมาแล้ว — กดเพื่ออ่าน/ตอบ">💬<span class="ping"></span></button>'
         : '<button class="icon-btn" data-msg="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="คุยกับนักเรียนคนนี้">💬</button>';
-      return '<tr><td>'+esc(a.classLevel)+'/'+esc(a.room)+'</td><td>'+esc(a.no)+'</td><td class="name">'+esc(a.name)+(a.unreadMsg?' 💬':'')+'</td>'+
+      const html = '<tr><td>'+esc(a.classLevel)+'/'+esc(a.room)+'</td><td>'+esc(a.no)+'</td><td class="name">'+esc(a.name)+(a.unreadMsg?' 💬':'')+'</td>'+
         '<td>'+esc(setLabel(a.setId))+'</td>'+
-        '<td>'+(a.current||'–')+'</td><td>'+a.answered+'/'+(a.total||'–')+'</td><td>'+fmtSec(a.remaining)+'</td>'+
+        '<td>'+(a.current||'–')+'</td><td>'+a.answered+'/'+(a.total||'–')+'</td><td class="rem-cell"></td>'+
         '<td>'+vio+'</td><td>'+sig+'</td>'+
         '<td class="act-cell"><span class="act-row">'+pauseBtn+msgBtn+
         '<button class="icon-btn danger" data-stop="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="สั่งหยุด — ส่งคำตอบทันทีด้วยคำตอบล่าสุด">🛑</button>'+
         '<button class="icon-btn danger" data-reset="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="ปลดล็อกให้เข้าสอบใหม่ (ลบผลเดิม)">🔓</button>'+
         '</span></td></tr>';
-    }).join('');
-  }
+    return { key: a.key, html: html };
+  }), '<tr><td colspan="10" class="empty-cell">🕒 ยังไม่มีนักเรียนกำลังสอบ</td></tr>');
+  // เวลาที่เหลือเปลี่ยนทุกรอบ — แก้แค่ตัวเลขในช่องเดียว ไม่ต้องสร้างทั้งแถวใหม่
+  act.forEach(a=>{
+    const ent = ab._rowCache && ab._rowCache.get(a.key);
+    const cell = ent && ent.tr.querySelector('.rem-cell');
+    if(cell){ const t = fmtSec(a.remaining); if(cell.textContent !== t) cell.textContent = t; }
+  });
 
   const rb = $('resultBody');
   const res = d.results.filter(passFilter);
-  if(!res.length){
-    rb.innerHTML = '<tr><td colspan="9" class="empty-cell">📭 ยังไม่มีผู้ส่งคำตอบ</td></tr>';
-  }else{
-    rb.innerHTML = res.map(r=>{
+  patchRows(rb, res.map(r=>{
       const t = (r.submitText||'').split(' ')[1] || r.submitText || '–';
       const vio = r.violations > 0 ? '<span class="pill bad">'+r.violations+'</span>' : '<span class="pill ok">0</span>';
       const pend = r.pending > 0 ? ' <span class="pill warn">📝 รอตรวจ '+r.pending+'</span>' : '';
       const gradeBtn = r.pending > 0 ? '<button class="icon-btn gold wide" data-grade="'+esc(r.key)+'" title="ตรวจข้อเขียนที่รอตรวจ">📝 ตรวจ</button>' : '';
-      return '<tr><td>'+esc(t)+'</td><td>'+esc(r.classLevel)+'/'+esc(r.room)+'</td><td>'+esc(r.no)+'</td><td class="name">'+esc(r.name)+'</td>'+
+      const html = '<tr><td>'+esc(t)+'</td><td>'+esc(r.classLevel)+'/'+esc(r.room)+'</td><td>'+esc(r.no)+'</td><td class="name">'+esc(r.name)+'</td>'+
         '<td>'+esc(setLabel(r.setId))+'</td>'+
         '<td class="score-cell">'+r.score+'/'+r.total+pend+'</td><td>'+fmtSec(r.timeUsedSec)+'</td><td>'+vio+'</td>'+
         '<td class="act-cell"><span class="act-row">'+gradeBtn+
         '<button class="icon-btn" data-msg="'+esc(r.key)+'" data-name="'+esc(r.name)+'" title="ดูบทสนทนาที่คุยกันไว้ (ย้อนอ่านได้แม้ส่งคำตอบไปแล้ว)">💬</button>'+
         '<button class="icon-btn danger" data-reset="'+esc(r.key)+'" data-name="'+esc(r.name)+'" title="ให้สอบใหม่ (ลบผลเดิม)">🔓</button>'+
         '</span></td></tr>';
-    }).join('');
-  }
+    return { key: r.key, html: html };
+  }), '<tr><td colspan="9" class="empty-cell">📭 ยังไม่มีผู้ส่งคำตอบ</td></tr>');
 }
 async function loadPracticeList(){
   try{
@@ -3955,14 +4014,14 @@ function bLoadSet(id){
   BLD.title = s.title || id;
   BLD.relax = !!s.relax;
   BLD.questions = s.questions.map(q => q.type === 'written'
-    ? { type:'written', q:q.q, keys:(q.keys||[]).slice(), image:q.image||'' }
-    : { type:'mc', q:q.q, choices:(q.choices||[]).slice(), answer:q.answer, image:q.image||'' });
+    ? { type:'written', q:q.q, keys:(q.keys||[]).slice(), image:q.image||'', points:qPoints(q) }
+    : { type:'mc', q:q.q, choices:(q.choices||[]).slice(), answer:q.answer, image:q.image||'', points:qPoints(q) });
   $('bSetId').value = id; $('bSetId').readOnly = true;
   $('bTitle').value = BLD.title;
   $('bRelax').checked = BLD.relax;
-  $('bPassScore').value = (s.passScore !== undefined) ? s.passScore : Math.round(BLD.questions.length*0.5);
+  $('bPassScore').value = (s.passScore !== undefined) ? s.passScore : Math.round(sumPoints(BLD.questions,false)*0.5*10)/10;
   $('bPracScore').value = (s.practiceMinScore !== undefined) ? s.practiceMinScore
-    : Math.round(BLD.questions.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length*0.9);
+    : Math.round(sumPoints(BLD.questions,true)*0.9*10)/10;
   $('bPracEnabled').checked = !!s.practiceEnabled;
   $('bDelSet').classList.toggle('hidden', !s.fromSheet);
   $('bEditor').classList.add('hidden');
@@ -3986,18 +4045,20 @@ function bNewSet(){
 }
 function bRenderList(){
   $('bCount').textContent = BLD.questions.length;
-  $('bQCount').textContent = BLD.questions.length;
-  $('bPassScore').max = BLD.questions.length;
-  const autoCount = BLD.questions.filter(q => q.type !== 'written' || (q.keys && q.keys.length)).length;
-  $('bAutoCount').textContent = autoCount;
-  $('bPracScore').max = autoCount;
+  const totalPts = sumPoints(BLD.questions, false);
+  const autoPts  = sumPoints(BLD.questions, true);
+  $('bQCount').textContent = totalPts;
+  $('bPassScore').max = totalPts;
+  $('bAutoCount').textContent = autoPts;
+  $('bPracScore').max = autoPts;
   const box = $('bQList');
   if(!BLD.questions.length){ box.innerHTML = '<p class="hint">ยังไม่มีข้อสอบในชุดนี้ กดปุ่มด้านล่างเพื่อเพิ่ม</p>'; return; }
   box.innerHTML = BLD.questions.map((q,i)=>{
     const tp = q.type === 'written'
       ? '<span class="tp wr">✍️ เขียน'+((q.keys&&q.keys.length)?'·ตรวจเอง':'·ครูตรวจ')+'</span>'
       : '<span class="tp">ปรนัย</span>';
-    return '<div class="bq"><b>'+(i+1)+'.</b> '+tp+'<span class="tx">'+esc(q.q)+'</span>'
+    const pt = '<span class="tp" style="background:rgba(var(--gold-rgb),.16);color:var(--gold);border-color:rgba(var(--gold-rgb),.45);">'+qPoints(q)+' คะแนน</span>';
+    return '<div class="bq"><b>'+(i+1)+'.</b> '+tp+pt+'<span class="tx">'+esc(q.q)+'</span>'
       +'<button data-bup="'+i+'" title="เลื่อนขึ้น">▲</button>'
       +'<button data-bdn="'+i+'" title="เลื่อนลง">▼</button>'
       +'<button data-bed="'+i+'">แก้</button>'
@@ -4012,11 +4073,20 @@ function bOpenEditor(type, idx){
   const q = BLD.edit >= 0 ? BLD.questions[BLD.edit] : null;
   $('eQ').value = q ? q.q : '';
   $('eImg').value = q ? (q.image||'') : '';
+  $('ePoints').value = (q && Number(q.points) > 0 && Number(q.points) !== 1) ? q.points : '';
   ['eC0','eC1','eC2','eC3'].forEach((id,i)=>{ $(id).value = (q && q.choices && q.choices[i]) || ''; });
   const ansIdx = (q && typeof q.answer === 'number') ? q.answer : 0;
   document.querySelectorAll('input[name=eAns]').forEach(r=>{ r.checked = Number(r.value) === ansIdx; });
   $('eKeys').value = (q && q.keys) ? q.keys.join('|') : '';
   $('bEditor').classList.remove('hidden');
+}
+/** อ่านช่องคะแนน — ว่าง/ใส่ผิด = 1 คะแนน */
+function readPointsInput(){
+  const raw = ($('ePoints').value || '').trim();
+  if(!raw) return 1;
+  const n = Number(raw);
+  if(!isFinite(n) || n <= 0) return 1;
+  return Math.round(n*100)/100;
 }
 function bSaveQuestion(){
   const qt = $('eQ').value.trim();
@@ -4024,7 +4094,7 @@ function bSaveQuestion(){
   let item;
   if(BLD.editType === 'written'){
     const keys = $('eKeys').value.split('|').map(s=>s.trim()).filter(Boolean);
-    item = { type:'written', q:qt, keys:keys, image:$('eImg').value.trim() };
+    item = { type:'written', q:qt, keys:keys, image:$('eImg').value.trim(), points:readPointsInput() };
   }else{
     const raw = ['eC0','eC1','eC2','eC3'].map(id=>$(id).value.trim());
     // ต้องกรอกเรียงจาก A ห้ามเว้นช่องกลาง (เช่น กรอก A,C,D แต่เว้น B ว่าง) ไม่งั้นตำแหน่งเฉลยจะเลื่อนผิดข้อ
@@ -4040,7 +4110,7 @@ function bSaveQuestion(){
     const ansEl = document.querySelector('input[name=eAns]:checked');
     const answer = ansEl ? Number(ansEl.value) : 0;
     if(answer >= choices.length){ toast('ข้อที่ติ๊กเป็นคำตอบถูกยังว่างอยู่'); return; }
-    item = { type:'mc', q:qt, choices:choices, answer:answer, image:$('eImg').value.trim() };
+    item = { type:'mc', q:qt, choices:choices, answer:answer, image:$('eImg').value.trim(), points:readPointsInput() };
   }
   if(BLD.edit >= 0) BLD.questions[BLD.edit] = item;
   else BLD.questions.push(item);
@@ -4091,15 +4161,17 @@ async function openGrading(key){
     const box = $('modalBox');
     box.className = 'modal wide';
     box.innerHTML = '<h3>📝 ตรวจข้อเขียน — '+esc(r.name)+'</h3>'
-      + '<p class="hint" style="text-align:left;margin-bottom:12px;">'+esc(setLabel(r.setId))+' · ให้คะแนนทีละข้อ (0 หรือ 1 คะแนน)</p>'
+      + '<p class="hint" style="text-align:left;margin-bottom:12px;">'+esc(setLabel(r.setId))+' · ให้คะแนนทีละข้อ (แต่ละข้อมีคะแนนเต็มของตัวเอง ให้คะแนนบางส่วนได้)</p>'
       + manual.map(i=>{
           const ansTxt = (typeof r.answers[i] === 'string' && r.answers[i].trim()) ? r.answers[i] : '';
+          const max = qPoints(set.questions[i]);
           return '<div class="gr-item" data-gi="'+i+'">'
-            + '<div class="gq">ข้อ '+(i+1)+': '+esc(set.questions[i].q)+'</div>'
+            + '<div class="gq">ข้อ '+(i+1)+' <span class="hint">(เต็ม '+max+' คะแนน)</span>: '+esc(set.questions[i].q)+'</div>'
             + '<div class="ga'+(ansTxt?'':' empty')+'">'+(ansTxt?esc(ansTxt):'— นักเรียนไม่ได้ตอบ —')+'</div>'
             + '<div class="gr-btns">'
             + '<button data-gr="0" class="'+(grades[i]===0?'on0':'')+'">✗ 0 คะแนน</button>'
-            + '<button data-gr="1" class="'+(grades[i]===1?'on1':'')+'">✓ 1 คะแนน</button>'
+            + (max > 1 ? '<button data-gr="'+(max/2)+'" class="'+(grades[i]===max/2?'on1':'')+'">◐ '+(max/2)+' คะแนน</button>' : '')
+            + '<button data-gr="'+max+'" class="'+(grades[i]===max?'on1':'')+'">✓ '+max+' คะแนน</button>'
             + '</div></div>';
         }).join('')
       + '<div class="row" style="margin-top:6px;"><button class="btn" id="grCancel">ปิด</button><button class="btn btn-gold" id="grSave">💾 บันทึกคะแนน</button></div>';
@@ -4110,7 +4182,7 @@ async function openGrading(key){
         const gi = item.getAttribute('data-gi');
         grades[gi] = Number(b.getAttribute('data-gr'));
         item.querySelectorAll('[data-gr]').forEach(x=>x.classList.remove('on0','on1'));
-        b.classList.add(grades[gi] === 1 ? 'on1' : 'on0');
+        b.classList.add(grades[gi] > 0 ? 'on1' : 'on0');
         sfxClick();
       });
     });
@@ -4257,6 +4329,7 @@ $('fRoom').addEventListener('change', renderAdmin);
 $('btnBcOk').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); });
 $('btnBcReply').addEventListener('click', ()=>{ $('bcOverlay').classList.remove('show'); openChat(); });
 $('fxToggle').addEventListener('click', cycleFxMode);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && S.phase === 'admin') adminPollOnce(); });
 applyFxMode();
 $('chatFab').addEventListener('click', openChat);
 $('chatClose').addEventListener('click', closeChat);
@@ -4324,6 +4397,7 @@ function fxIsLite(){
 function applyFxMode(){
   const lite = fxIsLite();
   document.documentElement.classList.toggle('fx-lite', lite);
+  if(lite){ const h = document.getElementById('heroWrap'); if(h) h.style.transform = ''; }
   const m = fxGet('fxMode', 'auto');
   const b = document.getElementById('fxToggle');
   if(b){
@@ -4394,6 +4468,7 @@ setInterval(applyTimeOfDay, 15*60*1000); // เผื่อเปิดค้า
     }
   }
   document.addEventListener('pointermove', e=>{
+    if(document.documentElement.classList.contains('fx-lite')) return; // โหมดลื่น: ไม่คำนวณแสงตามเมาส์/เอียงแบนเนอร์เลย
     px = e.clientX; py = e.clientY;
     document.body.classList.add('spot-on');
     if(!queued){ queued = true; requestAnimationFrame(draw); }
