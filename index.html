@@ -485,6 +485,35 @@ textarea,input{-webkit-user-select:text;user-select:text;}
 .act-legend span{display:inline-flex;align-items:center;gap:5px;}
 
 /* ══════════════════════════════════════════════════════════════
+   🛡️ iPad Guard — กันแบ่งหน้าจอ (Split View) / Slide Over / หน้าต่างลอย / ลากวางข้อความ
+   ตัวคลุมนี้ "ทึบสนิท" ไม่ใช่โปร่งแสง — ข้อสอบจะมองไม่เห็นเลยตราบใดที่หน้าต่างไม่เต็มจอ
+   นักเรียนจึงเปิดข้อสอบคู่กับแอปอื่นเพื่อลอกโจทย์ไม่ได้
+══════════════════════════════════════════════════════════════ */
+#guardShield{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;padding:20px;background:#04060f;overflow-y:auto;}
+#guardShield.show{display:flex;}
+.guard-card{max-width:460px;width:100%;text-align:center;border-radius:22px;padding:28px 22px;background:#10142e;border:1.5px solid var(--bad);box-shadow:0 24px 70px rgba(0,0,0,.6);}
+.guard-card .big{font-size:52px;line-height:1.1;}
+.guard-card h3{font-size:20px;font-weight:800;color:#ff9d9d;margin:8px 0;}
+.guard-card p{font-size:14.5px;line-height:1.7;color:#dbe4ff;margin-bottom:12px;}
+.guard-card ol{text-align:left;font-size:14px;line-height:1.75;color:#c6cdf5;margin:0 0 14px 22px;}
+.guard-teacher{margin-top:10px;font-size:12.5px;color:#8e98cf;}
+.guard-teacher summary::-webkit-details-marker{display:none;}
+.guard-teacher summary{cursor:pointer;list-style:none;display:inline-block;padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.14);}
+.guard-teacher .row{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px;}
+.guard-teacher input{font-family:var(--font);font-size:16px;text-align:center;letter-spacing:.35em;width:120px;padding:8px;border-radius:10px;border:1px solid var(--glass-line);background:rgba(255,255,255,.1);color:#fff;}
+/* ตัวคลุมขึ้นเมื่อไหร่ ซ่อนทั้งหน้าซ้ำอีกชั้น กันกรณีเครื่องวาดตัวคลุมไม่ทัน */
+html.guard-lock .shell, html.guard-lock #chatFab, html.guard-lock #chatPanel, html.guard-lock #monitorBox{visibility:hidden !important;}
+/* กันลากรูป/ข้อความออกไปวางในแอปอื่น (Split View ลากวางข้ามแอปได้) และกันเมนูกดค้าง "ค้นหา/แปล/บันทึกรูป" */
+img{-webkit-user-drag:none;user-drag:none;}
+body.in-exam, body.in-exam *{-webkit-touch-callout:none;}
+body.in-exam img{pointer-events:none;}
+/* กัน แชร์ → พิมพ์ → บันทึกเป็น PDF ระหว่างทำข้อสอบ */
+@media print{
+  body.in-exam > *{display:none !important;}
+  body.in-exam::after{content:'ห้ามพิมพ์/บันทึกข้อสอบ';display:block;font-size:28px;padding:48px;color:#000;}
+}
+
+/* ══════════════════════════════════════════════════════════════
    ⚡ โหมดลื่น (fx-lite) — ปรับเอฟเฟกต์ให้เหมาะกับเครื่อง
    เปิดอัตโนมัติเมื่อวัดแล้วเครื่องวาดภาพไม่ทัน หรือกดเลือกเองที่ปุ่ม ⚡ ด้านล่างหน้าแรก
    ตัดเฉพาะของที่กินการ์ดจอหนักๆ (เบลอกระจก, เลเยอร์ผสมสีเต็มจอ, ลูกเล่นที่วนไม่หยุด)
@@ -1583,7 +1612,7 @@ body.in-exam #spotlight{ opacity:0 !important; }
         <span id="vioBadge">⚠ ทุจริต 0 ครั้ง</span>
       </div>
       <div id="qText"></div>
-      <img id="qImg" alt="question image">
+      <img id="qImg" alt="question image" draggable="false">
       <div id="choices"></div>
     </div>
 
@@ -1949,6 +1978,18 @@ body.in-exam #spotlight{ opacity:0 !important; }
   </div>
 </div>
 
+<div id="guardShield" role="alertdialog" aria-live="assertive">
+  <div class="guard-card">
+    <div class="big" id="guardIcon">📵</div>
+    <h3 id="guardTitle">–</h3>
+    <p id="guardMsg">–</p>
+    <ol id="guardSteps"></ol>
+    <details class="guard-teacher">
+      <summary>🔑 สำหรับครูผู้คุมสอบ</summary>
+      <div class="row"><input type="password" id="guardPin" inputmode="numeric" maxlength="4" placeholder="รหัสครู"><button class="btn btn-sm" id="guardPinBtn">ปลดล็อก</button></div>
+    </details>
+  </div>
+</div>
 <button id="chatFab" title="คุยกับครู">💬<span class="dot" id="chatDot">1</span></button>
 <div id="chatPanel">
   <div id="chatHead"><b>💬 คุยกับครูโอ๊ต</b><button id="chatClose" title="ปิด">✕</button></div>
@@ -2092,6 +2133,7 @@ function show(id){
   $(id).classList.add('active');
   // ตอนอยู่หน้าทำข้อสอบ ปิดลูกเล่นที่อาจดึงสายตา (ไฟส่องตามเมาส์) และเปิดโหมดพื้นหลังตามความคืบหน้า
   document.body.classList.toggle('in-exam', id === 'scrExam');
+  if(typeof guardUpdate === 'function') guardUpdate();
   window.scrollTo(0,0);
 }
 function toast(msg){
@@ -2958,6 +3000,8 @@ function renderQuestion(){
     ta.setAttribute('autocapitalize', 'off');
     ta.setAttribute('autocomplete', 'off');
     ta.setAttribute('spellcheck', 'false');
+    ta.setAttribute('writingsuggestions', 'false');   // ปิด Writing Tools / ช่วยเขียนอัตโนมัติ
+    ta.setAttribute('data-gramm', 'false'); ta.setAttribute('data-gramm_editor', 'false'); ta.setAttribute('data-enable-grammarly', 'false');
     ta.placeholder = 'พิมพ์คำตอบของคุณที่นี่...';
     ta.value = (typeof S.answers[orig] === 'string') ? S.answers[orig] : '';
     const cnt = document.createElement('div');
@@ -3062,7 +3106,7 @@ async function sendHeartbeat(){
     const r = await api({action:'heartbeat', key:S.key, name:S.student.name, classLevel:S.classLevel, room:S.room, no:S.student.no,
       current:S.cur+1, answered:answeredCount(), total:QUESTIONS.length,
       violations:S.violations, remaining:remainingSec,
-      chatSince:S.chatSince,
+      chatSince:S.chatSince, guard:guardFlag(),
       answers:S.answers});
     let bcShownMs = 0;
     if(r && r.bc && r.bc.msg && Number(r.bc.ms) > S.bcSeen && S.phase === 'exam' && !S.submitted){
@@ -3377,6 +3421,152 @@ window.addEventListener('beforeunload', e=>{
   if(S.phase === 'exam' && !S.submitted){ e.preventDefault(); e.returnValue = ''; }
 });
 
+/* ══════════════════ 🛡️ iPAD GUARD ══════════════════
+   เว็บบล็อก Split View ตรงๆ ไม่ได้ (เบราว์เซอร์ไม่ให้สิทธิ์) แต่ "ตรวจจับ + ปิดบังข้อสอบทันที + บันทึกแจ้งครู" ได้
+   1) หน้าต่างไม่เต็มจอ (Split View / Slide Over / Stage Manager / หน้าต่างลอย) → ข้อสอบถูกซ่อน เห็นแต่หน้าแจ้งเตือน
+      เทียบ "ความกว้าง" เท่านั้น ไม่เทียบความสูง เพราะแป้นพิมพ์บนจอทำให้ความสูงหดตามปกติ ไม่ใช่การโกง
+   2) ออกจากหน้าต่างสอบ (แตะแอปอื่นที่ลอยทับอยู่ เช่น Slide Over / โน้ตด่วน) → ซ่อนข้อสอบจนกว่าจะแตะกลับ
+   3) ลากวางข้อความ/รูป และวางจากคลิปบอร์ด → บล็อก (ลากวางเป็นช่องที่ข้ามการดักปุ่ม paste ได้)
+   ทำงานเฉพาะบน iPad (หรือเปิดทดสอบด้วย ?ipadguard=1) — Chromebook/คอมพิวเตอร์ไม่ถูกกระทบ */
+var IS_IPAD = /iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+var GUARD_FORCE = /[?&]ipadguard(=[^&#]*)?(&|#|$)/.test(location.search);
+var GUARD = { on: IS_IPAD || GUARD_FORCE, mode: null, away: false, blurAt: 0, splitStart: 0, splitLogged: false,
+              focusOK: null, noFocus: 0, override: false, blockLogMs: 0, rt: 0 };
+
+/** อยู่ในหน้าทำข้อสอบ/ฝึกอยู่หรือไม่ (ใช้กับการบล็อกลากวาง ซึ่งทำงานทุกอุปกรณ์) */
+function guardInExam(){
+  return document.body.classList.contains('in-exam') && !S.submitted;
+}
+/** ต้องเปิดตัวคลุมหรือไม่ (เฉพาะ iPad และยังไม่ถูกครูปลดล็อก) */
+function guardNeeded(){
+  return !!(GUARD.on && !GUARD.override && guardInExam() && !S.paused);
+}
+function guardRelax(){ return S.phase === 'exam' && !!S.relax; }
+
+/** ความกว้างเต็มจอของเครื่องตามทิศที่ถือ — ใช้ window.orientation (บอกทิศของเครื่องจริง ไม่ขึ้นกับขนาดหน้าต่าง) */
+function guardIsSplit(){
+  const w = window.innerWidth;
+  if(!w) return false;
+  if(GUARD_FORCE && !IS_IPAD){                      // โหมดทดสอบบนคอมพิวเตอร์: เทียบกับพื้นที่จอที่ใช้ได้
+    const full = screen.availWidth || screen.width;
+    return !!full && w < full * 0.97;
+  }
+  const a = Math.max(screen.width || 0, screen.height || 0), b = Math.min(screen.width || 0, screen.height || 0);
+  if(!a || !b) return false;                        // ไม่รู้ขนาดจอ → ไม่ตัดสินมั่ว
+  let land = null;
+  if(typeof window.orientation === 'number') land = Math.abs(window.orientation) === 90;
+  else if(screen.orientation && typeof screen.orientation.type === 'string') land = screen.orientation.type.indexOf('landscape') === 0;
+  if(land === null) return !(w >= a * 0.97 || w >= b * 0.97);   // ไม่รู้ทิศ: ถือว่าเต็มจอถ้าตรงกับด้านใดด้านหนึ่ง
+  return w < (land ? a : b) * 0.97;
+}
+
+function guardRender(mode){
+  if(GUARD.mode === mode) return;
+  GUARD.mode = mode;
+  document.documentElement.classList.toggle('guard-lock', !!mode);
+  $('guardShield').classList.toggle('show', !!mode);
+  if(S.phase === 'exam') sendHeartbeat();           // แจ้งครูทันทีทั้งตอนขึ้นและตอนหาย ป้าย 📵 บนแดชบอร์ดจะได้ไม่ค้างหลังนักเรียนกลับมาแล้ว
+  if(!mode) return;
+  if(mode === 'split'){
+    $('guardIcon').textContent = '📵';
+    $('guardTitle').textContent = 'ตรวจพบการแบ่งหน้าจอ';
+    $('guardMsg').textContent = 'ข้อสอบถูกซ่อนไว้ชั่วคราว เพราะหน้าต่างสอบไม่ได้เต็มจอ (Split View / Slide Over / หน้าต่างลอย) ระบบบันทึกและแจ้งครูผู้คุมสอบแล้ว';
+    $('guardSteps').innerHTML = '<li>ปิดแอปอื่นที่เปิดคู่กันอยู่ (ลากเส้นแบ่งกลางจอไปสุดขอบ หรือปิดหน้าต่างนั้น)</li>'
+      + '<li>ถ้าเปิดแถบด้านข้างของ Safari อยู่ ให้ปิดก่อน</li>'
+      + '<li>ขยายหน้าต่างสอบให้เต็มจอ — ข้อสอบจะกลับมาเองทันที</li>';
+  }else{
+    $('guardIcon').textContent = '🙈';
+    $('guardTitle').textContent = 'ออกจากหน้าต่างสอบ';
+    $('guardMsg').textContent = 'ข้อสอบถูกซ่อนไว้ เพราะตรวจพบว่ากำลังใช้งานแอปหรือหน้าต่างอื่นอยู่';
+    $('guardSteps').innerHTML = '<li>ปิดหน้าต่างลอย / Slide Over ที่ค้างอยู่</li><li>แตะที่หน้าจอนี้ เพื่อกลับไปทำข้อสอบ</li>';
+  }
+  try{ sfxWarn(); }catch(e){}
+}
+
+function guardUpdate(){
+  if(typeof GUARD === 'undefined' || !GUARD || !GUARD.on) return;   // show() อาจถูกเรียกก่อนบล็อกนี้ถูกสร้างตอนเริ่มโหลดหน้า
+  if(!guardNeeded()){
+    GUARD.splitStart = 0; GUARD.splitLogged = false;
+    guardRender(null);
+    return;
+  }
+  const relax = guardRelax();
+  const now0 = Date.now();
+  // ตรวจโฟกัสเป็นระยะ — ใช้เฉพาะเมื่อเครื่องนี้ตอบ hasFocus() ได้น่าเชื่อถือ (วัดตอนแตะครั้งแรก) และต้องพลาด 2 รอบติด กันสะดุดชั่วครู่
+  if(GUARD.focusOK === true && !relax){
+    // หลังเกิดเหตุการณ์ blur ให้ตัวคลุมค้างอย่างน้อย 1.2 วินาที ก่อนยอมให้การตรวจโฟกัสเคลียร์ — กัน hasFocus() ที่อัปเดตช้ากว่าเหตุการณ์จนตัวคลุมหายทันที
+    if(document.hasFocus()){ GUARD.noFocus = 0; if(GUARD.away && now0 - GUARD.blurAt > 1200) GUARD.away = false; }
+    else if(++GUARD.noFocus >= 2){ GUARD.away = true; }
+  }
+  const split = guardIsSplit();
+  const now = Date.now();
+  if(split){
+    if(!GUARD.splitStart){ GUARD.splitStart = now; GUARD.splitLogged = false; }
+    // ซ่อนข้อสอบทันที แต่เริ่ม "นับครั้งทุจริต" เมื่อค้างเกิน 2 วินาที กันนับตอนปัดแถบ Dock ผ่านๆ
+    if(!GUARD.splitLogged && now - GUARD.splitStart >= 2000){
+      if(S.phase === 'exam'){
+        const before = S.violations;
+        violation('SPLIT_SCREEN', 'ตรวจพบการแบ่งหน้าจอ / Slide Over / หน้าต่างไม่เต็มจอ');
+        // violation() มีตัวกันนับซ้ำ 1.2 วินาทีที่ใช้ร่วมกับเหตุการณ์อื่น (เช่น blur) ถ้าชนกันจะถูกทิ้งเงียบๆ
+        // → จำว่า "นับแล้ว" เฉพาะเมื่อนับสำเร็จจริง ไม่งั้นลองใหม่รอบหน้า (เดิมพลาดตรงนี้ ทำให้ไม่ถูกนับเลยทั้งรอบ)
+        if(S.violations > before) GUARD.splitLogged = true;
+      }else GUARD.splitLogged = true;     // โหมดฝึก: มีแค่ตัวคลุม ไม่นับทุจริต
+    }
+  }else{ GUARD.splitStart = 0; GUARD.splitLogged = false; }
+  guardRender(split ? 'split' : ((GUARD.away && !relax) ? 'away' : null));
+}
+function guardFlag(){ return GUARD.mode || ''; }
+
+window.addEventListener('resize', ()=>{ clearTimeout(GUARD.rt); GUARD.rt = setTimeout(guardUpdate, 120); });
+window.addEventListener('orientationchange', ()=>{ clearTimeout(GUARD.rt); GUARD.rt = setTimeout(guardUpdate, 500); }); // รอให้ขนาดหน้าต่างนิ่งหลังหมุนจอ
+window.addEventListener('blur', ()=>{ if(guardNeeded() && !guardRelax()){ GUARD.away = true; GUARD.blurAt = Date.now(); guardUpdate(); } });
+window.addEventListener('focus', ()=>{ GUARD.away = false; GUARD.noFocus = 0; guardUpdate(); });
+document.addEventListener('pointerdown', e=>{
+  if(!e.isTrusted) return;
+  // แตะจริงในหน้านี้ = หน้านี้ต้องมีโฟกัสอยู่ ถ้าตอนนั้น hasFocus() ยังตอบ false แปลว่าเครื่องนี้ตอบไม่น่าเชื่อถือ → เลิกใช้วิธีนี้ (ใช้เหตุการณ์ blur อย่างเดียว)
+  if(GUARD.focusOK === null) GUARD.focusOK = !!document.hasFocus();
+  if(GUARD.away){ GUARD.away = false; GUARD.noFocus = 0; guardUpdate(); }   // แตะกลับมาที่หน้าสอบ
+}, true);
+setInterval(guardUpdate, 700);
+
+/* ครูปลดล็อก — กันกรณีระบบเข้าใจผิดจนนักเรียนที่ไม่ได้โกงเข้าสอบไม่ได้ (บันทึกลงชีตทุกครั้ง) */
+$('guardPinBtn').addEventListener('click', ()=>{
+  const v = $('guardPin').value.trim();
+  if(v !== TEACHER_PIN){ toast('รหัสครูไม่ถูกต้อง'); $('guardPin').value = ''; return; }
+  GUARD.override = true; GUARD.away = false;
+  apiSilent({action:'logViolation', key:S.key, name:S.student ? S.student.name : '', type:'GUARD_OVERRIDE', detail:'ครูปลดล็อกระบบกันแบ่งจอของนักเรียนคนนี้'});
+  $('guardPin').value = '';
+  guardUpdate();
+  toast('🔓 ครูปลดล็อกแล้ว');
+});
+
+/* ── ลากวาง / วางจากคลิปบอร์ด: ทำงานทุกอุปกรณ์ระหว่างสอบ (ปุ่ม paste เดิมดักได้แค่ปุ่มลัด แต่ลากวางข้ามไปได้) ── */
+function guardLogBlocked(type, detail){
+  const now = Date.now();
+  if(now - GUARD.blockLogMs < 4000) return;          // กันยิงล็อกรัวๆ
+  GUARD.blockLogMs = now;
+  if(S.phase === 'exam') apiSilent({action:'logViolation', key:S.key, name:S.student ? S.student.name : '', type:type, detail:detail+' (ถูกบล็อก)'});
+}
+['dragstart','dragenter','dragover','drop'].forEach(ev=>{
+  document.addEventListener(ev, e=>{
+    if(!guardInExam()) return;
+    e.preventDefault();
+    try{ if(e.dataTransfer) e.dataTransfer.dropEffect = 'none'; }catch(_){}
+    if(ev === 'drop' || ev === 'dragstart'){
+      toast('🚫 ห้ามลากวางข้อความ/รูประหว่างสอบ');
+      guardLogBlocked('DRAG_DROP', 'พยายามลากวางข้อความ/รูป');
+    }
+  }, true);
+});
+document.addEventListener('beforeinput', e=>{
+  if(!guardInExam()) return;
+  if(/^(insertFromPaste|insertFromDrop|insertFromYank|insertFromPasteAsQuotation|deleteByDrag)/.test(e.inputType || '')){
+    e.preventDefault();
+    toast('🚫 ห้ามวางข้อความระหว่างสอบ');
+    guardLogBlocked('COPY_PASTE', 'พยายามวางข้อความ ('+e.inputType+')');
+  }
+}, true);
+
 /* ══════════════════ ADMIN ══════════════════ */
 async function adminLogin(){
   const pin = $('adminPin').value.trim();
@@ -3417,7 +3607,9 @@ function buildAdminFilters(){
 const VIO_LABELS = {
   TAB_SWITCH:'สลับแท็บ/ออกจากหน้าจอสอบ', WINDOW_BLUR:'ออกจากหน้าต่างสอบ',
   RIGHT_CLICK:'พยายามคลิกขวา', COPY_PASTE:'พยายามคัดลอกข้อความ',
-  FACESCAN_SKIP:'ข้ามสแกนหน้า (ครูอนุญาต)'
+  FACESCAN_SKIP:'ข้ามสแกนหน้า (ครูอนุญาต)',
+  SPLIT_SCREEN:'แบ่งหน้าจอ / Slide Over / หน้าต่างไม่เต็มจอ', DRAG_DROP:'พยายามลากวางข้อความ/รูป',
+  GUARD_OVERRIDE:'ครูปลดล็อกระบบกันแบ่งจอ'
 };
 function warFilter(cls, room){
   const c = $('wClass').value, r = $('wRoom').value;
@@ -3497,7 +3689,7 @@ function renderWar(){
     const p = a.total ? Math.round(a.answered/a.total*100) : 0;
     curProg[a.key] = a.answered;
     const bumped = prevProg[a.key] !== undefined && prevProg[a.key] !== a.answered;
-    return { key: a.key, html: '<div class="war-chip'+(a.violations>0?' vio':'')+(bumped?' bump':'')+'"><div class="nm">'+esc(a.name)+(a.violations>0?' 🚨':'')+'</div>'
+    return { key: a.key, html: '<div class="war-chip'+(a.violations>0?' vio':'')+(bumped?' bump':'')+'"><div class="nm">'+esc(a.name)+(a.violations>0?' 🚨':'')+(a.guard?' 📵':'')+'</div>'
       +'<div class="meta">'+esc(a.classLevel)+'/'+esc(a.room)+' เลขที่ '+esc(a.no)+' · ตอบแล้ว '+a.answered+'/'+(a.total||'–')+'</div>'
       +'<div class="pgw"><span class="pg" style="width:'+p+'%"></span></div></div>' };
   }), '<div class="feed-item">ยังไม่มีนักเรียนกำลังสอบ</div>');
@@ -3643,7 +3835,9 @@ function renderAdmin(){
   const act = d.active.filter(passFilter);
   patchRows(ab, act.map(a=>{
       const fresh = a.lastSeen && (d.serverNow - a.lastSeen < 25000);
-      const sig = a.paused ? '<span class="pill warn">⏸ พักอยู่</span>' : (fresh ? '<span class="pill ok">● ออนไลน์</span>' : '<span class="pill warn">○ ขาดสัญญาณ</span>');
+      const sig = (a.paused ? '<span class="pill warn">⏸ พักอยู่</span>' : (fresh ? '<span class="pill ok">● ออนไลน์</span>' : '<span class="pill warn">○ ขาดสัญญาณ</span>'))
+        + (a.guard === 'split' ? ' <span class="pill bad" title="หน้าต่างสอบไม่เต็มจอ (แบ่งจอ/Slide Over) — ข้อสอบถูกซ่อนอยู่">📵 แบ่งจอ</span>'
+         : a.guard === 'away' ? ' <span class="pill bad" title="ออกจากหน้าต่างสอบ — ข้อสอบถูกซ่อนอยู่">🙈 ออกนอกหน้าต่าง</span>' : '');
       const vio = a.violations > 0 ? '<span class="pill bad">'+a.violations+'</span>' : '<span class="pill ok">0</span>';
       const pauseBtn = a.paused
         ? '<button class="icon-btn gold" data-resume="'+esc(a.key)+'" data-name="'+esc(a.name)+'" title="ให้ทำต่อ (ต่อเวลาชดเชยให้อัตโนมัติ)">▶️</button>'
